@@ -20,6 +20,16 @@ class Player(Character):
         # Other
         self.stage = 1
 
+    def level_up(self, *, levels=1):
+        self.level += 1
+        self.fully_restore()
+
+    def fully_restore(self):
+        self.max_hp = 90 + 10 * int(self.level)
+        self.current_hp = 90 + 10 * int(self.level)
+        self.max_mana = 95 + 5 * int(self.level)
+        self.current_mana = 95 + 5 * int(self.level)
+
     # Defining a function to play a sound when heal heart is used
     def heal_move_sound(self):
         pygame.mixer.music.load(self.game.file_directory + "audio/sunni_heal_move.ogg")

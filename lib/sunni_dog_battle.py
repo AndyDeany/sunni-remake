@@ -102,20 +102,12 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
         if left and not game.display_options:
             if mousein(mouse_x, mouse_y, 1000,600,1120,650):
                 game.current = "choose ability"
-                opponent_name = "Kanye Snake"
-                game.player.level += 1
-                game.player.max_hp = 90 + 10*int(game.player.level)
-                game.player.current_hp = 90 + 10*int(game.player.level)
-                game.player.max_mana = 95 + 5*int(game.player.level)
-                game.player.current_mana = 95 + 5*int(game.player.level)
-                game.opponent.max_hp = 120
-                game.opponent.current_hp = 120
-                game.opponent.max_mana = 120
-                game.opponent.current_mana = 120
+                game.player.level_up()
+                game.opponent = game.assign_enemy_stats("Kanye Snake")
                 game.save()
             elif mousein(mouse_x, mouse_y, 80,600,268,650):
-                game.player.level += 1
-                opponent_name = "Kayne Snake"
+                game.player.level_up()
+                game.opponent = game.assign_enemy_stats("Kanye Snake")
                 game.save()
                 game.current = "title"
 
@@ -204,7 +196,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                 if game.opponent.current_hp - kick_damage < 0:
                     kick_damage = game.opponent.current_hp
                 game.opponent.current_hp -= kick_damage
-                game.display_damage = game.font.render("-" + str(kick_damage), True, Color.DAMAGE_RED)
+                game.stat_change_text = game.font.render("-" + str(kick_damage), True, Color.DAMAGE_RED)
                 game.display_damage_time = 0
                 game.player.kick_x -= 36
                 game.advancing = False
@@ -252,7 +244,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                 if game.opponent.current_hp - headbutt_damage < 0:
                     headbutt_damage = game.opponent.current_hp
                 game.opponent.current_hp -= headbutt_damage
-                game.display_damage = game.font.render("-" + str(headbutt_damage), True, Color.DAMAGE_RED)
+                game.stat_change_text = game.font.render("-" + str(headbutt_damage), True, Color.DAMAGE_RED)
                 game.display_damage_time = 0
                 game.player.headbutt_x -= 36
                 game.advancing = False
@@ -292,7 +284,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                 if game.opponent.current_hp - frostbeam_damage < 0:
                     frostbeam_damage = game.opponent.current_hp
                 game.opponent.current_hp -= frostbeam_damage
-                game.display_damage = game.font.render("-" + str(frostbeam_damage), True, Color.DAMAGE_RED)
+                game.stat_change_text = game.font.render("-" + str(frostbeam_damage), True, Color.DAMAGE_RED)
                 game.display_damage_time = 0
 
             game.screen.blit(frostbeam_start, (215,381))
@@ -331,7 +323,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                 if game.player.current_hp - dog_bark_damage < 0:
                     dog_bark_damage = game.player.current_hp
                 game.player.current_hp -= dog_bark_damage
-                game.display_damage = game.font.render("-" + str(dog_bark_damage), True, Color.DAMAGE_RED)
+                game.stat_change_text = game.font.render("-" + str(dog_bark_damage), True, Color.DAMAGE_RED)
                 game.display_damage_time = 0
 
             game.screen.blit(game.opponent.dog_bark_stance, (930,440))
@@ -370,7 +362,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                 if game.opponent.current_hp + healed_by > game.opponent.max_hp:
                     healed_by = game.opponent.max_hp - game.opponent.current_hp
                 game.opponent.current_hp += healed_by
-                display_healed = game.font.render("+" + str(healed_by), True, Color.HEAL_GREEN)
+                game.stat_change_text = game.font.render("+" + str(healed_by), True, Color.HEAL_GREEN)
                 game.player.healed_already = True
 
             if game.duration_time < game.fps/2:
@@ -404,7 +396,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                 if game.player.current_hp - bite_damage < 0:
                     bite_damage = game.player.current_hp
                 game.player.current_hp -= bite_damage
-                game.display_damage = game.font.render("-" + str(bite_damage), True, Color.DAMAGE_RED)
+                game.stat_change_text = game.font.render("-" + str(bite_damage), True, Color.DAMAGE_RED)
                 game.display_damage_time = 0
                 game.opponent.bite_x += 42
                 game.advancing = False
@@ -465,7 +457,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                 if game.player.current_hp - spin_damage < 0:
                     spin_damage = game.player.current_hp
                 game.player.current_hp -= spin_damage
-                game.display_damage = game.font.render("-" + str(spin_damage), True, Color.DAMAGE_RED)
+                game.stat_change_text = game.font.render("-" + str(spin_damage), True, Color.DAMAGE_RED)
                 game.display_damage_time = 0
             if game.opponent.spin_direction == "backwards":
                 game.screen.blit(game.opponent.dog_backwards, (180,440))

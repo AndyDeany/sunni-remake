@@ -44,8 +44,6 @@ Keys.process_keydown(pygame.key.get_pressed(), accepting_text)
 # Moves
 display_mana_notification_time = 2*game.fps  # Variable to allow the "Not enough mana" notification to appear when necessary
 
-opponent_name = None
-
 # Setting colours
 
 # Setting fonts
@@ -310,7 +308,7 @@ start_time = time.time()
 while ongoing:
     # Obtaining information
     current_time = time.time() - start_time     # Storing the current amount of time that the program has been running
-    print(f"{opponent_name}: {game.current}")
+    print(f"{game.opponent.name}: {game.current}")
     left = 0    # Resetting the mouse inputs to 0 (off) so the computer doesn't think the mouse is still pressed
     middle = 0
     right = 0
@@ -450,7 +448,7 @@ while ongoing:
                 if mousein(mouse_x, mouse_y, 555,398,630,437) and not game.display_options:
                     game.screen.blit(sure_yes_flared, (0,0))
                     if left:
-                        opponent_name = "Meme Dog"
+                        game.load_opponent("Meme Dog")
                         character_level = 1
                         pygame.mixer.music.stop()
                         game.music_playing = False
@@ -471,7 +469,7 @@ while ongoing:
                         if save1_name != "No save data\n":
                             display_sure = True
                         else:
-                            opponent_name = "Meme Dog"
+                            game.load_opponent("Meme Dog")
                             character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
@@ -484,7 +482,7 @@ while ongoing:
                         if save2_name != "No save data\n":
                             display_sure = True
                         else:
-                            opponent_name = "Meme Dog"
+                            game.load_opponent("Meme Dog")
                             character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
@@ -497,7 +495,7 @@ while ongoing:
                         if save3_name != "No save data\n":
                             display_sure = True
                         else:
-                            opponent_name = "Meme Dog"
+                            game.load_opponent("Meme Dog")
                             character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
@@ -510,7 +508,7 @@ while ongoing:
                         if save4_name != "No save data\n":
                             display_sure = True
                         else:
-                            opponent_name = "Meme Dog"
+                            game.load_opponent("Meme Dog")
                             character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
@@ -570,7 +568,7 @@ while ongoing:
             if load_file:
                 character_name = save.readline()[:-1]
                 character_level = int(save.readline()[:-1])
-                opponent_name = save.readline()[:-1]
+                game.load_opponent(save.readline()[:-1])
                 game.character_number = save.readline()[:-1]
                 save.close()
                 character_normal = pygame.image.load(game.file_directory + f"images\sunni_{game.character_number}_normal1.png").convert_alpha()
@@ -588,7 +586,6 @@ while ongoing:
                 game.music_playing = False
 
                 game.player = Player(game, character_name, 90 + 10*int(character_level), 95 + 5*int(character_level), level=character_level)
-                game.opponent = game.assign_enemy_stats(opponent_name)
                 game.current = "choose ability"
 
             game.screen.blit(return_to_title_button, (1082,665))
@@ -617,7 +614,7 @@ while ongoing:
 
             ## Enemy battle file opening - Start
             # Dog battle
-            if opponent_name == "Meme Dog":
+            if game.opponent.name == "Meme Dog":
                 dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                                    headbutt_move_icon_faded, frostbeam_move_icon_faded, heal_move_icon_faded,
                                    kick_move_icon_solid, headbutt_move_icon_solid, frostbeam_move_icon_solid,
@@ -628,11 +625,11 @@ while ongoing:
                                    character_frostbeam_stance, frostbeam_start, frostbeam_middle)
 
             # Snake battle
-            elif opponent_name == "Kanye Snake":
+            elif game.opponent.name == "Kanye Snake":
                 execfile(game.file_directory + "Python Files\sunni_snake_battle.py")
 
             # Ghost Dog battle
-            elif opponent_name == "Spook Dog":
+            elif game.opponent.name == "Spook Dog":
                 execfile(game.file_directory + "Python Files\sunni_ghost_dog_battle.py")
 
             else:   ## JUST FOR DEBUGGING ## (maybe make this a screen which says: "ERROR, please restart"

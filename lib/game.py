@@ -46,26 +46,26 @@ class Game:
             self.screen.blit(save_name_text, coords)
             return save_name
 
-    def assign_enemy_stats(self, opponent_name):
-        if opponent_name == "Meme Dog":
+    def load_opponent(self, name):
+        if name == "Meme Dog":
             opponent = MemeDog(self, 100, 100)
-        elif opponent_name == "Kanye Snake":
-            opponent = Character(self, opponent_name, 120, 120)
+        elif name == "Kanye Snake":
+            opponent = Character(self, name, 120, 120)
             opponent.snake_confuse_x = 930
             opponent.snake_position = "normal"
             opponent.snake_confuse_direction = "backwards"
-        elif opponent_name == "Spook Dog":
-            opponent = Character(self, opponent_name, 200, 150)
+        elif name == "Spook Dog":
+            opponent = Character(self, name, 200, 150)
             opponent.ghost_dog_stage = 1     # Variable showing which frame of idle movement the ghost dog is in
             opponent.ghost_dog_glide_x = 930
             opponent.started_glowing = False
             opponent.ghost_dog_attack_time = self.fps/2
             opponent.already_clawed = False
         else:
-            raise ValueError(f"Unknown opponent: '{opponent_name}'")
+            raise ValueError(f"Unknown opponent: '{name}'")
 
-        return opponent
+        self.opponent = opponent
 
     def display_stat_change(self, display_x):
-        self.screen.blit(self.display_damage, (display_x, self.player.display_damage_y))
+        self.screen.blit(self.stat_change_text, (display_x, self.player.display_damage_y))
         self.player.display_damage_y -= 3
