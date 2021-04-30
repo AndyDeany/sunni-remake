@@ -1,10 +1,7 @@
 ## Coding related functions ##
 # Defining a function to check if the mouse is in a certain area
-def mousein(start_x, start_y, end_x, end_y):
-    if mouse_x > start_x and mouse_x < end_x and mouse_y > start_y and mouse_y < end_y:
-        return True
-    else:
-        return False
+def mousein(mouse_x, mouse_y, start_x, start_y, end_x, end_y):
+    return mouse_x > start_x and mouse_x < end_x and mouse_y > start_y and mouse_y < end_y
 
 # Defining a function to load files from the directory
 def load(file_type, name):
