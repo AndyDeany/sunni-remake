@@ -398,12 +398,8 @@ while ongoing:
 
     Keys.initialise()
         
-    mouse_position = pygame.mouse.get_pos()     # Checking the position of the mouse                            
-    mouse_x = mouse_position[0]                 # Checking the x coordinate of the mouse                        
-    mouse_y = mouse_position[1]                 # Checking the y coordinate of the mouse
-    
-    #print current   # Shows the screen the user is currently on 
-    
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+
     ## Main event loop (Reactions to user input)                                                                       
     for event in pygame.event.get():                    # i.e. Whenever the user does something                                                                                                                          
         if event.type == pygame.QUIT:                   # i.e. The user clicks close                                    
@@ -512,26 +508,22 @@ while ongoing:
         # When 'play' is pressed; starting a new game save
         elif current == "start new game":
             screen.blit(load_game_screen, (0,0))
-            save1 = open(file_directory + "saves\save1.txt", "r")
-            save1_name = save1.readline()
-            save1_name_text = font.render(save1_name[0:len(save1_name) - 1], True, BLACK)
-            save1.close
-            screen.blit(save1_name_text, (450,230))
-            save2 = open(file_directory + "saves\save2.txt", "r")
-            save2_name = save2.readline()
-            save2_name_text = font.render(save2_name[0:len(save2_name) - 1], True, BLACK)
-            save2.close
-            screen.blit(save2_name_text, (450,349))
-            save3 = open(file_directory + "saves\save3.txt", "r")
-            save3_name = save3.readline()
-            save3_name_text = font.render(save3_name[0:len(save3_name) - 1], True, BLACK)
-            save3.close
-            screen.blit(save3_name_text, (450,468))
-            save4 = open(file_directory + "saves\save4.txt", "r")
-            save4_name = save4.readline()
-            save4_name_text = font.render(save4_name[0:len(save4_name) - 1], True, BLACK)
-            save4.close
-            screen.blit(save4_name_text, (450,587))
+            with open(file_directory + "saves\save1.txt", "r") as save1:
+                save1_name = save1.readline()
+                save1_name_text = font.render(save1_name[0:len(save1_name) - 1], True, BLACK)
+                screen.blit(save1_name_text, (450, 230))
+            with open(file_directory + "saves\save2.txt", "r") as save2:
+                save2_name = save2.readline()
+                save2_name_text = font.render(save2_name[0:len(save2_name) - 1], True, BLACK)
+                screen.blit(save2_name_text, (450, 349))
+            with open(file_directory + "saves\save3.txt", "r") as save3:
+                save3_name = save3.readline()
+                save3_name_text = font.render(save3_name[0:len(save3_name) - 1], True, BLACK)
+                screen.blit(save3_name_text, (450, 468))
+            with open(file_directory + "saves\save4.txt", "r") as save4:
+                save4_name = save4.readline()
+                save4_name_text = font.render(save4_name[0:len(save4_name) - 1], True, BLACK)
+                screen.blit(save4_name_text, (450, 587))
 
             if accepting_text:
                 screen.blit(enter_character_name, (0,0))
