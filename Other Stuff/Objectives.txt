@@ -1,0 +1,32 @@
+Sunni objectives/improvements:
+- multiple characters you can fight
+- characters scale with your level
+- skill trees
+- art update xd, XD!
+- music
+- pet for character... xd
+- frostbeam could probably do with moving down so it looks right for the new Sunni.
+- change [person]_[movename]_x to [enemy/character]_movement_x
+- add recognition for all mouse buttons
+- add DoTs, bleed effect for ghost_dog_claw_move, shouldn't be too hard, just add something after the character attacks to check the duration of his DoTs if he has any, deal damage depending on the DoT, and reduce the duration by 1. Then continue as normal to the enemy's next move.
+- when you click 'PLAY', add something to ask the player if they're sure they want to start a new game. Alternatively, ask if they want to start a new game or load a previous save.
+- perhaps add an animation after killing the 'meme dog', showing the dog's ghost (spook dog) leaving his body. will b gd :]
+- Add multiple saves, with an interface showing the saves and the progress of the saves.
+- make wadud make idle animations for all the characters
+- remove recognition for any inputs which aren't used at the end of the game. Particularly some weird ones, such as scroll lock
+- Add the ability to name your own character
+- add recognition for when a key is held down when typing, so the letter is repeated
+- If you really want to, add a function to measure how long a text input is (in pixels) so a cursor can be shown
+- files will need changing if you want enter to do something other than go onto the next line when typing text. (ACTUALLY YOU COULD JUST LET IT GO ONTO THE NEXT LINE BUT THEN REMOVE THE "\n" THEN CONTINUE AS USUAL, AS IT WOULDN'T MAKE A VISUAL DIFFERENCE)
+- text is so fucking broken lol pls try fix or send4help asap
+- go through all the battles and implement the functions (like the stat change function)
+- Need something saying "choose a save file" after a name has been selected for a new save.Also the "Are you sure (you want to overwrite this save)" sign should say (in smaller writing);"any previous progress on the selected save will be wiped"
+- Define a function to choose the right variable for each fight (i.e. assigning the right "current" and health and mana for each enemy, instead of doing it separately each time. This will avoid any areas of code being missed out when new enemies are added, as only the function needs editing.)
+- Add an edit button when creating a new save for the character name after it has been entered. Also perhaps make it possible to edit the name later from the load save screen.
+- Maybe try to find a way to centre text (by makign a function to measure the length of the text (in pixels), then adjusting the x-coordinate of the text accordingly
+- Cross (delete) and edit button for save files (edit is for their names)
+- Choose colour and design for displaying character name
+- Perhaps make ghost dog have 100hp. I believe this would actually make him doable.
+- Finish removing underscores for the "current" variable
+- change the "not enough mana" pages to a variable which shows the not enough mana thingy when required, so the player can still click
+- finish the flaring for new buttons
