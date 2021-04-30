@@ -507,23 +507,19 @@ while ongoing:
         ## Starting the game screens
         # When 'play' is pressed; starting a new game save
         elif current == "start new game":
-            screen.blit(load_game_screen, (0,0))
-            with open(file_directory + "saves\save1.txt", "r") as save1:
-                save1_name = save1.readline()
-                save1_name_text = font.render(save1_name[0:len(save1_name) - 1], True, BLACK)
-                screen.blit(save1_name_text, (450, 230))
-            with open(file_directory + "saves\save2.txt", "r") as save2:
-                save2_name = save2.readline()
-                save2_name_text = font.render(save2_name[0:len(save2_name) - 1], True, BLACK)
-                screen.blit(save2_name_text, (450, 349))
-            with open(file_directory + "saves\save3.txt", "r") as save3:
-                save3_name = save3.readline()
-                save3_name_text = font.render(save3_name[0:len(save3_name) - 1], True, BLACK)
-                screen.blit(save3_name_text, (450, 468))
-            with open(file_directory + "saves\save4.txt", "r") as save4:
-                save4_name = save4.readline()
-                save4_name_text = font.render(save4_name[0:len(save4_name) - 1], True, BLACK)
-                screen.blit(save4_name_text, (450, 587))
+            screen.blit(load_game_screen, (0, 0))
+
+            def display_save_name(save_number, coords):
+                with open(file_directory + f"saves\save{save_number}.txt", "r") as save_file:
+                    save_name = save_file.readline()
+                    save_name_text = font.render(save_name[0:len(save_name) - 1], True, BLACK)
+                    screen.blit(save_name_text, coords)
+                    return save_name
+
+            save1_name = display_save_name(1, (450, 230))
+            save2_name = display_save_name(2, (450, 349))
+            save3_name = display_save_name(3, (450, 468))
+            save4_name = display_save_name(4, (450, 587))
 
             if accepting_text:
                 screen.blit(enter_character_name, (0,0))
@@ -558,7 +554,7 @@ while ongoing:
                 screen.blit(font.render("Character name: " + character_name, True, MILD_BLUE), (10,10))
                 if mousein(mouse_x, mouse_y, 355,225,925,338) and not display_options:
                     screen.blit(load1_flared, (0,0))
-                    screen.blit(save1_name_text, (450,230))
+                    display_save_name(1, (450, 230))
                     if left:
                         save_number = "1"
                         if save1_name != "No save data\n":
@@ -571,7 +567,7 @@ while ongoing:
                             current = "choose character"
                 elif mousein(mouse_x, mouse_y, 355,344,925,457) and not display_options:
                     screen.blit(load2_flared, (0,0))
-                    screen.blit(save2_name_text, (450,349))
+                    display_save_name(2, (450, 349))
                     if left:
                         save_number = "2"
                         if save2_name != "No save data\n":
@@ -584,7 +580,7 @@ while ongoing:
                             current = "choose character"
                 elif mousein(mouse_x, mouse_y, 355,463,925,576) and not display_options:
                     screen.blit(load3_flared, (0,0))
-                    screen.blit(save3_name_text, (450,468))
+                    display_save_name(3, (450, 468))
                     if left:
                         save_number = "3"
                         if save3_name != "No save data\n":
@@ -597,7 +593,7 @@ while ongoing:
                             current = "choose character"
                 elif mousein(mouse_x, mouse_y, 355,582,925,695) and not display_options:
                     screen.blit(load4_flared, (0,0))
-                    screen.blit(save4_name_text, (450,587))
+                    display_save_name(4, (450, 587))
                     if left:
                         save_number = "4"
                         if save4_name != "No save data\n":
