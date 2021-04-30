@@ -1,4 +1,5 @@
-## Coding related functions ##
+from lib.character import Character
+
 # Defining a function to check if the mouse is in a certain area
 def mousein(mouse_x, mouse_y, start_x, start_y, end_x, end_y):
     return mouse_x > start_x and mouse_x < end_x and mouse_y > start_y and mouse_y < end_y
@@ -12,13 +13,6 @@ def load(file_type, name):
         return pygame.mixer.music.load(file_location + "ogg")
     
 # Defining a function to save the game
-def savegame(savefile):
-    save = open(file_directory + "Save Files\save" + savefile + ".txt", "w")
-    save.write(character_name + "\n")
-    save.write(str(character_level) + "\n")
-    save.write(opponent_name + "\n")
-    save.write(character_number + "\n")
-    save.close()
 
 # Defining a function to delete save files
 def deletesave(savefile):
@@ -51,30 +45,6 @@ def accept_text():
             else:
                 input_text += chr(key_pressed)
         
-
-# Defining a function to designate the appropriate stats to the enemy depending on what it is
-def assign_enemy_stats(opponent_name):
-    if opponent_name == "Meme Dog":
-        max_hp = 100
-        current_hp = 100
-        max_mana = 100
-        current_mana = 100
-    elif opponent_name == "Kanye Snake":
-        max_hp = 120
-        current_hp = 120
-        max_mana = 120
-        current_mana = 120
-    elif opponent_name == "Spook Dog":
-        max_hp = 200
-        current_hp = 200
-        max_mana = 150
-        current_mana = 150
-        
-    else:   # if there is an error
-        return 1,1,1,1,"null"
-
-    return max_hp, current_hp, max_mana, current_mana, "choose ability"
-    
 
 ## Character sound functions ##
 # Defining a function to play a sound when heal heart is used
