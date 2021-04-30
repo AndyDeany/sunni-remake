@@ -9,6 +9,7 @@ from lib.sunni_keydown import Keys
 from lib.sunni_core_functions import *
 from lib.game import Game
 from lib.character import Character
+from lib.player import Player
 from lib.color import Color
 from lib.sunni_dog_functions import *
 from lib.sunni_snake_functions import *
@@ -23,28 +24,12 @@ pygame.init()
 # Setting essential game variables
 game = Game()
 
-# Heal move variables
-game.player.heal_heart_y = 170
-game.player.display_healed_y = 360
-game.player.healed_already = False
-game.opponent.heal_heart_y = 230
-# Kick move variables
-game.player.kick_x = 150
-game.player.tilt_direction = "left"
-game.player.display_damage_y = 420
-game.player.character_display_damage_y = 360
-game.player.display_damage_time = game.fps
-# Headbutt move variables
-game.player.headbutt_x = 150
-
-
 character_name_assigned = False
 opacity = 10    # Variable showing opacity of fading overlay for fading in/out
 fade_direction = "out"
 left_held = 0
 middle_held = 0
 right_held = 0
-volume_multiplier = 1
 load_file = False
 
 accepting_text = False
@@ -57,7 +42,6 @@ Keys.initialise()
 Keys.process_keydown(pygame.key.get_pressed(), accepting_text)
 
 # Moves
-game.player.stage = 1
 display_mana_notification_time = 2*game.fps  # Variable to allow the "Not enough mana" notification to appear when necessary
 
 opponent_name = None
@@ -230,10 +214,6 @@ character_choice1 = pygame.image.load(game.file_directory + "images\sunni_charac
 character_choice2 = pygame.image.load(game.file_directory + "images\sunni_character2_normal1.png").convert_alpha()
 
 # Dog
-dog_normal = pygame.image.load(game.file_directory + "images\sunni_dog_normal.png").convert_alpha()
-dog_dead = pygame.image.load(game.file_directory + "images\sunni_dog_dead.png").convert_alpha()
-dog_backwards = pygame.image.load(game.file_directory + "images\sunni_dog_backwards.png").convert_alpha()
-dog_bark_stance = pygame.image.load(game.file_directory + "images\sunni_dog_bark_stance.png").convert_alpha()
 
 # Snake
 snake_normal = pygame.image.load(game.file_directory + "images\sunni_snake_normal.png").convert_alpha()
@@ -408,7 +388,7 @@ while ongoing:
             else:
                 if not game.music_playing:
                     pygame.mixer.music.load(game.file_directory + "audio\sunni_title_screen_music.ogg")
-                    pygame.mixer.music.set_volume(0.1*volume_multiplier)
+                    pygame.mixer.music.set_volume(0.1*game.volume_multiplier)
                     pygame.mixer.music.play(-1)
                     game.music_playing = True
                     
@@ -546,7 +526,7 @@ while ongoing:
                 game.current = "title"
                 if not game.music_playing:
                     pygame.mixer.music.load(game.file_directory + "audio\sunni_title_screen_music.ogg")
-                    pygame.mixer.music.set_volume(0.1*volume_multiplier)
+                    pygame.mixer.music.set_volume(0.1*game.volume_multiplier)
                     pygame.mixer.music.play(-1)
                     game.music_playing = True
 
@@ -607,7 +587,7 @@ while ongoing:
                 pygame.mixer.music.stop()
                 game.music_playing = False
 
-                game.player = Character(character_name, 90 + 10*int(character_level), 95 + 5*int(character_level), level=character_level)
+                game.player = Player(game, character_name, 90 + 10*int(character_level), 95 + 5*int(character_level), level=character_level)
                 game.opponent = game.assign_enemy_stats(opponent_name)
                 game.current = "choose ability"
 
@@ -621,7 +601,7 @@ while ongoing:
                 game.current = "title"
                 if not game.music_playing:
                     pygame.mixer.music.load(game.file_directory + "audio\sunni_title_screen_music.ogg")
-                    pygame.mixer.music.set_volume(0.1*volume_multiplier)                
+                    pygame.mixer.music.set_volume(0.1*game.volume_multiplier)                
                     pygame.mixer.music.play(-1)
                     game.music_playing = True
                     
@@ -638,18 +618,14 @@ while ongoing:
             ## Enemy battle file opening - Start
             # Dog battle
             if opponent_name == "Meme Dog":
-                dog_battle_display(game, left, mouse_x, mouse_y, dog_normal, kick_move_icon_faded,
+                dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                                    headbutt_move_icon_faded, frostbeam_move_icon_faded, heal_move_icon_faded,
-                                   kick_move_icon_solid,
-                                   headbutt_move_icon_solid, frostbeam_move_icon_solid, heal_move_icon_solid,
-                                   kick_move_info,
-                                   headbutt_move_info, frostbeam_move_info, heal_move_info, dog_dead, victory_overlay,
-                                   continue_button, return_to_title_button, character_dead, defeat_overlay,
-                                   try_again_button,
-                                   heal_heart, character_normal, character_tilt_left, character_tilt_right,
-                                   character_headbutt_stance, character_frostbeam_stance, frostbeam_start,
-                                   frostbeam_middle,
-                                   dog_bark_stance)
+                                   kick_move_icon_solid, headbutt_move_icon_solid, frostbeam_move_icon_solid,
+                                   heal_move_icon_solid, kick_move_info, headbutt_move_info, frostbeam_move_info,
+                                   heal_move_info, victory_overlay, continue_button, return_to_title_button,
+                                   character_dead, defeat_overlay, try_again_button, heal_heart, character_normal,
+                                   character_tilt_left, character_tilt_right, character_headbutt_stance,
+                                   character_frostbeam_stance, frostbeam_start, frostbeam_middle)
 
             # Snake battle
             elif opponent_name == "Kanye Snake":
