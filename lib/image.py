@@ -18,7 +18,6 @@ class Surface:
 class Image(Surface):
     def __init__(self, path, default_coords: tuple = (None, None), *, convert_alpha=True):
         super().__init__(default_coords)
-        print(path)
         self.image = pygame.image.load("../" + path)
         if convert_alpha:
             self.image = self.image.convert_alpha()

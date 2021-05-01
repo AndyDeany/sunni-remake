@@ -8,15 +8,14 @@ class Character:
         self.game = game
         self.name = name
         self.name_display = Text(self.name, Font.DEFAULT, Color.BLACK)
-        self._max_hp = max_hp
-        self._current_hp = self.max_hp
-        self._max_mana = max_mana
-        self._current_mana = self.max_mana
-        self.level = level
 
         self.current_hp_display = None
         self.current_mana_display = None
-        self.render_stats()
+        self.max_hp = max_hp
+        self.current_hp = self.max_hp
+        self.max_mana = max_mana
+        self.current_mana = self.max_mana
+        self.level = level
 
         self.stat_change_text = None
         self.display_stat_x = display_stat_x
@@ -35,7 +34,7 @@ class Character:
     @current_hp.setter
     def current_hp(self, value):
         self._current_hp = value
-        self.render_stats()
+        self.render_hp()
 
     @property
     def max_hp(self):
@@ -44,7 +43,7 @@ class Character:
     @max_hp.setter
     def max_hp(self, value):
         self._max_hp = value
-        self.render_stats()
+        self.render_hp()
 
     @property
     def current_mana(self):
@@ -53,7 +52,7 @@ class Character:
     @current_mana.setter
     def current_mana(self, value):
         self._current_mana = value
-        self.render_stats()
+        self.render_mana()
 
     @property
     def max_mana(self):
@@ -62,10 +61,14 @@ class Character:
     @max_mana.setter
     def max_mana(self, value):
         self._max_mana = value
-        self.render_stats()
+        self.render_mana()
 
-    def render_stats(self):
+    def render_hp(self):
+        """Re-renders the HP display of the character. Used when an hp value (current or max) has been changed."""
         self.current_hp_display = Text(f"Health: {self.current_hp}/{self.max_hp}", Font.DEFAULT, Color.BLACK)
+
+    def render_mana(self):
+        """Re-renders the mana display of the character. Used when a mana value (current or max) has been changed."""
         self.current_mana_display = Text(f"Mana: {self.current_mana}/{self.max_mana}", Font.DEFAULT, Color.BLACK)
 
     def display_stat_change(self):
