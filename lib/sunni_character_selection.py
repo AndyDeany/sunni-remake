@@ -5,7 +5,7 @@ screen.blit(character_choice2, (810,300))
 
 if left and not display_options:
     if mousein(400,300,470,480):
-        character_number = "character1"
+        character = "character1"
         character_normal = pygame.image.load(file_directory + "Image Files\sunni_character1_normal1.png").convert_alpha()
         character_backwards = pygame.image.load(file_directory + "Image Files\sunni_character1_backwards.png").convert_alpha()
         character_scared = pygame.image.load(file_directory + "Image Files\sunni_character1_scared.png").convert_alpha()
@@ -17,7 +17,7 @@ if left and not display_options:
         character_frostbeam_stance = pygame.image.load(file_directory + "Image Files\sunni_character1_frostbeam_stance.png").convert_alpha()
         
     elif mousein(810,300,880,480):
-        character_number = "character2"
+        character = "character2"
         character_normal = pygame.image.load(file_directory + "Image Files\sunni_character2_normal1.png").convert_alpha()
         character_backwards = pygame.image.load(file_directory + "Image Files\sunni_character2_backwards.png").convert_alpha()
         character_scared = pygame.image.load(file_directory + "Image Files\sunni_character2_normal1.png").convert_alpha()

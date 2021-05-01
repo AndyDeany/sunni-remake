@@ -50,21 +50,6 @@ def accept_text():
                 input_text += chr(key_pressed)
 
 
-# Defining a function for the idle movement of characters
-def idle_movement(game, frames,x,y):
-    if game.player.stage == 2*frames - 2:
-        character_image = Image("images/sunni_" + game.character_number + "_normal2.png")
-        character_image.display(x, y)
-        return 1
-    else:
-        if game.player.stage <= frames:
-            character_image = Image("images/sunni_" + game.character_number + "_normal" + str(game.player.stage) + ".png")
-        else:
-            character_image = Image("images/sunni_" + game.character_number + "_normal" + str(2*frames - game.player.stage) + ".png")
-        character_image.display(x, y)
-        return game.player.stage + 1
-
-
 # Definining a function to make the screen fade out or in
 def fade(direction,opacity):
     fade_overlay = pygame.image.load(file_directory + "images/sunni_fade_overlay" + str(opacity) + ".png").convert_alpha()

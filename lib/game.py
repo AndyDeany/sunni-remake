@@ -21,9 +21,8 @@ class Game:
         self.display_options = False
         self.options_just_selected = False
         self.display_sure = False
-        self.player = Player(self, None, 100, 100)
+        self.player = None
         self.opponent = Character(self, None, 100, 100)
-        self.character_number = None
         self.display_mana_notification_time = 0     # Variable to allow the "Not enough mana" notification to appear when necessary
         self.mana_notification_duration = 2 * self.fps  # 2 seconds
         self.duration_time = 0          # Variable to show how long something has been occuring (will be changed by other parts of the program)
@@ -39,7 +38,7 @@ class Game:
             save_file.write(self.player.name + "\n")
             save_file.write(str(self.player.level) + "\n")
             save_file.write(self.opponent.name + "\n")
-            save_file.write(self.character_number + "\n")
+            save_file.write(self.player.character + "\n")
 
     def display_save_name(self, save_number, coords):
         with open(self.get_save_path(save_number), "r") as save_file:

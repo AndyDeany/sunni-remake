@@ -1,5 +1,6 @@
 import pygame
 
+from lib.image import Image
 from lib.character import Character, NotEnoughManaError
 
 
@@ -20,8 +21,9 @@ class Player(Character):
         MOVE_HEAL: 10,
     }
 
-    def __init__(self, game, name, max_hp, max_mana, *, level=1):
+    def __init__(self, game, name, character, max_hp, max_mana, *, level=1):
         super().__init__(game, name, max_hp, max_mana, level=level, display_stat_x=170, display_stat_y_start=360)
+        self.character = character
         # Heal move variables
         self.heal_heart_y = 170
         # Kick move variables
@@ -30,7 +32,9 @@ class Player(Character):
         # Headbutt move variables
         self.headbutt_x = 150
         # Other
-        self.stage = 1
+        self.stage = 0
+        self.num_idle_frames = 6
+        self.idle_frames = [Image(f"images/sunni_{self.character}_normal{n}.png") for n in range(self.num_idle_frames)]
 
     def level_up(self, levels=1):
         old_level = self.level
@@ -39,6 +43,11 @@ class Player(Character):
             self.max_hp = 90 + 10*int(self.level)
             self.max_mana = 95 + 5*int(self.level)
             self.fully_restore()
+
+    def idle_movement(self, x, y):
+        character_image = self.idle_frames[int(self.stage)]
+        character_image.display(x, y)
+        self.stage = round((self.stage + 0.2) % self.num_idle_frames, 2)
 
     def use_move(self, move):
         try:

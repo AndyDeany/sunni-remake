@@ -12,7 +12,7 @@ def dog_battle_display(game, kick_move_icon_faded,
                        character_headbutt_stance, character_frostbeam_stance, frostbeam_start, frostbeam_middle):
     # Default battle screen, where the player chooses which move to use
     if game.current == game.player.CHOOSE_ABILITY:
-        game.player.stage = idle_movement(game, 20,150,380)
+        game.player.idle_movement(150,380)
         game.opponent.dog_normal.display(930, 440)
 
         if game.mouse.is_in(960,430,1100,540):
@@ -31,7 +31,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
     # Screen showing the player their aggressive move options
     elif game.current == "aggressive moves":
-        game.player.stage = idle_movement(game, 20, 150, 380)
+        game.player.idle_movement(150, 380)
         game.opponent.dog_normal.display(930, 440)
 
         kick_move_icon_solid.display(960, 390)
@@ -57,7 +57,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
     # Screen showing the player their defensive move options
     elif game.current == "defensive moves":
-        game.player.stage = idle_movement(game, 20,150,380)
+        game.player.idle_movement(150,380)
         game.opponent.dog_normal.display(930, 440)
 
         heal_move_icon_solid.display(165, 330)
@@ -73,7 +73,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
     # Dog dead/Victory screen
     elif game.current == game.opponent.DEAD:
-        game.player.stage = idle_movement(game, 20,150,380)
+        game.player.idle_movement(150,380)
         game.opponent.dog_dead.display(930, 440)
         victory_overlay.display(0, 0)
         continue_button.display(1000, 600)
@@ -113,7 +113,7 @@ def dog_battle_display(game, kick_move_icon_faded,
     # Character moves
     # Character heal move animation
     elif game.current == game.player.MOVE_HEAL:
-        game.player.stage = idle_movement(game, 20, 150, 380)
+        game.player.idle_movement(150, 380)
         game.opponent.dog_normal.display(930, 440)
 
         if game.player.heal_heart_y < 350:
@@ -154,7 +154,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
         elif not game.player.is_advancing:
             if game.player.kick_x > 150:
-                game.player.stage = idle_movement(game, 20, game.player.kick_x, 380)
+                game.player.idle_movement(game.player.kick_x, 380)
                 game.player.kick_x -= 36
             else:
                 # Resetting variables for next time
@@ -169,7 +169,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
         if game.player.is_advancing:
             if game.player.headbutt_x == 150:
-                game.player.stage = idle_movement(game, 20,150,380)
+                game.player.idle_movement(150,380)
                 game.player.headbutt_x += 24
             elif game.player.headbutt_x < 870:
                 character_headbutt_stance.display(game.player.headbutt_x, 380)
@@ -185,7 +185,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
         elif not game.player.is_advancing:
             if game.player.headbutt_x > 150:
-                game.player.stage = idle_movement(game, 20,game.player.headbutt_x,380)
+                game.player.idle_movement(game.player.headbutt_x,380)
                 game.player.headbutt_x -= 36
             else:
                 # Resetting variables for next time
@@ -217,7 +217,7 @@ def dog_battle_display(game, kick_move_icon_faded,
     # Dog moves
     # Dog bark move animation
     elif game.current == game.opponent.MOVE_BARK:
-        game.player.stage = idle_movement(game, 20,150,380)
+        game.player.idle_movement(150,380)
 
         if game.duration_time < 2*game.fps:
             if game.duration_time == 0:
@@ -237,7 +237,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
     # Dog heal move animation
     elif game.current == game.opponent.MOVE_HEAL:
-        game.player.stage = idle_movement(game, 20,150,380)
+        game.player.idle_movement(150,380)
         game.opponent.dog_normal.display(930, 440)
 
         if game.opponent.heal_heart_y < 410:
@@ -253,7 +253,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
     # Dog bite move animation
     elif game.current == game.opponent.MOVE_BITE:
-        game.player.stage = idle_movement(game, 20 ,150, 380)
+        game.player.idle_movement(150, 380)
 
         if game.opponent.is_advancing:
             if game.opponent.bite_x == 930:
@@ -283,7 +283,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
     # Dog spin move animation
     elif game.current == game.opponent.MOVE_SPIN:
-        game.player.stage = idle_movement(game, 20,150,380)
+        game.player.idle_movement(150,380)
 
         if game.opponent.is_advancing:
             if game.opponent.spin_x == 930:

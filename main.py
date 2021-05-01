@@ -462,23 +462,23 @@ while ongoing:
                 character_name = save.readline()[:-1]
                 character_level = int(save.readline()[:-1])
                 game.load_opponent(save.readline()[:-1])
-                game.character_number = save.readline()[:-1]
+                character = save.readline()[:-1]
                 save.close()
-                character_normal = Image(f"images\sunni_{game.character_number}_normal1.png")
-                character_backwards = Image(f"images\sunni_{game.character_number}_backwards.png")
-                character_scared = Image(f"images\sunni_{game.character_number}_scared.png")
-                character_scared_redflash = Image(f"images\sunni_{game.character_number}_scared_redflash.png")
-                character_tilt_left = Image(f"images\sunni_{game.character_number}_tilt_left.png")
-                character_tilt_right = Image(f"images\sunni_{game.character_number}_tilt_right.png")
-                character_dead = Image(f"images\sunni_{game.character_number}_dead.png")
-                character_headbutt_stance = Image(f"images\sunni_{game.character_number}_headbutt_stance.png")
-                character_frostbeam_stance = Image(f"images\sunni_{game.character_number}_frostbeam_stance.png")
+                character_normal = Image(f"images\sunni_{character}_normal1.png")
+                character_backwards = Image(f"images\sunni_{character}_backwards.png")
+                character_scared = Image(f"images\sunni_{character}_scared.png")
+                character_scared_redflash = Image(f"images\sunni_{character}_scared_redflash.png")
+                character_tilt_left = Image(f"images\sunni_{character}_tilt_left.png")
+                character_tilt_right = Image(f"images\sunni_{character}_tilt_right.png")
+                character_dead = Image(f"images\sunni_{character}_dead.png")
+                character_headbutt_stance = Image(f"images\sunni_{character}_headbutt_stance.png")
+                character_frostbeam_stance = Image(f"images\sunni_{character}_frostbeam_stance.png")
                 load_file = False
 
                 pygame.mixer.music.stop()
                 game.music_playing = False
 
-                game.player = Player(game, character_name, 90 + 10*int(character_level), 95 + 5*int(character_level), level=character_level)
+                game.player = Player(game, character_name, character, 90 + 10*int(character_level), 95 + 5*int(character_level), level=character_level)
                 game.current = "choose ability"
 
             return_to_title_button.display(1082, 665)

@@ -2,7 +2,7 @@
 
 # Default battle screen, where the player chooses which move to use
 if current == "choose ability":
-    character_stage = idle_movement(character_stage,character_number,20,150,380)
+    character_stage = idle_movement(character_stage,character,20,150,380)
     ghost_dog_stage = idle_movement(ghost_dog_stage,"ghost_dog",20,930,440)
 
     if mousein(960,430,1100,540):
@@ -21,7 +21,7 @@ if current == "choose ability":
 
 # Screen showing the player their aggressive move options
 elif current == "aggressive moves":
-    character_stage = idle_movement(character_stage,character_number,20,150,380)
+    character_stage = idle_movement(character_stage,character,20,150,380)
     ghost_dog_stage = idle_movement(ghost_dog_stage,"ghost_dog",20,930,440)
     
     screen.blit(kick_move_icon_solid, (960,390))
@@ -61,7 +61,7 @@ elif current == "aggressive moves":
 
 # Screen showing the player their defensive move options
 elif current == "defensive moves":
-    character_stage = idle_movement(character_stage,character_number,20,150,380)
+    character_stage = idle_movement(character_stage,character,20,150,380)
     ghost_dog_stage = idle_movement(ghost_dog_stage,"ghost_dog",20,930,440)
     
     screen.blit(heal_move_icon_solid, (165,330))
@@ -82,7 +82,7 @@ elif current == "defensive moves":
 
 # Not enough mana screen - displays text telling the player that they do not have enough mana to use the move they tried to use
 elif current == "ghost_dog_not_enough_mana":
-    character_stage = idle_movement(character_stage,character_number,20,150,380)
+    character_stage = idle_movement(character_stage,character,20,150,380)
     ghost_dog_stage = idle_movement(ghost_dog_stage,"ghost_dog",20,930,440)
 
     if duration_time < 2*fps:
@@ -94,7 +94,7 @@ elif current == "ghost_dog_not_enough_mana":
 
 # Ghost Dog dead/Victory screen
 elif current == "ghost dog dead":
-    character_stage = idle_movement(character_stage,character_number,20,150,380)
+    character_stage = idle_movement(character_stage,character,20,150,380)
     screen.blit(ghost_dog_dead, (930,440))
     screen.blit(victory_overlay, (0,0))
     screen.blit(continue_button, (1000,600))
@@ -151,7 +151,7 @@ elif current == "character dead":
 
 # Character heal move animation
 elif current == "heal move":
-    character_stage = idle_movement(character_stage,character_number,20,150,380)
+    character_stage = idle_movement(character_stage,character,20,150,380)
     ghost_dog_stage = idle_movement(ghost_dog_stage,"ghost_dog",20,930,440)
 
     if heal_heart_y < 350:
@@ -189,7 +189,7 @@ elif current == "kick move":
     
     if advancing:
         if character_kick_x == 150:
-            character_stage = idle_movement(character_stage,character_number,20,150,380)
+            character_stage = idle_movement(character_stage,character,20,150,380)
             character_kick_x += 24
         elif character_kick_x < 870:
             if character_tilt_direction == "left":
@@ -215,7 +215,7 @@ elif current == "kick move":
             
     elif not advancing:
         if character_kick_x > 150:
-            character_stage = idle_movement(character_stage,character_number,20,character_kick_x,380)
+            character_stage = idle_movement(character_stage,character,20,character_kick_x,380)
             character_kick_x -= 36
         else:
             # Resetting variables for next time
@@ -243,7 +243,7 @@ elif current == "headbutt move":
     
     if advancing:
         if character_headbutt_x == 150:
-            character_stage = idle_movement(character_stage,character_number,20,150,380)
+            character_stage = idle_movement(character_stage,character,20,150,380)
             character_headbutt_x += 24
         elif character_headbutt_x < 870:
             screen.blit(character_headbutt_stance, (character_headbutt_x,380))
@@ -264,7 +264,7 @@ elif current == "headbutt move":
             
     elif not advancing:
         if character_headbutt_x > 150:
-            character_stage = idle_movement(character_stage,character_number,20,character_headbutt_x,380)
+            character_stage = idle_movement(character_stage,character,20,character_headbutt_x,380)
             character_headbutt_x -= 36
         else:
             # Resetting variables for next time
@@ -340,7 +340,7 @@ elif current == "frostbeam move":
 
 # Ghost dog heal move animation
 elif current == "ghost dog heal move":
-    character_stage = idle_movement(character_stage,character_number,20,150,380)
+    character_stage = idle_movement(character_stage,character,20,150,380)
     ghost_dog_stage = idle_movement(ghost_dog_stage,"ghost_dog",20,930,440)
 
     if enemy_heal_y < 410:
@@ -372,7 +372,7 @@ elif current == "ghost dog heal move":
 
 # Ghost dog glide move animation
 elif current == "ghost dog glide move":
-    character_stage = idle_movement(character_stage,character_number,20,150,380)
+    character_stage = idle_movement(character_stage,character,20,150,380)
 
     if ghost_dog_glide_x == 690:
         glide_move_sound()
@@ -408,7 +408,7 @@ elif current == "ghost dog glide move":
 
 # Ghost dog teleport move animation
 elif current == "ghost dog teleport move":
-    character_stage = idle_movement(character_stage,character_number,20,150,380)
+    character_stage = idle_movement(character_stage,character,20,150,380)
     if not started_glowing:
         duration_time = 2*fps
         teleport_move_sound()
