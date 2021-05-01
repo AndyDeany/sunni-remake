@@ -191,9 +191,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                 if game.opponent.current_hp == 0:
                     game.current = "dog dead"
                 else:
-                    dog_next_move = game.opponent.choose_move()
-                    game.opponent.current_mana = game.opponent.change_mana(dog_next_move)
-                    game.current = dog_next_move
+                    game.opponent.next_move()
 
     # Character headbutt move animation
     elif game.current == "headbutt move":
@@ -226,9 +224,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                 if game.opponent.current_hp == 0:
                     game.current = "dog dead"
                 else:
-                    dog_next_move = game.opponent.choose_move()
-                    game.opponent.current_mana = game.opponent.change_mana(dog_next_move)
-                    game.current = dog_next_move
+                    game.opponent.next_move()
 
     # Character frostbeam move animation
     elif game.current == "frostbeam move":
@@ -252,9 +248,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
             if game.opponent.current_hp == 0:
                 game.current = "dog dead"
             else:
-                dog_next_move = game.opponent.choose_move()
-                game.opponent.current_mana = game.opponent.change_mana(dog_next_move)
-                game.current = dog_next_move
+                game.opponent.next_move()
 
     # Dog moves
     # Dog bark move animation
@@ -381,9 +375,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
         game.player.reset_display_stat_y()
         if game.current == "heal move":
             game.player.healed_already = False
-            dog_next_move = game.opponent.choose_move()
-            game.opponent.current_mana = game.opponent.change_mana(dog_next_move)
-            game.current = dog_next_move
+            game.opponent.next_move()
         game.player.display_stat_change_time -= 1
 
     if game.opponent.display_stat_change_time > 0:
