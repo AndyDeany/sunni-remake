@@ -22,7 +22,6 @@ class Character:
         self.is_retreating = False
 
     def display_stat_change(self):
-        print(self.display_stat_y)
         self.game.screen.blit(self.stat_change_text, (self.display_stat_x, self.display_stat_y))
         self.display_stat_y -= 3
 
