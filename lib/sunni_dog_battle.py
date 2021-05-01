@@ -155,20 +155,9 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                     healed_by = game.player.max_hp - game.player.current_hp
                 game.player.current_hp += healed_by
                 game.player.stat_change_text = game.font.render("+" + str(healed_by), True, Color.HEAL_GREEN)
-                game.player.healed_already = True
-
-            if game.duration_time < game.fps/2:
-                game.player.display_stat_change()
-                game.duration_time += 1
-            else:
-                # Resetting variables for next time
+                game.player.trigger_stat_change_text()
                 game.player.heal_heart_y = 170
-                game.player.reset_display_stat_y()
-                game.duration_time = 0
-                game.player.healed_already = False
-                dog_next_move = game.opponent.choose_move()
-                game.opponent.current_mana = game.opponent.change_mana(dog_next_move)
-                game.current = dog_next_move
+                game.player.healed_already = True
 
     # Character kick move animation
     elif game.current == "kick move":
@@ -196,7 +185,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                     kick_damage = game.opponent.current_hp
                 game.opponent.current_hp -= kick_damage
                 game.opponent.stat_change_text = game.font.render("-" + str(kick_damage), True, Color.DAMAGE_RED)
-                game.opponent.display_stat_change_time = 0
+                game.opponent.trigger_stat_change_text()
                 game.player.kick_x -= 36
                 game.advancing = False
 
@@ -215,13 +204,6 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                     dog_next_move = game.opponent.choose_move()
                     game.opponent.current_mana = game.opponent.change_mana(dog_next_move)
                     game.current = dog_next_move
-
-        if game.opponent.display_stat_change_time < game.fps/2:     # Make this into a function in the future? if more battles are made (also for the heal one)
-            game.opponent.display_stat_change()
-            game.opponent.display_stat_change_time += 1
-        else:
-            game.opponent.reset_display_stat_y()
-            game.opponent.display_stat_change_time = game.fps
 
     # Character headbutt move animation
     elif game.current == "headbutt move":
@@ -244,7 +226,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                     headbutt_damage = game.opponent.current_hp
                 game.opponent.current_hp -= headbutt_damage
                 game.opponent.stat_change_text = game.font.render("-" + str(headbutt_damage), True, Color.DAMAGE_RED)
-                game.opponent.display_stat_change_time = 0
+                game.opponent.trigger_stat_change_text()
                 game.player.headbutt_x -= 36
                 game.advancing = False
 
@@ -263,13 +245,6 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                     game.opponent.current_mana = game.opponent.change_mana(dog_next_move)
                     game.current = dog_next_move
 
-        if game.opponent.display_stat_change_time < game.fps/2:
-            game.opponent.display_stat_change()
-            game.opponent.display_stat_change_time += 1
-        else:
-            game.opponent.reset_display_stat_y()
-            game.opponent.display_stat_change_time = game.fps
-
     # Character frostbeam move animation
     elif game.current == "frostbeam move":
         game.screen.blit(game.opponent.dog_normal, (930,440))
@@ -284,7 +259,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                     frostbeam_damage = game.opponent.current_hp
                 game.opponent.current_hp -= frostbeam_damage
                 game.opponent.stat_change_text = game.font.render("-" + str(frostbeam_damage), True, Color.DAMAGE_RED)
-                game.opponent.display_stat_change_time = 0
+                game.opponent.trigger_stat_change_text()
 
             game.screen.blit(frostbeam_start, (215,381))
             for x in range(14):
@@ -293,21 +268,13 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
 
         else:
             # Resetting variables for next time
-            game.opponent.display_stat_change_time = game.fps
             game.duration_time = 0
             if game.opponent.current_hp == 0:
-                    game.current = "dog dead"
+                game.current = "dog dead"
             else:
                 dog_next_move = game.opponent.choose_move()
                 game.opponent.current_mana = game.opponent.change_mana(dog_next_move)
                 game.current = dog_next_move
-
-        if game.opponent.display_stat_change_time < game.fps/2:
-            game.opponent.display_stat_change()
-            game.opponent.display_stat_change_time += 1
-        else:
-            game.opponent.reset_display_stat_y()
-            game.opponent.display_stat_change_time = game.fps
 
     # Dog moves
     # Dog bark move animation
@@ -325,26 +292,18 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                     dog_bark_damage = game.player.current_hp
                 game.player.current_hp -= dog_bark_damage
                 game.player.stat_change_text = game.font.render("-" + str(dog_bark_damage), True, Color.DAMAGE_RED)
-                game.player.display_stat_change_time = 0
+                game.player.trigger_stat_change_text()
 
             game.screen.blit(game.opponent.dog_bark_stance, (930,440))
             game.duration_time += 1
 
         else:
             # Resetting variables for next time
-            game.player.display_stat_change_time = game.fps
             game.duration_time = 0
             if game.player.current_hp == 0:
                 game.current = "character dead"
             else:
                 game.current = "choose ability"
-
-        if game.player.display_stat_change_time < game.fps/2:
-            game.player.display_stat_change()
-            game.player.display_stat_change_time += 1
-        else:
-            game.player.reset_display_stat_y()
-            game.player.display_stat_change_time = game.fps
 
     # Dog heal move animation
     elif game.current == "dog heal move":
@@ -398,7 +357,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                     bite_damage = game.player.current_hp
                 game.player.current_hp -= bite_damage
                 game.player.stat_change_text = game.font.render("-" + str(bite_damage), True, Color.DAMAGE_RED)
-                game.player.display_stat_change_time = 0
+                game.player.trigger_stat_change_text()
                 game.opponent.bite_x += 42
                 game.advancing = False
 
@@ -414,13 +373,6 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                     game.current = "character dead"
                 else:
                     game.current = "choose ability"
-
-        if game.player.display_stat_change_time < game.fps/2:
-            game.player.display_stat_change()
-            game.player.display_stat_change_time += 1
-        else:
-            game.player.reset_display_stat_y()
-            game.player.display_stat_change_time = game.fps
 
     # Dog spin move animation
     elif game.current == "dog spin move":
@@ -459,7 +411,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
                     spin_damage = game.player.current_hp
                 game.player.current_hp -= spin_damage
                 game.player.stat_change_text = game.font.render("-" + str(spin_damage), True, Color.DAMAGE_RED)
-                game.player.display_stat_change_time = 0
+                game.player.trigger_stat_change_text()
             if game.opponent.spin_direction == "backwards":
                 game.screen.blit(game.opponent.dog_backwards, (180,440))
                 game.opponent.spin_direction = "forwards"
@@ -472,11 +424,21 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
         else:
             game.opponent.spin_time = game.fps
 
-        if game.player.display_stat_change_time < game.fps/2:
-            game.player.display_stat_change()
-            game.player.display_stat_change_time += 1
-        else:
-            game.player.reset_display_stat_y()
-            game.player.display_stat_change_time = game.fps
+    if game.player.display_stat_change_time > 0:
+        game.player.display_stat_change()
+        game.player.display_stat_change_time -= 1
+    else:
+        game.player.reset_display_stat_y()
+        if game.current == "heal move":
+            game.player.healed_already = False
+            dog_next_move = game.opponent.choose_move()
+            game.opponent.current_mana = game.opponent.change_mana(dog_next_move)
+            game.current = dog_next_move
+
+    if game.opponent.display_stat_change_time > 0:
+        game.opponent.display_stat_change()
+        game.opponent.display_stat_change_time -= 1
+    else:
+        game.opponent.reset_display_stat_y()
 
     # DOG BATTLE - END

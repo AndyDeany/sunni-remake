@@ -11,7 +11,7 @@ class Character:
         self.display_stat_x = display_stat_x
         self.display_stat_y_start = display_stat_y_start
         self.display_stat_y = self.display_stat_y_start
-        self.display_stat_change_time = self.game.fps
+        self.display_stat_change_time = 0
 
     def display_stat_change(self):
         self.game.screen.blit(self.stat_change_text, (self.display_stat_x, self.display_stat_y))
@@ -20,3 +20,6 @@ class Character:
     def reset_display_stat_y(self):
         """Reset the display_stat_y attribute to its starting value."""
         self.display_stat_y = self.display_stat_y_start
+
+    def trigger_stat_change_text(self):
+        self.display_stat_change_time = self.game.fps/2
