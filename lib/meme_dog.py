@@ -47,22 +47,19 @@ class MemeDog(Character):
                 return [self.MOVE_BITE, self.MOVE_SPIN]
             return [self.MOVE_BITE, self.MOVE_BARK, self.MOVE_SPIN]
 
-        def attack():
-            return random.choice(attack_options())
-
         if self.current_mana < 10:  # Only usable move
             return self.MOVE_BARK
 
         if self.game.player.current_hp < 15:    # Try to finish the player off
-            attack()
+            return random.choice(attack_options())
 
         if self.current_hp < self.max_hp / 4:   # Low - prefer to heal but chance of attacking
             if random.randint(1, 10) == 1:
-                attack()
+                return random.choice(attack_options())
             return self.MOVE_HEAL
 
         if self.current_hp > 3 * (self.max_hp / 4):  # Don't heal at high HP.
-            attack()
+            return random.choice(attack_options())
 
         return random.choice([*attack_options(), self.MOVE_HEAL])
 
