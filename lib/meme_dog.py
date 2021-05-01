@@ -6,6 +6,12 @@ from lib.character import Character
 
 
 class MemeDog(Character):
+
+    MOVE_BARK = "dog bark move"
+    MOVE_BITE = "dog bite move"
+    MOVE_SPIN = "dog spin move"
+    MOVE_HEAL = "dog heal move"
+
     def __init__(self, game, max_hp, max_mana, *, level=1):
         super().__init__(game, "Meme Dog", max_hp, max_mana, level=level, display_stat_x=1015, display_stat_y_start=420)
         self.bite_x = 930
@@ -17,170 +23,60 @@ class MemeDog(Character):
         self.display_stat_y_start = 420
         self.display_stat_y = self.display_stat_y_start
 
-        self.dog_normal = pygame.image.load(self.game.file_directory + "images\sunni_dog_normal.png").convert_alpha()
-        self.dog_dead = pygame.image.load(self.game.file_directory + "images\sunni_dog_dead.png").convert_alpha()
-        self.dog_backwards = pygame.image.load(self.game.file_directory + "images\sunni_dog_backwards.png").convert_alpha()
-        self.dog_bark_stance = pygame.image.load(self.game.file_directory + "images\sunni_dog_bark_stance.png").convert_alpha()
+        self.dog_normal = pygame.image.load(self.game.file_directory + "images/sunni_dog_normal.png").convert_alpha()
+        self.dog_dead = pygame.image.load(self.game.file_directory + "images/sunni_dog_dead.png").convert_alpha()
+        self.dog_backwards = pygame.image.load(self.game.file_directory + "images/sunni_dog_backwards.png").convert_alpha()
+        self.dog_bark_stance = pygame.image.load(self.game.file_directory + "images/sunni_dog_bark_stance.png").convert_alpha()
+
+    def next_move(self):
+        """Chooses and uses the dog's next move."""
+        next_move = self.choose_move()
+        self.change_mana(next_move)
+        self.game.current = next_move
 
     # Defining a function to decide which move the dog is going to use
     def choose_move(self):
-        if self.game.player.current_hp < 15:
+        """Return the name of the next move that the dog decides to use."""
+        def attack_options():
+            """Return the options the dog can/would choose from for attacking based on his mana."""
             if self.current_mana < 15:
-                return "dog bark move"
+                return [self.MOVE_BARK]
+            if self.current_mana < 25:
+                return [self.MOVE_BARK, self.MOVE_BITE]
+            if self.current_mana > 90:
+                return [self.MOVE_BITE, self.MOVE_SPIN]
+            return [self.MOVE_BITE, self.MOVE_BARK, self.MOVE_SPIN]
 
-            elif self.current_mana < 25:
-                r = random.randint(1, 2)
-                if r == 1:
-                    return "dog bark move"
-                elif r == 2:
-                    return "dog bite move"
+        def attack():
+            return random.choice(attack_options())
 
-            elif self.current_mana > 90:
-                r = random.randint(1, 2)
-                if r == 1:
-                    return "dog bite move"
-                elif r == 2:
-                    return "dog spin move"
+        if self.current_mana < 10:  # Only usable move
+            return self.MOVE_BARK
 
-            else:
-                r = random.randint(1, 3)
-                if r == 1:
-                    return "dog bite move"
-                elif r == 2:
-                    return "dog spin move"
-                elif r == 3:
-                    return "dog bark move"
+        if self.game.player.current_hp < 15:    # Try to finish the player off
+            attack()
 
-        elif self.current_hp < self.max_hp / 4:
-            if self.current_mana < 10:
-                return "dog bark move"
+        if self.current_hp < self.max_hp / 4:   # Low - prefer to heal but chance of attacking
+            if random.randint(1, 10) == 1:
+                attack()
+            return self.MOVE_HEAL
 
-            elif self.current_mana > 90:
-                r = random.randint(1, 20)
-                if r == 1:
-                    return "dog bite move"
-                elif r == 2:
-                    return "dog spin move"
-                else:
-                    return "dog heal move"
+        if self.current_hp > 3 * (self.max_hp / 4):  # Don't heal at high HP.
+            attack()
 
-            elif self.current_mana < 15:
-                r = random.randint(1, 10)
-                if r == 1:
-                    return "dog bark move"
-                else:
-                    return "dog heal move"
+        return random.choice([*attack_options(), self.MOVE_HEAL])
 
-            elif self.current_mana < 25:
-                r = random.randint(1, 20)
-                if r == 1:
-                    return "dog bark move"
-                elif r == 2:
-                    return "dog bite move"
-                else:
-                    return "dog heal move"
-
-            else:
-                r = random.randint(1, 30)
-                if r == 1:
-                    return "dog bite move"
-                elif r == 2:
-                    return "dog spin move"
-                elif r == 3:
-                    return "dog bark move"
-                else:
-                    return "dog heal move"
-
-        elif self.current_hp > 3 * (self.max_hp / 4):
-            if self.current_mana < 10:
-                return "dog bark move"
-
-            elif self.current_mana < 25:
-                r = random.randint(1, 2)
-                if r == 1:
-                    return "dog bark move"
-                elif r == 2:
-                    return "dog bite move"
-
-            elif self.current_mana > 90:
-                r = random.randint(1, 2)
-                if r == 1:
-                    return "dog bite move"
-                elif r == 2:
-                    return "dog spin move"
-
-            else:
-                r = random.randint(1, 3)
-                if r == 1:
-                    return "dog bark move"
-                elif r == 2:
-                    return "dog bite move"
-                elif r == 3:
-                    return "dog spin move"
-
-        else:
-            if self.current_mana < 10:
-                return "dog bark move"
-
-            elif self.current_mana < 15:
-                r = random.randint(1, 2)
-                if r == 1:
-                    return "dog bark move"
-                elif r == 2:
-                    return "dog heal move"
-
-            elif self.current_mana < 25:
-                r = random.randint(1, 3)
-                if r == 1:
-                    return "dog bark move"
-                elif r == 2:
-                    return "dog heal move"
-                elif r == 3:
-                    return "dog bite move"
-
-            elif self.current_mana > 90:
-                r = random.randint(1, 3)
-                if r == 1:
-                    return "dog heal move"
-                elif r == 2:
-                    return "dog bite move"
-                elif r == 3:
-                    return "dog spin move"
-
-            else:
-                r = random.randint(1, 4)
-                if r == 1:
-                    return "dog bark move"
-                elif r == 2:
-                    return "dog heal move"
-                elif r == 3:
-                    return "dog bite move"
-                elif r == 4:
-                    return "dog spin move"
-
-    # Defining a function to change the dog's mana
     def change_mana(self, next_move):
-        if next_move == "dog bark move":
-            return self.current_mana + 10
-        elif next_move == "dog heal move":
-            return self.current_mana - 10
-        elif next_move == "dog bite move":
-            return self.current_mana - 15
-        elif next_move == "dog spin move":
-            return self.current_mana - 25
+        """Change the dog's mana based on the given move to be used."""
+        self.current_mana -= {
+            "dog bark move": 10,
+            "dog heal move": 10,
+            "dog bite move": 15,
+            "dog spin move": 25,
+        }[next_move]
 
-    # Defining a function to play a sound when the dog attacks
     def attack_sound(self):
-        r = random.randint(1, 3)
-        if r == 1:
-            pygame.mixer.music.load(self.game.file_directory + "audio/sunni_dog_attack1.ogg")
-            pygame.mixer.music.set_volume(self.game.volume_multiplier)
-            pygame.mixer.music.play(0)
-        elif r == 2:
-            pygame.mixer.music.load(self.game.file_directory + "audio/sunni_dog_attack2.ogg")
-            pygame.mixer.music.set_volume(self.game.volume_multiplier)
-            pygame.mixer.music.play(0)
-        elif r == 3:
-            pygame.mixer.music.load(self.game.file_directory + "audio/sunni_dog_attack3.ogg")
-            pygame.mixer.music.set_volume(self.game.volume_multiplier)
-            pygame.mixer.music.play(0)
+        """Plays a sound for when the dog attacks."""
+        pygame.mixer.music.load(self.game.file_directory + f"audio/sunni_dog_attack{random.randint(1, 3)}.ogg")
+        pygame.mixer.music.set_volume(self.game.volume_multiplier)
+        pygame.mixer.music.play(0)
