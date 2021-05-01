@@ -308,7 +308,7 @@ start_time = time.time()
 while ongoing:
     # Obtaining information
     current_time = time.time() - start_time     # Storing the current amount of time that the program has been running
-    print(f"{game.opponent.name}: {game.current}")
+    #print(f"{game.opponent.name}: {game.current}")
     left = 0    # Resetting the mouse inputs to 0 (off) so the computer doesn't think the mouse is still pressed
     middle = 0
     right = 0
