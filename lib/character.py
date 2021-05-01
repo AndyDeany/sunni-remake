@@ -16,6 +16,7 @@ class Character:
 
         self.current_hp_display = None
         self.current_mana_display = None
+        self.render_stats()
 
         self.stat_change_text = None
         self.display_stat_x = display_stat_x
@@ -32,7 +33,7 @@ class Character:
         return self._current_hp
 
     @current_hp.setter
-    def set_current_hp(self, value):
+    def current_hp(self, value):
         self._current_hp = value
         self.render_stats()
 
@@ -41,7 +42,7 @@ class Character:
         return self._max_hp
 
     @max_hp.setter
-    def set_max_hp(self, value):
+    def max_hp(self, value):
         self._max_hp = value
         self.render_stats()
 
@@ -50,7 +51,7 @@ class Character:
         return self._current_mana
 
     @current_mana.setter
-    def set_current_mana(self, value):
+    def current_mana(self, value):
         self._current_mana = value
         self.render_stats()
 
@@ -59,7 +60,7 @@ class Character:
         return self._max_mana
 
     @max_mana.setter
-    def set_max_mana(self, value):
+    def max_mana(self, value):
         self._max_mana = value
         self.render_stats()
 
@@ -68,7 +69,7 @@ class Character:
         self.current_mana_display = Text(f"Mana: {self.current_mana}/{self.max_mana}", Font.DEFAULT, Color.BLACK)
 
     def display_stat_change(self):
-        self.game.screen.blit(self.stat_change_text, (self.display_stat_x, self.display_stat_y))
+        self.stat_change_text.display(self.display_stat_x, self.display_stat_y)
         self.display_stat_y -= 3
 
     def reset_display_stat_y(self):
@@ -95,14 +96,14 @@ class Character:
         """Damages the character by the given amount."""
         amount = min(self.current_hp, amount)   # Don't overkill
         self.current_hp -= amount
-        self.stat_change_text = self.game.font.render(f"-{amount}", True, Color.DAMAGE_RED)
+        self.stat_change_text = Text(f"-{amount}", Font.DEFAULT, Color.DAMAGE_RED)
         self.trigger_stat_change_text()
 
     def heal(self, amount):
         """Heals the character for the given amount."""
         amount = min(self.max_hp - self.current_hp, amount)
         self.current_hp += amount
-        self.stat_change_text = self.game.font.render(f"+{amount}", True, Color.HEAL_GREEN)
+        self.stat_change_text = Text(f"+{amount}", Font.DEFAULT, Color.HEAL_GREEN)
         self.trigger_stat_change_text()
 
 

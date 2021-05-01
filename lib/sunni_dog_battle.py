@@ -119,7 +119,7 @@ def dog_battle_display(game, kick_move_icon_faded,
         if game.player.heal_heart_y < 350:
             if game.player.heal_heart_y == 170:
                 game.player.heal_move_sound()
-            game.screen.blit(heal_heart, (160, game.player.heal_heart_y))
+            heal_heart.display(160, game.player.heal_heart_y)
             game.player.heal_heart_y += 5
         else:
             game.player.heal(random.randint(5, 15))
@@ -141,7 +141,7 @@ def dog_battle_display(game, kick_move_icon_faded,
                 elif game.player.tilt_direction == "right":
                     image = character_tilt_right
                     game.player.tilt_direction = "left"
-                game.screen.blit(image, (game.player.kick_x, 380))
+                image.display(game.player.kick_x, 380)
                 game.player.kick_x += 24
                 if game.player.kick_x == 750:
                     game.player.attack_sound()
@@ -172,7 +172,7 @@ def dog_battle_display(game, kick_move_icon_faded,
                 game.player.stage = idle_movement(game, 20,150,380)
                 game.player.headbutt_x += 24
             elif game.player.headbutt_x < 870:
-                game.screen.blit(character_headbutt_stance, (game.player.headbutt_x,380))
+                character_headbutt_stance.display(game.player.headbutt_x, 380)
                 game.player.headbutt_x += 24
                 if game.player.headbutt_x == 750:
                     game.player.attack_sound()
@@ -206,7 +206,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
             frostbeam_start.display(215, 381)
             for x in range(14):
-                game.screen.blit(frostbeam_middle, (265+50*x,383+2*x))
+                frostbeam_middle.display(265+50*x, 383+2*x)
             game.duration_time += 1
 
         else:
@@ -243,7 +243,7 @@ def dog_battle_display(game, kick_move_icon_faded,
         if game.opponent.heal_heart_y < 410:
             if game.opponent.heal_heart_y == 230:
                 game.player.heal_move_sound()
-            game.screen.blit(heal_heart, (1005, game.opponent.heal_heart_y))
+            heal_heart.display(1005, game.opponent.heal_heart_y)
             game.opponent.heal_heart_y += 5
 
         else:
@@ -260,7 +260,7 @@ def dog_battle_display(game, kick_move_icon_faded,
                 game.opponent.dog_normal.display(930, 440)
                 game.opponent.bite_x -= 24
             elif game.opponent.bite_x > 90:
-                game.screen.blit(game.opponent.dog_normal, (game.opponent.bite_x,440))
+                game.opponent.dog_normal.display(game.opponent.bite_x, 440)
                 game.opponent.bite_x -= 24
                 if game.opponent.bite_x == 330:
                     game.opponent.attack_sound()
@@ -273,7 +273,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
         elif not game.opponent.is_advancing:
             if game.opponent.bite_x < 930:
-                game.screen.blit(game.opponent.dog_backwards, (game.opponent.bite_x,440))
+                game.opponent.dog_backwards.display(game.opponent.bite_x, 440)
                 game.opponent.bite_x += 42
             else:
                 # Resetting variables for next time
@@ -290,7 +290,7 @@ def dog_battle_display(game, kick_move_icon_faded,
                 game.opponent.dog_normal.display(930, 440)
                 game.opponent.spin_x -= 25
             elif game.opponent.spin_x > 180:
-                game.screen.blit(game.opponent.dog_normal, (game.opponent.spin_x,440))
+                game.opponent.dog_normal.display(game.opponent.spin_x, 440)
                 game.opponent.spin_x -= 25
             elif game.opponent.spin_x == 180:
                 game.opponent.dog_normal.display(180, 440)
@@ -300,7 +300,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
         elif game.opponent.is_retreating:
             if game.opponent.spin_x < 930:
-                game.screen.blit(game.opponent.dog_backwards, (game.opponent.spin_x,440))
+                game.opponent.dog_backwards.display(game.opponent.spin_x, 440)
                 game.opponent.spin_x += 30
             else:
                 game.opponent.is_advancing = True

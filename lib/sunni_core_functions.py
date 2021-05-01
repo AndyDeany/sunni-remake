@@ -1,6 +1,9 @@
 from lib.character import Character
 import pygame
 
+
+from lib.image import Image
+
 # Defining a function to check if the mouse is in a certain area
 def mousein(mouse_x, mouse_y, start_x, start_y, end_x, end_y):
     return mouse_x > start_x and mouse_x < end_x and mouse_y > start_y and mouse_y < end_y
@@ -12,8 +15,7 @@ def load(file_type, name):
         return pygame.image.load(file_location + "png").convert_alpha()
     elif file_type == "Sound":
         return pygame.mixer.music.load(file_location + "ogg")
-    
-# Defining a function to save the game
+
 
 # Defining a function to delete save files
 def deletesave(savefile):
@@ -32,7 +34,8 @@ def deletesave(savefile):
     for line in range(number_of_lines - 1):
         save.write("\n")
     save.close()
-    
+
+
 # Defining a function to accept text input from the user
 def accept_text():
     input_text = ""
@@ -45,29 +48,22 @@ def accept_text():
                 input_text += chr(key_pressed - 32)
             else:
                 input_text += chr(key_pressed)
-        
-
-## Character sound functions ##
-
-    
-    
-## Default battle functions ##
-# Defining a function to display how much health or mana has been added or removed
 
 
 # Defining a function for the idle movement of characters
 def idle_movement(game, frames,x,y):
     if game.player.stage == 2*frames - 2:
-        character_image = pygame.image.load(game.file_directory + "images/sunni_" + game.character_number + "_normal2.png").convert_alpha()
-        game.screen.blit(character_image, (x,y))
+        character_image = Image("images/sunni_" + game.character_number + "_normal2.png")
+        character_image.display(x, y)
         return 1
     else:
         if game.player.stage <= frames:
-            character_image = pygame.image.load(game.file_directory + "images/sunni_" + game.character_number + "_normal" + str(game.player.stage) + ".png").convert_alpha()
+            character_image = Image("images/sunni_" + game.character_number + "_normal" + str(game.player.stage) + ".png")
         else:
-            character_image = pygame.image.load(game.file_directory + "images/sunni_" + game.character_number + "_normal" + str(2*frames - game.player.stage) + ".png").convert_alpha()
-        game.screen.blit(character_image, (x,y))
+            character_image = Image("images/sunni_" + game.character_number + "_normal" + str(2*frames - game.player.stage) + ".png")
+        character_image.display(x, y)
         return game.player.stage + 1
+
 
 # Definining a function to make the screen fade out or in
 def fade(direction,opacity):

@@ -3,6 +3,7 @@ import random
 import pygame
 
 from lib.character import Character
+from lib.image import Image
 
 
 class MemeDog(Character):
@@ -31,10 +32,10 @@ class MemeDog(Character):
         self.display_stat_y_start = 420
         self.display_stat_y = self.display_stat_y_start
 
-        self.dog_normal = pygame.image.load(self.game.file_directory + "images/sunni_dog_normal.png").convert_alpha()
-        self.dog_dead = pygame.image.load(self.game.file_directory + "images/sunni_dog_dead.png").convert_alpha()
-        self.dog_backwards = pygame.image.load(self.game.file_directory + "images/sunni_dog_backwards.png").convert_alpha()
-        self.dog_bark_stance = pygame.image.load(self.game.file_directory + "images/sunni_dog_bark_stance.png").convert_alpha()
+        self.dog_normal = Image("images/sunni_dog_normal.png")
+        self.dog_dead = Image("images/sunni_dog_dead.png")
+        self.dog_backwards = Image("images/sunni_dog_backwards.png")
+        self.dog_bark_stance = Image("images/sunni_dog_bark_stance.png")
 
     def next_move(self):
         """Chooses and uses the dog's next move."""
