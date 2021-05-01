@@ -11,7 +11,6 @@ from lib.game import Game
 from lib.character import Character
 from lib.player import Player
 from lib.color import Color
-from lib.sunni_dog_functions import *
 from lib.sunni_snake_functions import *
 from lib.sunni_ghost_dog_functions import *
 from lib.sunni_default_battle_display import default_battle_display
@@ -41,8 +40,6 @@ keys_pressed = 0
 Keys.initialise()
 Keys.process_keydown(pygame.key.get_pressed(), accepting_text)
 
-# Moves
-display_mana_notification_time = 2*game.fps  # Variable to allow the "Not enough mana" notification to appear when necessary
 
 # Setting colours
 
@@ -640,9 +637,9 @@ while ongoing:
         
         # CODE THAT IS RUN THROUGH EVERY FRAME
         # Not enough mana notification
-        if display_mana_notification_time < 2*game.fps:
-            game.screen.blit(not_enough_mana, (300,200))
-            display_mana_notification_time += 1
+        if game.display_mana_notification_time > 0:
+            game.screen.blit(not_enough_mana, (300, 200))
+            game.display_mana_notification_time -= 1
 
         # Input text handling
         if accepting_text:

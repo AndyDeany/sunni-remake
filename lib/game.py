@@ -21,10 +21,10 @@ class Game:
         self.player = Player(self, None, 100, 100)
         self.opponent = Character(self, None, 100, 100)
         self.character_number = None
+        self.display_mana_notification_time = 0     # Variable to allow the "Not enough mana" notification to appear when necessary
+        self.mana_notification_duration = 2 * self.fps  # 2 seconds
         self.duration_time = 0          # Variable to show how long something has been occuring (will be changed by other parts of the program)
         self.damage_decided = False     # Variable to show whether or not the damage that will be done has been calculated already, so it is not done multiple times in loops
-        self.advancing = True
-        self.retreating = False
         self.volume_multiplier = 1
 
     def get_save_path(self, save_number):
@@ -68,3 +68,11 @@ class Game:
     def display_stat_change(self, display_x):
         self.screen.blit(self.stat_change_text, (display_x, self.player.display_stat_y))
         self.player.display_stat_y -= 3
+
+    def show_mana_notification(self):
+        """Show the 'not enough mana' notification to the player."""
+        self.display_mana_notification_time = self.mana_notification_duration
+
+    def hide_mana_notification(self):
+        """Stop displaying the 'not enough mana' notification to the player, if it's showing."""
+        self.display_mana_notification_time = 0

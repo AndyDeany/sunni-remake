@@ -12,6 +12,15 @@ class MemeDog(Character):
     MOVE_SPIN = "dog spin move"
     MOVE_HEAL = "dog heal move"
 
+    DEAD = "dog dead"
+
+    MANA_COSTS = {
+        MOVE_BARK: -10,
+        MOVE_HEAL: 10,
+        MOVE_BITE: 15,
+        MOVE_SPIN: 25,
+    }
+
     def __init__(self, game, max_hp, max_mana, *, level=1):
         super().__init__(game, "Meme Dog", max_hp, max_mana, level=level, display_stat_x=1015, display_stat_y_start=420)
         self.bite_x = 930
@@ -30,6 +39,9 @@ class MemeDog(Character):
 
     def next_move(self):
         """Chooses and uses the dog's next move."""
+        if self.current_hp == 0:
+            self.game.current = self.DEAD
+            return
         next_move = self.choose_move()
         self.change_mana(next_move)
         self.game.current = next_move
@@ -62,15 +74,6 @@ class MemeDog(Character):
             return random.choice(attack_options())
 
         return random.choice([*attack_options(), self.MOVE_HEAL])
-
-    def change_mana(self, next_move):
-        """Change the dog's mana based on the given move to be used."""
-        self.current_mana -= {
-            "dog bark move": 10,
-            "dog heal move": 10,
-            "dog bite move": 15,
-            "dog spin move": 25,
-        }[next_move]
 
     def attack_sound(self):
         """Plays a sound for when the dog attacks."""
