@@ -3,6 +3,8 @@ import os
 
 from lib.character import Character
 from lib.color import Color
+from lib.font import Font
+from lib.mouse import Mouse
 from lib.player import Player
 from lib.meme_dog import MemeDog
 
@@ -12,6 +14,7 @@ class Game:
         self.current = "title"
         self.file_directory = os.getcwd()[:-3]
         self.screen = None
+        self.mouse = Mouse()
         self.music_playing = False
         self.fps = 30  # Setting fps
         self.fullscreen_enabled = False
@@ -41,7 +44,7 @@ class Game:
     def display_save_name(self, save_number, coords):
         with open(self.get_save_path(save_number), "r") as save_file:
             save_name = save_file.readline()
-            save_name_text = self.font.render(save_name[:-1], True, Color.BLACK)
+            save_name_text = Font.DEFAULT.render(save_name[:-1], True, Color.BLACK)
             self.screen.blit(save_name_text, coords)
             return save_name
 

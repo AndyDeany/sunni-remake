@@ -1,15 +1,21 @@
 from lib.color import Color
+from lib.font import Font
+from lib.image import Text
 
 
 class Character:
     def __init__(self, game, name, max_hp, max_mana, *, level=1, display_stat_x=600, display_stat_y_start=600):
         self.game = game
         self.name = name
-        self.max_hp = max_hp
-        self.current_hp = self.max_hp
-        self.max_mana = max_mana
-        self.current_mana = self.max_mana
+        self.name_display = Text(self.name, Font.DEFAULT, Color.BLACK)
+        self._max_hp = max_hp
+        self._current_hp = self.max_hp
+        self._max_mana = max_mana
+        self._current_mana = self.max_mana
         self.level = level
+
+        self.current_hp_display = None
+        self.current_mana_display = None
 
         self.stat_change_text = None
         self.display_stat_x = display_stat_x
@@ -20,6 +26,46 @@ class Character:
 
         self.is_advancing = True
         self.is_retreating = False
+
+    @property
+    def current_hp(self):
+        return self._current_hp
+
+    @current_hp.setter
+    def set_current_hp(self, value):
+        self._current_hp = value
+        self.render_stats()
+
+    @property
+    def max_hp(self):
+        return self._max_hp
+
+    @max_hp.setter
+    def set_max_hp(self, value):
+        self._max_hp = value
+        self.render_stats()
+
+    @property
+    def current_mana(self):
+        return self._current_mana
+
+    @current_mana.setter
+    def set_current_mana(self, value):
+        self._current_mana = value
+        self.render_stats()
+
+    @property
+    def max_mana(self):
+        return self._max_mana
+
+    @max_mana.setter
+    def set_max_mana(self, value):
+        self._max_mana = value
+        self.render_stats()
+
+    def render_stats(self):
+        self.current_hp_display = Text(f"Health: {self.current_hp}/{self.max_hp}", Font.DEFAULT, Color.BLACK)
+        self.current_mana_display = Text(f"Mana: {self.current_mana}/{self.max_mana}", Font.DEFAULT, Color.BLACK)
 
     def display_stat_change(self):
         self.game.screen.blit(self.stat_change_text, (self.display_stat_x, self.display_stat_y))

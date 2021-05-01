@@ -8,9 +8,11 @@ import pygame
 from lib.sunni_keydown import Keys
 from lib.sunni_core_functions import *
 from lib.game import Game
+from lib.image import Surface, Image, Text
 from lib.character import Character
 from lib.player import Player
 from lib.color import Color
+from lib.font import Font
 from lib.sunni_snake_functions import *
 from lib.sunni_ghost_dog_functions import *
 from lib.sunni_default_battle_display import default_battle_display
@@ -26,9 +28,6 @@ game = Game()
 character_name_assigned = False
 opacity = 10    # Variable showing opacity of fading overlay for fading in/out
 fade_direction = "out"
-left_held = 0
-middle_held = 0
-right_held = 0
 load_file = False
 
 accepting_text = False
@@ -41,259 +40,171 @@ Keys.initialise()
 Keys.process_keydown(pygame.key.get_pressed(), accepting_text)
 
 
-# Setting colours
-
-# Setting fonts
-title_font = pygame.font.SysFont("Arial Black", 40, False, False)
-opening_font = pygame.font.SysFont("Arial Black", 30, False, False)
-game.font = pygame.font.SysFont("Impact", 20, False, False)
-sunni_font = pygame.font.SysFont("Candara", 40, False, False)
-
 # Setting up screen
 size = (1280, 720)
 game.screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Sunni (Alpha 3.0)")
+Surface.default_screen = game.screen
 
 
-##class Character(object):
-##    def __init__(self, name, image, stage, max_hp, current_hp, max_mana, current_mana):
-##        self.name = name
-##        self.image = image
-##        self.stage = stage
-##        self.max_hp = max_hp
-##        self.current_hp = current_hp
-##        self.max_mana = max_mana
-##        self.current_mana = current_mana
-##
-##    def idle_movement(self, frames, x, y):
-##        if stage == 2*frames - 2:
-##            self.image = pygame.image.load(game.file_directory + "images\sunni_" + self.name + "_normal2.png").convert_alpha()
-##            game.screen.blit(self.image, (x,y))
-##            return 1
-##        else:
-##            if stage <= frames:
-##                self.image = pygame.image.load(game.file_directory + "images\sunni_" + self.name + "_normal" + str(stage) + ".png").convert_alpha()
-##            else:
-##                character_image = pygame.image.load(game.file_directory + "images\sunni_" + self.name + "_normal" + str(2*frames - stage) + ".png").convert_alpha()
-##            game.screen.blit(character_image, (x,y))
-##            return stage + 1
-##
-##    class Move(object):
-##        def __init__(self, name, mana_cost, health_cost, mana_taken, health_taken):
-##            self.name = name
-##            self.mana_cost = mana_cost
-##            self.health_cost = health_cost
-##            self.mana_taken = mana_taken
-##            self.health_taken = health_taken
-##
-##         Move heal(self):
-##            character_stage = idle_movement(character_stage,game.character_number,20,150,380)
-##            game.screen.blit(dog_normal, (930,440))
-##
-##            if heal_heart_y < 350:
-##                if heal_heart_y == 170:
-##                    heal_move_sound()
-##                game.screen.blit(heal_heart, (160,heal_heart_y))
-##                heal_heart_y += 5
-##
-##            else:
-##                if not healed_already:
-##                    healed_by = random.randint(5,15)
-##                    if character_current_hp + healed_by > character_max_hp:
-##                        healed_by = character_max_hp - character_current_hp
-##                    character_current_hp += healed_by
-##                    display_healed = game.font.render("+" + str(healed_by), True, HEAL_GREEN)
-##                    healed_already = True
-##
-##                if duration_time < game.fps/2:
-##                    display_healed_y = display_stat_change(display_healed,170,display_healed_y)
-##                    duration_time += 1
-##                else:
-##                    # Resetting variables for next time
-##                    heal_heart_y = 170
-##                    display_healed_y = 360
-##                    duration_time = 0
-##                    healed_already = False
-##                    dog_next_move = choose_dog_move()
-##                    enemy_current_mana = dog_change_mana(enemy_current_mana,dog_next_move)
-##                    game.current = dog_next_move
-##
-##
-##class Player(Character):
-##    def __init__(self, name, max_hp, current_hp, max_mana, current_mana, level):
-##        super(Player, self).__init__(name, max_hp, current_hp, max_mana, current_mana)
-##        self.level = level
-##
-##class Opponent(Character):
-##    def __init__(self, name, max_hp, current_hp, max_mana, current_mana):
-##        super(Opponent, self).__init__(name, max_hp, current_hp, max_mana, current_mana)
-
-
-
-### ------------------- CLASS DEFINING - END ------------------- ###
-
-### ------------------- IMPORTING IMAGES - START ------------------- ###
-
+# Images ---------------------------------------------------------------------------------------------------------------
 # Game icon
-print(game.file_directory)
-print(game.file_directory + "images\sunni_game_icon.png")
-game_icon = pygame.image.load(game.file_directory + "images\sunni_game_icon.png").convert_alpha()
-pygame.display.set_icon(game_icon)  # Setting the icon
+game_icon = Image("images/sunni_game_icon.png")
+pygame.display.set_icon(game_icon.image)  # Setting the icon
 
 # Title screen
-title_screen =  pygame.image.load(game.file_directory + "images\sunni_title_screen.png").convert_alpha()
+title_screen = Image("images/sunni_title_screen.png", (0, 0))
 
 # Main menu
-main_menu = pygame.image.load(game.file_directory + "images\sunni_main_menu.png").convert_alpha()
-menu_exit_flared = pygame.image.load(game.file_directory + "images\sunni_menu_exit_flared.png").convert_alpha()
-menu_load_flared = pygame.image.load(game.file_directory + "images\sunni_menu_load_flared.png").convert_alpha()
-menu_options_flared = pygame.image.load(game.file_directory + "images\sunni_menu_options_flared.png").convert_alpha()
-menu_play_flared = pygame.image.load(game.file_directory + "images\sunni_menu_play_flared.png").convert_alpha()
+main_menu = Image("images/sunni_main_menu.png", (0, 0))
+menu_exit_flared = Image("images/sunni_menu_exit_flared.png", (166, 476))
+menu_load_flared = Image("images/sunni_menu_load_flared.png", (82, 106))
+menu_options_flared = Image("images/sunni_menu_options_flared.png", (82, 212))
+menu_play_flared = Image("images/sunni_menu_play_flared.png", (79, 0))
 
 # Load screens
-load_game_screen = pygame.image.load(game.file_directory + "images\sunni_load_game_screen.png").convert_alpha()
-enter_character_name = pygame.image.load(game.file_directory + "images\sunni_enter_character_name.png").convert_alpha()
-continue_button_flared = pygame.image.load(game.file_directory + "images\sunni_continue_button_flared.png").convert_alpha()
-are_you_sure = pygame.image.load(game.file_directory + "images\sunni_are_you_sure.png").convert_alpha()
-sure_yes_flared = pygame.image.load(game.file_directory + "images\sunni_sure_yes_flared.png").convert_alpha()
-sure_no_flared = pygame.image.load(game.file_directory + "images\sunni_sure_no_flared.png").convert_alpha()
-load1_flared = pygame.image.load(game.file_directory + "images\sunni_load1_flared.png").convert_alpha()
-load2_flared = pygame.image.load(game.file_directory + "images\sunni_load2_flared.png").convert_alpha()
-load3_flared = pygame.image.load(game.file_directory + "images\sunni_load3_flared.png").convert_alpha()
-load4_flared = pygame.image.load(game.file_directory + "images\sunni_load4_flared.png").convert_alpha()
+load_game_screen = Image("images/sunni_load_game_screen.png")
+enter_character_name = Image("images/sunni_enter_character_name.png")
+continue_button_flared = Image("images/sunni_continue_button_flared.png")
+are_you_sure = Image("images/sunni_are_you_sure.png")
+sure_yes_flared = Image("images/sunni_sure_yes_flared.png")
+sure_no_flared = Image("images/sunni_sure_no_flared.png")
+load1_flared = Image("images/sunni_load1_flared.png")
+load2_flared = Image("images/sunni_load2_flared.png")
+load3_flared = Image("images/sunni_load3_flared.png")
+load4_flared = Image("images/sunni_load4_flared.png")
 
 # Battle screen
-battle_background_hallway =  pygame.image.load(game.file_directory + "images\sunni_battle_background_hallway.png").convert_alpha()
+battle_background_hallway =  Image("images/sunni_battle_background_hallway.png")
 
 # Victory and defeat overlays
-victory_overlay = pygame.image.load(game.file_directory + "images\sunni_victory_overlay.png").convert_alpha()
-defeat_overlay = pygame.image.load(game.file_directory + "images\sunni_defeat_overlay.png").convert_alpha()
-continue_button = pygame.image.load(game.file_directory + "images\sunni_continue_button.png").convert_alpha()
-try_again_button = pygame.image.load(game.file_directory + "images\sunni_try_again_button.png").convert_alpha()
+victory_overlay = Image("images/sunni_victory_overlay.png")
+defeat_overlay = Image("images/sunni_defeat_overlay.png")
+continue_button = Image("images/sunni_continue_button.png")
+try_again_button = Image("images/sunni_try_again_button.png")
 
 # Options menu
-options_button = pygame.image.load(game.file_directory + "images\sunni_options_button.png").convert_alpha()
-return_to_game_button = pygame.image.load(game.file_directory + "images\sunni_return_to_game_button.png").convert_alpha()
-return_to_title_button = pygame.image.load(game.file_directory + "images\sunni_return_to_title_button.png").convert_alpha()
-options_button = pygame.image.load(game.file_directory + "images\sunni_options_button.png").convert_alpha()
-volume_plus_button = pygame.image.load(game.file_directory + "images\sunni_volume_plus_button.png").convert_alpha()
-volume_minus_button = pygame.image.load(game.file_directory + "images\sunni_volume_minus_button.png").convert_alpha()
-volume_mute_button = pygame.image.load(game.file_directory + "images\sunni_volume_mute_button.png").convert_alpha()
-fullscreen_button = pygame.image.load(game.file_directory + "images\sunni_fullscreen_button.png").convert_alpha()
-windowed_button = pygame.image.load(game.file_directory + "images\sunni_windowed_button.png").convert_alpha()
+options_button = Image("images/sunni_options_button.png")
+return_to_game_button = Image("images/sunni_return_to_game_button.png")
+return_to_title_button = Image("images/sunni_return_to_title_button.png")
+options_button = Image("images/sunni_options_button.png")
+volume_plus_button = Image("images/sunni_volume_plus_button.png")
+volume_minus_button = Image("images/sunni_volume_minus_button.png")
+volume_mute_button = Image("images/sunni_volume_mute_button.png")
+fullscreen_button = Image("images/sunni_fullscreen_button.png")
+windowed_button = Image("images/sunni_windowed_button.png")
 
 # Icons
-health_icon = pygame.image.load(game.file_directory + "images\sunni_health_icon.png").convert_alpha()
-mana_icon = pygame.image.load(game.file_directory + "images\sunni_mana_icon.png").convert_alpha()
+health_icon = Image("images/sunni_health_icon.png")
+mana_icon = Image("images/sunni_mana_icon.png")
 
-heal_move_icon_faded = pygame.image.load(game.file_directory + "images\sunni_heal_move_icon_faded.png").convert_alpha()
-heal_move_icon_solid = pygame.image.load(game.file_directory + "images\sunni_heal_move_icon_solid.png").convert_alpha()
+heal_move_icon_faded = Image("images/sunni_heal_move_icon_faded.png")
+heal_move_icon_solid = Image("images/sunni_heal_move_icon_solid.png")
 
-kick_move_icon_faded = pygame.image.load(game.file_directory + "images\sunni_kick_move_icon_faded.png").convert_alpha()
-kick_move_icon_solid = pygame.image.load(game.file_directory + "images\sunni_kick_move_icon_solid.png").convert_alpha()
+kick_move_icon_faded = Image("images/sunni_kick_move_icon_faded.png")
+kick_move_icon_solid = Image("images/sunni_kick_move_icon_solid.png")
 
-headbutt_move_icon_faded = pygame.image.load(game.file_directory + "images\sunni_headbutt_move_icon_faded.png").convert_alpha()
-headbutt_move_icon_solid = pygame.image.load(game.file_directory + "images\sunni_headbutt_move_icon_solid.png").convert_alpha()
+headbutt_move_icon_faded = Image("images/sunni_headbutt_move_icon_faded.png")
+headbutt_move_icon_solid = Image("images/sunni_headbutt_move_icon_solid.png")
 
-frostbeam_move_icon_faded = pygame.image.load(game.file_directory + "images\sunni_frostbeam_move_icon_faded.png").convert_alpha()
-frostbeam_move_icon_solid = pygame.image.load(game.file_directory + "images\sunni_frostbeam_move_icon_solid.png").convert_alpha()
+frostbeam_move_icon_faded = Image("images/sunni_frostbeam_move_icon_faded.png")
+frostbeam_move_icon_solid = Image("images/sunni_frostbeam_move_icon_solid.png")
 
 # Move information
-kick_move_info = pygame.image.load(game.file_directory + "images\sunni_kick_move_info.png").convert_alpha()
-heal_move_info = pygame.image.load(game.file_directory + "images\sunni_heal_move_info.png").convert_alpha()
-headbutt_move_info = pygame.image.load(game.file_directory + "images\sunni_headbutt_move_info.png").convert_alpha()
-frostbeam_move_info = pygame.image.load(game.file_directory + "images\sunni_frostbeam_move_info.png").convert_alpha()
+kick_move_info = Image("images/sunni_kick_move_info.png")
+heal_move_info = Image("images/sunni_heal_move_info.png")
+headbutt_move_info = Image("images/sunni_headbutt_move_info.png")
+frostbeam_move_info = Image("images/sunni_frostbeam_move_info.png")
 
 # Character
-character_choice1 = pygame.image.load(game.file_directory + "images\sunni_character1_normal1.png").convert_alpha()
-character_choice2 = pygame.image.load(game.file_directory + "images\sunni_character2_normal1.png").convert_alpha()
+character_choice1 = Image("images/sunni_character1_normal1.png")
+character_choice2 = Image("images/sunni_character2_normal1.png")
 
 # Dog
 
 # Snake
-snake_normal = pygame.image.load(game.file_directory + "images\sunni_snake_normal.png").convert_alpha()
-snake_backwards = pygame.image.load(game.file_directory + "images\sunni_snake_backwards.png").convert_alpha()
-snake_moving = pygame.image.load(game.file_directory + "images\sunni_snake_moving.png").convert_alpha()
-snake_dead = pygame.image.load(game.file_directory + "images\sunni_snake_dead.png").convert_alpha()
-snake_laser_stance = pygame.image.load(game.file_directory + "images\sunni_snake_laser_stance.png").convert_alpha()
-snake_venom_stance = pygame.image.load(game.file_directory + "images\sunni_snake_venom_stance.png").convert_alpha()
-snake_laser_beam = pygame.image.load(game.file_directory + "images\sunni_snake_laser_beam.png").convert_alpha()
-snake_venom_beam = pygame.image.load(game.file_directory + "images\sunni_snake_venom_beam.png").convert_alpha()
+snake_normal = Image("images/sunni_snake_normal.png")
+snake_backwards = Image("images/sunni_snake_backwards.png")
+snake_moving = Image("images/sunni_snake_moving.png")
+snake_dead = Image("images/sunni_snake_dead.png")
+snake_laser_stance = Image("images/sunni_snake_laser_stance.png")
+snake_venom_stance = Image("images/sunni_snake_venom_stance.png")
+snake_laser_beam = Image("images/sunni_snake_laser_beam.png")
+snake_venom_beam = Image("images/sunni_snake_venom_beam.png")
 
 # Ghost Dog
-ghost_dog_dead = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_dead.png").convert_alpha()
-ghost_dog_glow1 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_glow1.png").convert_alpha()
-ghost_dog_glow2 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_glow2.png").convert_alpha()
-ghost_dog_glow3 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_glow3.png").convert_alpha()
-ghost_dog_glow4 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_glow4.png").convert_alpha()
-ghost_dog_glow5 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_glow5.png").convert_alpha()
+ghost_dog_dead = Image("images/sunni_ghost_dog_dead.png")
+ghost_dog_glow1 = Image("images/sunni_ghost_dog_glow1.png")
+ghost_dog_glow2 = Image("images/sunni_ghost_dog_glow2.png")
+ghost_dog_glow3 = Image("images/sunni_ghost_dog_glow3.png")
+ghost_dog_glow4 = Image("images/sunni_ghost_dog_glow4.png")
+ghost_dog_glow5 = Image("images/sunni_ghost_dog_glow5.png")
 
-ghost_dog_top_claw_swipe1 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_swipe1.png").convert_alpha()
-ghost_dog_top_claw_swipe2 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_swipe2.png").convert_alpha()
-ghost_dog_top_claw_swipe3 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_swipe3.png").convert_alpha()
-ghost_dog_top_claw_swipe4 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_swipe4.png").convert_alpha()
-ghost_dog_top_claw_swipe5 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_swipe5.png").convert_alpha()
-ghost_dog_top_claw_size1 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_size1.png").convert_alpha()
-ghost_dog_top_claw_size2 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_size2.png").convert_alpha()
-ghost_dog_top_claw_size3 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_size3.png").convert_alpha()
-ghost_dog_top_claw_size4 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_size4.png").convert_alpha()
-ghost_dog_top_claw_size5 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_size5.png").convert_alpha()
-ghost_dog_top_claw_size6 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_size6.png").convert_alpha()
-ghost_dog_top_claw_size7 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_size7.png").convert_alpha()
-ghost_dog_top_claw_size8 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_size8.png").convert_alpha()
-ghost_dog_top_claw_fade20 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_fade20.png").convert_alpha()
-ghost_dog_top_claw_fade40 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_fade40.png").convert_alpha()
-ghost_dog_top_claw_fade60 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_fade60.png").convert_alpha()
-ghost_dog_top_claw_fade80 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_top_claw_fade80.png").convert_alpha()
+ghost_dog_top_claw_swipe1 = Image("images/sunni_ghost_dog_top_claw_swipe1.png")
+ghost_dog_top_claw_swipe2 = Image("images/sunni_ghost_dog_top_claw_swipe2.png")
+ghost_dog_top_claw_swipe3 = Image("images/sunni_ghost_dog_top_claw_swipe3.png")
+ghost_dog_top_claw_swipe4 = Image("images/sunni_ghost_dog_top_claw_swipe4.png")
+ghost_dog_top_claw_swipe5 = Image("images/sunni_ghost_dog_top_claw_swipe5.png")
+ghost_dog_top_claw_size1 = Image("images/sunni_ghost_dog_top_claw_size1.png")
+ghost_dog_top_claw_size2 = Image("images/sunni_ghost_dog_top_claw_size2.png")
+ghost_dog_top_claw_size3 = Image("images/sunni_ghost_dog_top_claw_size3.png")
+ghost_dog_top_claw_size4 = Image("images/sunni_ghost_dog_top_claw_size4.png")
+ghost_dog_top_claw_size5 = Image("images/sunni_ghost_dog_top_claw_size5.png")
+ghost_dog_top_claw_size6 = Image("images/sunni_ghost_dog_top_claw_size6.png")
+ghost_dog_top_claw_size7 = Image("images/sunni_ghost_dog_top_claw_size7.png")
+ghost_dog_top_claw_size8 = Image("images/sunni_ghost_dog_top_claw_size8.png")
+ghost_dog_top_claw_fade20 = Image("images/sunni_ghost_dog_top_claw_fade20.png")
+ghost_dog_top_claw_fade40 = Image("images/sunni_ghost_dog_top_claw_fade40.png")
+ghost_dog_top_claw_fade60 = Image("images/sunni_ghost_dog_top_claw_fade60.png")
+ghost_dog_top_claw_fade80 = Image("images/sunni_ghost_dog_top_claw_fade80.png")
 
-ghost_dog_side_claw_swipe1 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_swipe1.png").convert_alpha()
-ghost_dog_side_claw_swipe2 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_swipe2.png").convert_alpha()
-ghost_dog_side_claw_swipe3 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_swipe3.png").convert_alpha()
-ghost_dog_side_claw_swipe4 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_swipe4.png").convert_alpha()
-ghost_dog_side_claw_swipe5 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_swipe5.png").convert_alpha()
-ghost_dog_side_claw_size1 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_size1.png").convert_alpha()
-ghost_dog_side_claw_size2 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_size2.png").convert_alpha()
-ghost_dog_side_claw_size3 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_size3.png").convert_alpha()
-ghost_dog_side_claw_size4 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_size4.png").convert_alpha()
-ghost_dog_side_claw_size5 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_size5.png").convert_alpha()
-ghost_dog_side_claw_size6 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_size6.png").convert_alpha()
-ghost_dog_side_claw_size7 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_size7.png").convert_alpha()
-ghost_dog_side_claw_size8 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_size8.png").convert_alpha()
-ghost_dog_side_claw_fade20 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_fade20.png").convert_alpha()
-ghost_dog_side_claw_fade40 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_fade40.png").convert_alpha()
-ghost_dog_side_claw_fade60 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_fade60.png").convert_alpha()
-ghost_dog_side_claw_fade80 = pygame.image.load(game.file_directory + "images\sunni_ghost_dog_side_claw_fade80.png").convert_alpha()
+ghost_dog_side_claw_swipe1 = Image("images/sunni_ghost_dog_side_claw_swipe1.png")
+ghost_dog_side_claw_swipe2 = Image("images/sunni_ghost_dog_side_claw_swipe2.png")
+ghost_dog_side_claw_swipe3 = Image("images/sunni_ghost_dog_side_claw_swipe3.png")
+ghost_dog_side_claw_swipe4 = Image("images/sunni_ghost_dog_side_claw_swipe4.png")
+ghost_dog_side_claw_swipe5 = Image("images/sunni_ghost_dog_side_claw_swipe5.png")
+ghost_dog_side_claw_size1 = Image("images/sunni_ghost_dog_side_claw_size1.png")
+ghost_dog_side_claw_size2 = Image("images/sunni_ghost_dog_side_claw_size2.png")
+ghost_dog_side_claw_size3 = Image("images/sunni_ghost_dog_side_claw_size3.png")
+ghost_dog_side_claw_size4 = Image("images/sunni_ghost_dog_side_claw_size4.png")
+ghost_dog_side_claw_size5 = Image("images/sunni_ghost_dog_side_claw_size5.png")
+ghost_dog_side_claw_size6 = Image("images/sunni_ghost_dog_side_claw_size6.png")
+ghost_dog_side_claw_size7 = Image("images/sunni_ghost_dog_side_claw_size7.png")
+ghost_dog_side_claw_size8 = Image("images/sunni_ghost_dog_side_claw_size8.png")
+ghost_dog_side_claw_fade20 = Image("images/sunni_ghost_dog_side_claw_fade20.png")
+ghost_dog_side_claw_fade40 = Image("images/sunni_ghost_dog_side_claw_fade40.png")
+ghost_dog_side_claw_fade60 = Image("images/sunni_ghost_dog_side_claw_fade60.png")
+ghost_dog_side_claw_fade80 = Image("images/sunni_ghost_dog_side_claw_fade80.png")
 
 
 # Moves
 # Heal
-heal_heart = pygame.image.load(game.file_directory + "images\sunni_heal_heart.png").convert_alpha()
+heal_heart = Image("images/sunni_heal_heart.png")
 
 # Frostbeam
-frostbeam_start = pygame.image.load(game.file_directory + "images\sunni_frostbeam_start.png").convert_alpha()
-frostbeam_middle = pygame.image.load(game.file_directory + "images\sunni_frostbeam_middle.png").convert_alpha()
-frostbeam_end = pygame.image.load(game.file_directory + "images\sunni_frostbeam_end.png").convert_alpha()
+frostbeam_start = Image("images/sunni_frostbeam_start.png")
+frostbeam_middle = Image("images/sunni_frostbeam_middle.png")
+frostbeam_end = Image("images/sunni_frostbeam_end.png")
 
 
 # Miscellaneous
-blank_overlay = pygame.image.load(game.file_directory + "images\sunni_blank_overlay.png").convert_alpha()
-choose_character_overlay = pygame.image.load(game.file_directory + "images\sunni_choose_character_overlay.png").convert_alpha()
+blank_overlay = Image("images/sunni_blank_overlay.png")
+choose_character_overlay = Image("images/sunni_choose_character_overlay.png")
 
 
-### ------------------- TEXT ASSIGNMENT - START ------------------- ###
+# Text -----------------------------------------------------------------------------------------------------------------
+# Opening screen - Start
+# REMOVE THIS, MAYBE ADD ANOTHER OPENING SCREEN WITH A LOGO + COMPANY NAME. MAKE CREDITS FOR NAMES)
+welcome_l1 = Text("Welcome to Sunni!", Font.OPENING, Color.BLACK)
+welcome_l2 = Text("This is coded entirely with Python and the pygame module!", Font.OPENING, Color.BLACK)
+welcome_l3 = Text("created by Andrew and co.", Font.OPENING, Color.BLACK)
+welcome_l4 = Text("Enjoy!", Font.OPENING, Color.BLACK)
 
-## Opening screen - Start   ### REMOVE THIS, MAYBE ADD ANOTHER OPENING SCREEN WITH A LOGO + COMPANY NAME. MAKE CREDITS FOR NAMES) ###
-welcome_l1 = opening_font.render("Welcome to Sunni!", True, Color.BLACK)
-welcome_l2 = opening_font.render("This is coded entirely with Python and the pygame module!", True, Color.BLACK)
-welcome_l3 = opening_font.render("created by Andrew and co.", True, Color.BLACK)
-welcome_l4 = opening_font.render("Enjoy!", True, Color.BLACK)
-# Opening screen - End
-
-## Title screen - Start
-game_title = title_font.render("SUNNI", True, Color.MURKY_YELLOW)
+# Title screen - Start
+game_title = Text("SUNNI", Font.TITLE, Color.MURKY_YELLOW)
 
 # Miscellaneous
-not_enough_mana = opening_font.render("You don't have enough mana to use that", True, Color.MANA_BLUE)
+not_enough_mana = Text("You don't have enough mana to use that", Font.OPENING, Color.MANA_BLUE)
 
 
 # Main program loop
@@ -305,14 +216,12 @@ start_time = time.time()
 while ongoing:
     # Obtaining information
     current_time = time.time() - start_time     # Storing the current amount of time that the program has been running
-    #print(f"{game.opponent.name}: {game.current}")
-    left = 0    # Resetting the mouse inputs to 0 (off) so the computer doesn't think the mouse is still pressed
-    middle = 0
-    right = 0
+    # print(f"{game.opponent.name}: {game.current}")
+    game.mouse.reset_buttons()
 
     Keys.initialise()
         
-    mouse_x, mouse_y = pygame.mouse.get_pos()
+    game.mouse.update_coordinates(pygame.mouse.get_pos())
 
     # Main event loop (dealing with user input)
     for event in pygame.event.get():                    # i.e. Whenever the user does something                                                                                                                          
@@ -320,22 +229,9 @@ while ongoing:
             ongoing = False                             # Show that the user is finished
             
         elif event.type == pygame.MOUSEBUTTONDOWN:      # Checking if the mouse button is being pressed down
-            mouse_state = pygame.mouse.get_pressed()    # Checking whether the mouse buttons are pressed               
-            left_held = mouse_state[0]                  # Checking whether the left mouse button is pressed
-            middle_held = mouse_state[1]                # Checking whether the middle mouse button is pressed
-            right_held = mouse_state[2]                 # Checking whether the right mouse button is pressed
+            game.mouse.process_button_down(pygame.mouse.get_pressed())
         elif event.type == pygame.MOUSEBUTTONUP:        # Checking whether the mouse button was pressed and released
-            mouse_state = pygame.mouse.get_pressed()
-            if left_held and not mouse_state[0]:
-                left = 1
-                left_held = 0  # Showing that the mouse button has been released
-            if middle_held and not mouse_state[1]:
-                middle = 1
-                middle_held = 0
-            if right_held and not mouse_state[2]:
-                right = 1
-                right_held = 0
-
+            game.mouse.process_button_up(pygame.mouse.get_pressed())
         elif event.type == pygame.KEYDOWN:
             Keys.process_keydown(pygame.key.get_pressed(), accepting_text)
             if accepting_text:
@@ -347,21 +243,21 @@ while ongoing:
     # Opening screen
     if current_time < 5:    # change to 5
         game.screen.fill(Color.MILD_BLUE)
-        game.screen.blit(welcome_l1, (480,100))
-        if left and current_time <= 2:      # Enabling the user to skip through the starting sequence by clicking
+        welcome_l1.display(480, 100)
+        if game.mouse.left and current_time <= 2:      # Enabling the user to skip through the starting sequence by clicking
             start_time = time.time() - 0.5
             
         if current_time > 0.5:
-            game.screen.blit(welcome_l2, (150,140))
-            if left and current_time <= 2:
+            welcome_l2.display(150, 140)
+            if game.mouse.left and current_time <= 2:
                 start_time = time.time() - 2
         if current_time > 2:
-            game.screen.blit(welcome_l3, (690,500))
-            if left and current_time <= 3:
+            welcome_l3.display(690, 500)
+            if game.mouse.left and current_time <= 3:
                 start_time = time.time() - 3
         if current_time > 3:
-            game.screen.blit(welcome_l4, (590,300))
-            if left and current_time <= 5:
+            welcome_l4.display(590, 300)
+            if game.mouse.left and current_time <= 5:
                 start_time = time.time() - 5
 
     # Other screens
@@ -371,13 +267,13 @@ while ongoing:
         # Title screen
         if game.current == "title":
             if current_time < 8:    # change to 8
-                game.screen.blit(title_screen, (0,0))
-                if left and current_time <= 6:
+                title_screen.display()
+                if game.mouse.left and current_time <= 6:
                     start_time = time.time() - 6
 
                 if current_time > 6:    # change to 6
-                    game.screen.blit(game_title, (555,100))
-                    if left:
+                    game_title.display(555, 100)
+                    if game.mouse.left:
                         start_time = time.time() - 8
 
             else:
@@ -387,30 +283,30 @@ while ongoing:
                     pygame.mixer.music.play(-1)
                     game.music_playing = True
                     
-                game.screen.blit(main_menu, (0,0))
+                main_menu.display()
                 
-                if mousein(mouse_x, mouse_y, 535,269,744,345) and not game.display_options:    # Play button
-                    game.screen.blit(menu_play_flared, (79,0))
-                    if left:
+                if game.mouse.is_in(535, 269, 744, 345) and not game.display_options:    # Play button
+                    menu_play_flared.display()
+                    if game.mouse.left:
                         input_text = "Sunni"
                         accepting_text = True
                         maximum_characters = 16
                         game.current = "start new game"
 
-                elif mousein(mouse_x, mouse_y, 406,375,877,451) and not game.display_options:  # Load button
-                    game.screen.blit(menu_load_flared, (82,106))
-                    if left:
+                elif game.mouse.is_in(406,375,877,451) and not game.display_options:  # Load button
+                    menu_load_flared.display()
+                    if game.mouse.left:
                         game.current = "load save file"
 
-                elif mousein(mouse_x, mouse_y, 461,481,817,557) and not game.display_options:  # Options button
-                    game.screen.blit(menu_options_flared, (82,212))
-                    if left:
+                elif game.mouse.is_in(461,481,817,557) and not game.display_options:  # Options button
+                    menu_options_flared.display()
+                    if game.mouse.left:
                         game.display_options = True
                         options_just_selected = True
 
-                elif mousein(mouse_x, mouse_y, 547,585,734,661) and not game.display_options:  # Exit button
-                    game.screen.blit(menu_exit_flared, (166,476))
-                    if left:
+                elif game.mouse.is_in(547,585,734,661) and not game.display_options:  # Exit button
+                    menu_exit_flared.display()
+                    if game.mouse.left:
                         ongoing = False
 
                 elif Keys.escape and not game.display_options:
@@ -420,7 +316,7 @@ while ongoing:
         ## Starting the game screens
         # When 'play' is pressed; starting a new game save
         elif game.current == "start new game":
-            game.screen.blit(load_game_screen, (0, 0))
+            load_game_screen.display(0, 0)
 
             save1_name = game.display_save_name(1, (450, 230))
             save2_name = game.display_save_name(2, (450, 349))
@@ -428,23 +324,23 @@ while ongoing:
             save4_name = game.display_save_name(4, (450, 587))
 
             if accepting_text:
-                game.screen.blit(enter_character_name, (0,0))
-                game.screen.blit(sunni_font.render(input_text, True, Color.BLACK), (370,338))
-                if mousein(mouse_x, mouse_y, 553,404,727,442) and not game.display_options:
-                    game.screen.blit(continue_button_flared, (0,0))
-                    game.screen.blit(sunni_font.render(input_text, True, Color.BLACK), (370,338))
-                    if left:
+                enter_character_name.display(0, 0)
+                game.screen.blit(Font.SUNNI.render(input_text, True, Color.BLACK), (370,338))
+                if game.mouse.is_in(553,404,727,442) and not game.display_options:
+                    continue_button_flared.display(0, 0)
+                    game.screen.blit(Font.SUNNI.render(input_text, True, Color.BLACK), (370,338))
+                    if game.mouse.left:
                         accepting_text = False
             elif not character_name_assigned:
                 character_name = input_text
                 input_text = ""
                 character_name_assigned = True
             elif display_sure:
-                game.screen.blit(game.font.render("Character name: " + character_name, True, Color.MILD_BLUE), (10,10))
-                game.screen.blit(are_you_sure, (0,0))
-                if mousein(mouse_x, mouse_y, 555,398,630,437) and not game.display_options:
-                    game.screen.blit(sure_yes_flared, (0,0))
-                    if left:
+                game.screen.blit(Font.DEFAULT.render("Character name: " + character_name, True, Color.MILD_BLUE), (10,10))
+                are_you_sure.display(0, 0)
+                if game.mouse.is_in(555,398,630,437) and not game.display_options:
+                    sure_yes_flared.display(0, 0)
+                    if game.mouse.left:
                         game.load_opponent("Meme Dog")
                         character_level = 1
                         pygame.mixer.music.stop()
@@ -452,16 +348,16 @@ while ongoing:
                         game.current = "choose character"
                         display_sure = False
                         character_name_assigned = False
-                elif mousein(mouse_x, mouse_y, 648,398,723,437) and not game.display_options:
-                    game.screen.blit(sure_no_flared, (0,0))
-                    if left:
+                elif game.mouse.is_in(648,398,723,437) and not game.display_options:
+                    sure_no_flared.display(0, 0)
+                    if game.mouse.left:
                         display_sure = False
             else:
-                game.screen.blit(game.font.render("Character name: " + character_name, True, Color.MILD_BLUE), (10,10))
-                if mousein(mouse_x, mouse_y, 355,225,925,338) and not game.display_options:
-                    game.screen.blit(load1_flared, (0,0))
+                game.screen.blit(Font.DEFAULT.render("Character name: " + character_name, True, Color.MILD_BLUE), (10,10))
+                if game.mouse.is_in(355,225,925,338) and not game.display_options:
+                    load1_flared.display(0, 0)
                     game.display_save_name(1, (450, 230))
-                    if left:
+                    if game.mouse.left:
                         game.save_number = "1"
                         if save1_name != "No save data\n":
                             display_sure = True
@@ -471,10 +367,10 @@ while ongoing:
                             pygame.mixer.music.stop()
                             game.music_playing = False
                             game.current = "choose character"
-                elif mousein(mouse_x, mouse_y, 355,344,925,457) and not game.display_options:
-                    game.screen.blit(load2_flared, (0,0))
+                elif game.mouse.is_in(355,344,925,457) and not game.display_options:
+                    load2_flared.display(0, 0)
                     game.display_save_name(2, (450, 349))
-                    if left:
+                    if game.mouse.left:
                         game.save_number = "2"
                         if save2_name != "No save data\n":
                             display_sure = True
@@ -484,10 +380,10 @@ while ongoing:
                             pygame.mixer.music.stop()
                             game.music_playing = False
                             game.current = "choose character"
-                elif mousein(mouse_x, mouse_y, 355,463,925,576) and not game.display_options:
-                    game.screen.blit(load3_flared, (0,0))
+                elif game.mouse.is_in(355,463,925,576) and not game.display_options:
+                    load3_flared.display(0, 0)
                     game.display_save_name(3, (450, 468))
-                    if left:
+                    if game.mouse.left:
                         game.save_number = "3"
                         if save3_name != "No save data\n":
                             display_sure = True
@@ -497,10 +393,10 @@ while ongoing:
                             pygame.mixer.music.stop()
                             game.music_playing = False
                             game.current = "choose character"
-                elif mousein(mouse_x, mouse_y, 355,582,925,695) and not game.display_options:
-                    game.screen.blit(load4_flared, (0,0))
+                elif game.mouse.is_in(355,582,925,695) and not game.display_options:
+                    load4_flared.display(0, 0)
                     game.display_save_name(4, (450, 587))
-                    if left:
+                    if game.mouse.left:
                         game.save_number = "4"
                         if save4_name != "No save data\n":
                             display_sure = True
@@ -511,12 +407,12 @@ while ongoing:
                             game.music_playing = False
                             game.current = "choose character"
 
-            game.screen.blit(return_to_title_button, (1082,665))
-            game.screen.blit(options_button, (10,665))
-            if (Keys.escape or (mousein(mouse_x, mouse_y, 10,665,100,715) and left == 1)) and not game.display_options:
+            return_to_title_button.display(1082, 665)
+            options_button.display(10, 665)
+            if (Keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
                 game.display_options = True
                 options_just_selected = True
-            elif mousein(mouse_x, mouse_y, 1082,665,1270,715) and left and not game.display_options:
+            elif game.mouse.is_in(1082,665,1270,715) and game.mouse.left and not game.display_options:
                 character_name_assigned = False
                 game.current = "title"
                 if not game.music_playing:
@@ -527,37 +423,37 @@ while ongoing:
 
         # When 'load' is pressed; loading a previous save
         elif game.current == "load save file":
-            game.screen.blit(load_game_screen, (0, 0))
+            load_game_screen.display(0, 0)
             save1_name = game.display_save_name(1, (450, 230))
             save2_name = game.display_save_name(2, (450, 349))
             save3_name = game.display_save_name(3, (450, 468))
             save4_name = game.display_save_name(4, (450, 587))
 
-            if mousein(mouse_x, mouse_y, 355,225,925,338) and not game.display_options:
-                game.screen.blit(load1_flared, (0,0))
+            if game.mouse.is_in(355,225,925,338) and not game.display_options:
+                load1_flared.display(0, 0)
                 game.display_save_name(1, (450, 230))
-                if left and save1_name != "No save data\n":
+                if game.mouse.left and save1_name != "No save data\n":
                     game.save_number = "1"
                     save = open(game.file_directory + "saves/save1.txt", "r")
                     load_file = True
-            elif mousein(mouse_x, mouse_y, 355,344,925,457) and not game.display_options:
-                game.screen.blit(load2_flared, (0,0))
+            elif game.mouse.is_in(355,344,925,457) and not game.display_options:
+                load2_flared.display(0, 0)
                 game.display_save_name(2, (450, 349))
-                if left and save2_name != "No save data\n":
+                if game.mouse.left and save2_name != "No save data\n":
                     game.save_number = "2"
                     save = open(game.file_directory + "saves/save2.txt", "r")
                     load_file = True
-            elif mousein(mouse_x, mouse_y, 355,463,925,576) and not game.display_options:
-                game.screen.blit(load3_flared, (0,0))
+            elif game.mouse.is_in(355,463,925,576) and not game.display_options:
+                load3_flared.display(0, 0)
                 game.display_save_name(3, (450, 468))
-                if left and save3_name != "No save data\n":
+                if game.mouse.left and save3_name != "No save data\n":
                     game.save_number = "3"
                     save = open(game.file_directory + "saves/save3.txt", "r")
                     load_file = True
-            elif mousein(mouse_x, mouse_y, 355,582,925,695) and not game.display_options:
-                game.screen.blit(load4_flared, (0,0))
+            elif game.mouse.is_in(355,582,925,695) and not game.display_options:
+                load4_flared.display(0, 0)
                 game.display_save_name(4, (450, 587))
-                if left and save4_name != "No save data\n":
+                if game.mouse.left and save4_name != "No save data\n":
                     game.save_number = "4"
                     save = open(game.file_directory + "saves/save4.txt", "r")
                     load_file = True
@@ -568,15 +464,15 @@ while ongoing:
                 game.load_opponent(save.readline()[:-1])
                 game.character_number = save.readline()[:-1]
                 save.close()
-                character_normal = pygame.image.load(game.file_directory + f"images\sunni_{game.character_number}_normal1.png").convert_alpha()
-                character_backwards = pygame.image.load(game.file_directory + f"images\sunni_{game.character_number}_backwards.png").convert_alpha()
-                character_scared = pygame.image.load(game.file_directory + f"images\sunni_{game.character_number}_scared.png").convert_alpha()
-                character_scared_redflash = pygame.image.load(game.file_directory + f"images\sunni_{game.character_number}_scared_redflash.png").convert_alpha()
-                character_tilt_left = pygame.image.load(game.file_directory + f"images\sunni_{game.character_number}_tilt_left.png").convert_alpha()
-                character_tilt_right = pygame.image.load(game.file_directory + f"images\sunni_{game.character_number}_tilt_right.png").convert_alpha()
-                character_dead = pygame.image.load(game.file_directory + f"images\sunni_{game.character_number}_dead.png").convert_alpha()
-                character_headbutt_stance = pygame.image.load(game.file_directory + f"images\sunni_{game.character_number}_headbutt_stance.png").convert_alpha()
-                character_frostbeam_stance = pygame.image.load(game.file_directory + f"images\sunni_{game.character_number}_frostbeam_stance.png").convert_alpha()
+                character_normal = Image(f"images\sunni_{game.character_number}_normal1.png")
+                character_backwards = Image(f"images\sunni_{game.character_number}_backwards.png")
+                character_scared = Image(f"images\sunni_{game.character_number}_scared.png")
+                character_scared_redflash = Image(f"images\sunni_{game.character_number}_scared_redflash.png")
+                character_tilt_left = Image(f"images\sunni_{game.character_number}_tilt_left.png")
+                character_tilt_right = Image(f"images\sunni_{game.character_number}_tilt_right.png")
+                character_dead = Image(f"images\sunni_{game.character_number}_dead.png")
+                character_headbutt_stance = Image(f"images\sunni_{game.character_number}_headbutt_stance.png")
+                character_frostbeam_stance = Image(f"images\sunni_{game.character_number}_frostbeam_stance.png")
                 load_file = False
 
                 pygame.mixer.music.stop()
@@ -585,12 +481,12 @@ while ongoing:
                 game.player = Player(game, character_name, 90 + 10*int(character_level), 95 + 5*int(character_level), level=character_level)
                 game.current = "choose ability"
 
-            game.screen.blit(return_to_title_button, (1082,665))
-            game.screen.blit(options_button, (10,665))
-            if (Keys.escape or (mousein(mouse_x, mouse_y, 10,665,100,715) and left == 1)) and not game.display_options:
+            return_to_title_button.display(1082, 665)
+            options_button.display(10, 665)
+            if (Keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
                 game.display_options = True
                 options_just_selected = True
-            elif mousein(mouse_x, mouse_y, 1082,665,1270,715) and left and not game.display_options:
+            elif game.mouse.is_in(1082,665,1270,715) and game.mouse.left and not game.display_options:
                 character_name_assigned = False
                 game.current = "title"
                 if not game.music_playing:
@@ -603,7 +499,7 @@ while ongoing:
         ## Battle screens - Start
         else:
             # Default things that are in every battle screen
-            default_battle_display(game.font, battle_background_hallway, health_icon, mana_icon, options_button, left, mouse_x, mouse_y, game)
+            default_battle_display(battle_background_hallway, health_icon, mana_icon, options_button, game)
 
             # Choose your character page
             if game.current == "choose character":
@@ -612,7 +508,7 @@ while ongoing:
             ## Enemy battle file opening - Start
             # Dog battle
             if game.opponent.name == "Meme Dog":
-                dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
+                dog_battle_display(game, kick_move_icon_faded,
                                    headbutt_move_icon_faded, frostbeam_move_icon_faded, heal_move_icon_faded,
                                    kick_move_icon_solid, headbutt_move_icon_solid, frostbeam_move_icon_solid,
                                    heal_move_icon_solid, kick_move_info, headbutt_move_info, frostbeam_move_info,
@@ -631,14 +527,14 @@ while ongoing:
 
             else:   ## JUST FOR DEBUGGING ## (maybe make this a screen which says: "ERROR, please restart"
                 game.screen.fill(Color.DAMAGE_RED)    # or something instead. Or just remove this completely
-                game.screen.blit(title_font.render("ERROR", True, Color.BLACK), (600,300))
+                game.screen.blit(Font.TITLE.render("ERROR", True, Color.BLACK), (600,300))
             # Enemy battle file opening - End
         # Battle screens - End
         
         # CODE THAT IS RUN THROUGH EVERY FRAME
         # Not enough mana notification
         if game.display_mana_notification_time > 0:
-            game.screen.blit(not_enough_mana, (300, 200))
+            not_enough_mana.display(300, 200)
             game.display_mana_notification_time -= 1
 
         # Input text handling

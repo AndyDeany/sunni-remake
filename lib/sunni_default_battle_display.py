@@ -11,9 +11,9 @@ EMPTY_BLUE = (0, 20, 79)
 EMPTY_RED = (117, 0, 0)
 
 
-def default_battle_display(font, battle_background_hallway, health_icon, mana_icon, options_button, left, mouse_x, mouse_y, game):
+def default_battle_display(battle_background_hallway, health_icon, mana_icon, options_button, game):
     # Background
-    game.screen.blit(battle_background_hallway, (0,0))
+    battle_background_hallway.display(0, 0)
     # Assigning variables which contain the positions the ends of the health and mana bars
     character_health_end_pos = ((200/float(game.player.max_hp))*game.player.current_hp)
     character_mana_end_pos = ((200/float(game.player.max_mana))*game.player.current_mana)
@@ -35,29 +35,21 @@ def default_battle_display(font, battle_background_hallway, health_icon, mana_ic
     pygame.draw.rect(game.screen, BLACK, [1070,30,200,30], 1)
     pygame.draw.rect(game.screen, BLACK, [1070,60,200,30], 1)
     # Health and mana icons
-    game.screen.blit(health_icon, (210, 20))
-    game.screen.blit(mana_icon, (210, 50))
-    game.screen.blit(health_icon, (1020, 20))
-    game.screen.blit(mana_icon, (1020, 50))
+    health_icon.display(210, 20)
+    mana_icon.display(210, 50)
+    health_icon.display(1020, 20)
+    mana_icon.display(1020, 50)
 
-    # Health and mana number display. Should do these on set with a @property method instead on the Character class.
-    game.player.current_hp_display = font.render("Health: " + str(game.player.current_hp) + "/" + str(game.player.max_hp), True, BLACK)
-    game.player.current_mana_display = font.render("Mana: " + str(game.player.current_mana) + "/" + str(game.player.max_mana), True, BLACK)
-    game.opponent.current_hp_display = font.render("Health: " + str(game.opponent.current_hp) + "/" + str(game.opponent.max_hp), True, BLACK)
-    game.opponent.current_mana_display = font.render("Mana: " + str(game.opponent.current_mana) + "/" + str(game.opponent.max_mana), True, BLACK)
-    game.screen.blit(game.player.current_hp_display, (15,32))
-    game.screen.blit(game.player.current_mana_display, (15,62))
-    game.screen.blit(game.opponent.current_hp_display, (1075,32))
-    game.screen.blit(game.opponent.current_mana_display, (1075,62))
-    # Character name display. Same with these and a @property method.
-    game.player.name_display = font.render(game.player.name, True, BLACK)
-    game.opponent.name_display = font.render(game.opponent.name, True, BLACK)
-    game.screen.blit(game.player.name_display, (15, 2))
-    game.screen.blit(game.opponent.name_display, (1075, 2))
+    game.player.current_hp_display.display(15, 32)
+    game.player.current_mana_display.display(15, 62)
+    game.opponent.current_hp_display.display(1075, 32)
+    game.opponent.current_mana_display.display(1075, 62)
+    game.player.name_display.display(15, 2)
+    game.opponent.name_display.display(1075, 2)
 
     # Options button
-    game.screen.blit(options_button, (10,665))
-    if (Keys.escape or (mousein(mouse_x, mouse_y, 10, 665, 100, 715) and left == 1))\
+    options_button.display(10, 665)
+    if (Keys.escape or (game.mouse.is_in(10, 665, 100, 715) and game.mouse.left == 1))\
             and not game.display_options and game.current != "choose_character":   # Focus on choosing your character!
         game.display_options = True
         game.options_just_selected = True
