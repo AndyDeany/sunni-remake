@@ -67,5 +67,5 @@ class Game:
         self.opponent = opponent
 
     def display_stat_change(self, display_x):
-        self.screen.blit(self.stat_change_text, (display_x, self.player.display_damage_y))
-        self.player.display_damage_y -= 3
+        self.screen.blit(self.stat_change_text, (display_x, self.player.display_stat_y))
+        self.player.display_stat_y -= 3

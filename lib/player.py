@@ -5,7 +5,7 @@ from lib.character import Character
 
 class Player(Character):
     def __init__(self, game, name, max_hp, max_mana, *, level=1):
-        super().__init__(game, name, max_hp, max_mana, level=level)
+        super().__init__(game, name, max_hp, max_mana, level=level, display_stat_x=170, display_stat_y_start=360)
         # Heal move variables
         self.heal_heart_y = 170
         self.display_healed_y = 360
@@ -13,8 +13,6 @@ class Player(Character):
         # Kick move variables
         self.kick_x = 150
         self.tilt_direction = "left"
-        self.display_damage_y = 420
-        self.character_display_damage_y = 360
         # Headbutt move variables
         self.headbutt_x = 150
         # Other

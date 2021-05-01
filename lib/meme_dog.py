@@ -7,12 +7,14 @@ from lib.character import Character
 
 class MemeDog(Character):
     def __init__(self, game, max_hp, max_mana, *, level=1):
-        super().__init__(game, "Meme Dog", max_hp, max_mana, level=level)
+        super().__init__(game, "Meme Dog", max_hp, max_mana, level=level, display_stat_x=1015, display_stat_y_start=420)
         self.bite_x = 930
         self.spin_x = 930
         self.spin_time = self.game.fps
         self.spin_direction = "backwards"
         self.heal_heart_y = 230
+        self.display_stat_y_start = 420
+        self.display_stat_y = self.display_stat_y_start
 
         self.dog_normal = pygame.image.load(self.game.file_directory + "images\sunni_dog_normal.png").convert_alpha()
         self.dog_dead = pygame.image.load(self.game.file_directory + "images\sunni_dog_dead.png").convert_alpha()
