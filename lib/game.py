@@ -25,7 +25,6 @@ class Game:
         self.damage_decided = False     # Variable to show whether or not the damage that will be done has been calculated already, so it is not done multiple times in loops
         self.advancing = True
         self.retreating = False
-        self.display_damage_time = self.fps
         self.volume_multiplier = 1
 
     def get_save_path(self, save_number):

@@ -664,6 +664,3 @@ try:
 except NameError:   # incase the variables to be saved haven't been assigned yet
     pass
 pygame.quit()
-
-close_condition = input("Press Enter to Quit")  # To stop the console closing as soon as the game is closed
-###^^^^^^^^^^^^^^^^^^^^^^^ remove this before compiling to a .exe file

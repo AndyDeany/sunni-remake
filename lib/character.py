@@ -7,9 +7,11 @@ class Character:
         self.max_mana = max_mana
         self.current_mana = self.max_mana
         self.level = level
+
         self.display_stat_x = display_stat_x
         self.display_stat_y_start = display_stat_y_start
         self.display_stat_y = self.display_stat_y_start
+        self.display_stat_change_time = self.game.fps
 
     def display_stat_change(self):
         self.game.screen.blit(self.stat_change_text, (self.display_stat_x, self.display_stat_y))
