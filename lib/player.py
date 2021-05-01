@@ -8,7 +8,6 @@ class Player(Character):
         super().__init__(game, name, max_hp, max_mana, level=level, display_stat_x=170, display_stat_y_start=360)
         # Heal move variables
         self.heal_heart_y = 170
-        self.display_healed_y = 360
         self.healed_already = False
         # Kick move variables
         self.kick_x = 150

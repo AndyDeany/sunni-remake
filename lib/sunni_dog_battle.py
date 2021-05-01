@@ -150,12 +150,7 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
 
         else:
             if not game.player.game.player.healed_already:
-                healed_by = random.randint(5,15)
-                if game.player.current_hp + healed_by > game.player.max_hp:
-                    healed_by = game.player.max_hp - game.player.current_hp
-                game.player.current_hp += healed_by
-                game.player.stat_change_text = game.font.render("+" + str(healed_by), True, Color.HEAL_GREEN)
-                game.player.trigger_stat_change_text()
+                game.player.heal(random.randint(5, 15))
                 game.player.heal_heart_y = 170
                 game.player.healed_already = True
 
@@ -297,24 +292,9 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
             game.opponent.heal_heart_y += 5
 
         else:
-            if not game.player.healed_already:
-                healed_by = random.randint(5,15)
-                if game.opponent.current_hp + healed_by > game.opponent.max_hp:
-                    healed_by = game.opponent.max_hp - game.opponent.current_hp
-                game.opponent.current_hp += healed_by
-                game.opponent.stat_change_text = game.font.render("+" + str(healed_by), True, Color.HEAL_GREEN)
-                game.player.healed_already = True
-
-            if game.duration_time < game.fps/2:
-                game.opponent.display_stat_change()
-                game.duration_time += 1
-            else:
-                # Resetting variables for next time
-                game.opponent.heal_heart_y = 170
-                game.opponent.reset_display_stat_y()
-                game.duration_time = 0
-                game.player.healed_already = False
-                game.current = "choose ability"
+            if not game.opponent.healed_already:
+                game.opponent.heal(random.randint(5, 15))
+                game.opponent.healed_already = True
 
     # Dog bite move animation
     elif game.current == "dog bite move":
@@ -411,4 +391,9 @@ def dog_battle_display(game, left, mouse_x, mouse_y, kick_move_icon_faded,
         game.opponent.display_stat_change_time -= 1
     elif game.opponent.display_stat_change_time == 0:
         game.opponent.reset_display_stat_y()
+        if game.current == "dog heal move":
+            game.opponent.healed_already = False
+            game.opponent.heal_heart_y = 170
+            game.opponent.reset_display_stat_y()
+            game.current = "choose ability"
         game.opponent.display_stat_change_time -= 1

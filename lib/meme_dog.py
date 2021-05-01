@@ -13,6 +13,7 @@ class MemeDog(Character):
         self.spin_time = self.game.fps
         self.spin_direction = "backwards"
         self.heal_heart_y = 230
+        self.healed_already = False
         self.display_stat_y_start = 420
         self.display_stat_y = self.display_stat_y_start
 

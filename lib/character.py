@@ -36,3 +36,10 @@ class Character:
         self.current_hp -= amount
         self.stat_change_text = self.game.font.render(f"-{amount}", True, Color.DAMAGE_RED)
         self.trigger_stat_change_text()
+
+    def heal(self, amount):
+        """Heals the character for the given amount."""
+        amount = min(self.max_hp - self.current_hp, amount)
+        self.current_hp += amount
+        self.stat_change_text = self.game.font.render(f"+{amount}", True, Color.HEAL_GREEN)
+        self.trigger_stat_change_text()
