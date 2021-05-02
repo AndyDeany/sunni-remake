@@ -44,11 +44,11 @@ game.screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Sunni (Alpha 3.0)")
 Surface.initialise(game)
 Game.initialise()
+Move.initialise(game)
 Character.initialise()
 Player.initialise()
 MemeDog.initialise()
 Battle.initialise()
-Move.initialise(game)
 
 
 # Images ---------------------------------------------------------------------------------------------------------------
@@ -158,13 +158,6 @@ ghost_dog_side_claw_fade80 = Image("images/sunni_ghost_dog_side_claw_fade80.png"
 
 # Moves
 # Heal
-heal_heart = Image("images/sunni_heal_heart.png")
-
-# Frostbeam
-frostbeam_start = Image("images/sunni_frostbeam_start.png")
-frostbeam_middle = Image("images/sunni_frostbeam_middle.png")
-frostbeam_end = Image("images/sunni_frostbeam_end.png")
-
 
 # Miscellaneous
 blank_overlay = Image("images/sunni_blank_overlay.png")
@@ -433,7 +426,7 @@ while ongoing:
                 # Dog battle
                 if game.opponent.name == "Meme Dog":
                     dog_battle_display(game, victory_overlay, continue_button, return_to_title_button,
-                                       defeat_overlay, try_again_button, heal_heart, frostbeam_start, frostbeam_middle)
+                                       defeat_overlay, try_again_button)
 
                 # Snake battle
                 elif game.opponent.name == "Kanye Snake":

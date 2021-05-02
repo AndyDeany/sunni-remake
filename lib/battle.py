@@ -10,6 +10,7 @@ class Battle:
 
     def __init__(self, game):
         self.game = game
+        self.active_character = None
 
     @property
     def player(self):

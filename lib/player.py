@@ -15,7 +15,7 @@ class Player(Character):
         cls.MOVE_KICK = Kick()
         cls.MOVE_HEADBUTT = Headbutt()
         cls.MOVE_FROSTBEAM = Frostbeam()
-        cls.MOVE_HEAL = Heal()
+        cls.MOVE_HEAL = Heal(160, 170, 350)
 
     def __init__(self, game, name, character, *, level=1):
         super().__init__(game, name, level=level, display_stat_x=170, display_stat_y_start=360)
@@ -24,11 +24,9 @@ class Player(Character):
 
         # Heal move variables
         self.heal_heart_y = 170
-        # Kick move variables
-        self.kick_x = 150
         self.tilt_direction = "left"
-        # Headbutt move variables
-        self.headbutt_x = 150
+        self.x = 150
+        self.y = 380
 
         self.stage = 0
         self.num_idle_frames = 6
@@ -42,7 +40,10 @@ class Player(Character):
         self.character_tilt_right = Image(f"images/sunni_{character}_tilt_right.png")
         self.character_dead = Image(f"images/sunni_{character}_dead.png")
         self.character_headbutt_stance = Image(f"images/sunni_{character}_headbutt_stance.png")
-        self.character_frostbeam_stance = Image(f"images/sunni_{character}_frostbeam_stance.png")
+        self.character_frostbeam_stance = Image(f"images/sunni_{character}_frostbeam_stance.png", (self.x, self.y))
+
+        if self.game.battle is not None:
+            self.game.battle.active_character = self
 
     def level_up(self, levels=1):
         old_level = self.level
@@ -74,16 +75,8 @@ class Player(Character):
         if self.current_hp == 0:
             self.game.current = self.DEAD
             return
+        self.game.battle.active_character = self
         self.game.current = self.CHOOSE_ABILITY
 
-    # Defining a function to play a sound when heal heart is used
-    def heal_move_sound(self):
-        self.game.music.play_sound(self.heal_sound)
-
-    # Defining a function to play a sound when the character attack (with kick or headbutt)
-    def attack_sound(self):
-        self.game.music.play_sound(self.basic_attack_sound)
-
-    # Defining a function to play a sound when frostbeam is user
-    def frostbeam_move_sound(self):
-        self.game.music.play_sound(self.frostbeam_sound)
+    def idle_display(self):
+        self.idle_movement(self.x, self.y)

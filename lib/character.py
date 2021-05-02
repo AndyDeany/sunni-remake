@@ -141,6 +141,9 @@ class Character:
         self.stat_change_text = Text(f"+{amount}", Font.DEFAULT, Color.HEAL_GREEN)
         self.trigger_stat_change_text()
 
+    def idle_display(self):
+        raise NotImplementedError(f"{type(self)}.idle_display() is not implemented.")
+
 
 class NotEnoughManaError(Exception):
     """Exception to be raised when the player attempts to use a move they don't have enough mana for."""

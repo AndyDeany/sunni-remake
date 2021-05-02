@@ -54,7 +54,7 @@ class Game:
     def display_save_name(self, save_number, coords):
         with open(self.get_save_path(save_number), "r") as save_file:
             save_name = save_file.readline().strip()
-            save_name_text = Font.DEFAULT.render(save_name[:-1], True, Color.BLACK)
+            save_name_text = Font.DEFAULT.render(save_name, True, Color.BLACK)
             self.screen.blit(save_name_text, coords)
             return save_name
 
@@ -66,8 +66,7 @@ class Game:
         self.load_battle(save_lines[2])
         character = save_lines[3]
 
-        pygame.mixer.music.stop()
-        self.music_playing = False
+        self.music.stop()
         self.player = Player(self, character_name, character, level=character_level)
         self.current = "choose ability"
 
@@ -91,6 +90,7 @@ class Game:
 
         self.battle = Battle(self)
         self.opponent = self.battle.opponent
+        self.battle.active_character = self.player
 
     def display_stat_change(self, display_x):
         self.screen.blit(self.stat_change_text, (display_x, self.player.display_stat_y))

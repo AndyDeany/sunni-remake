@@ -3,8 +3,8 @@ import random
 from lib.sunni_core_functions import *
 
 
-def dog_battle_display(game, victory_overlay, continue_button, return_to_title_button, defeat_overlay,
-                       try_again_button, heal_heart, frostbeam_start, frostbeam_middle):
+def dog_battle_display(game, victory_overlay, continue_button, return_to_title_button,
+                       defeat_overlay, try_again_button):
     # Default battle screen, where the player chooses which move to use
     if game.current == game.player.CHOOSE_ABILITY:
         game.player.idle_movement(150, 380)
@@ -33,11 +33,11 @@ def dog_battle_display(game, victory_overlay, continue_button, return_to_title_b
         game.player.MOVE_HEADBUTT.icon.display(1010, 390)
         game.player.MOVE_FROSTBEAM.icon.display(1060, 390)
 
-        if game.mouse.is_in(960,390,1000,430):
+        if game.mouse.is_in(960, 390, 1000, 430):
             game.player.MOVE_KICK.info.display(930, 130)
-        elif game.mouse.is_in(1010,390,1050,430):
+        elif game.mouse.is_in(1010, 390, 1050, 430):
             game.player.MOVE_HEADBUTT.info.display(930, 130)
-        elif game.mouse.is_in(1060,390,1100,430):
+        elif game.mouse.is_in(1060, 390, 1100, 430):
             game.player.MOVE_FROSTBEAM.info.display(930, 130)
 
         if game.mouse.left and not game.display_options:
@@ -106,108 +106,14 @@ def dog_battle_display(game, victory_overlay, continue_button, return_to_title_b
                 game.current = "title"
 
     # Character moves
-    # Character heal move animation
     elif game.current == game.player.MOVE_HEAL:
-        game.player.idle_movement(150, 380)
-        game.opponent.dog_normal.display(930, 440)
-
-        if game.player.heal_heart_y < 350:
-            if game.player.heal_heart_y == 170:
-                game.player.MOVE_HEAL.play_sound()
-            heal_heart.display(160, game.player.heal_heart_y)
-            game.player.heal_heart_y += 5
-        else:
-            game.player.heal(random.randint(5, 15))
-            game.player.heal_heart_y = 170
-            game.opponent.next_move()
-
-    # Character kick move animation
+        game.battle.active_character.MOVE_HEAL.run()
     elif game.current == game.player.MOVE_KICK:
-        game.opponent.dog_normal.display(930, 440)
-
-        if game.player.is_advancing:
-            if game.player.kick_x == 150:
-                game.player.character_normal.display(150, 380)
-                game.player.kick_x += 24
-            elif game.player.kick_x < 870:
-                if game.player.tilt_direction == "left":
-                    image = game.player.character_tilt_left
-                    game.player.tilt_direction = "right"
-                elif game.player.tilt_direction == "right":
-                    image = game.player.character_tilt_right
-                    game.player.tilt_direction = "left"
-                image.display(game.player.kick_x, 380)
-                game.player.kick_x += 24
-                if game.player.kick_x == 750:
-                    game.player.MOVE_KICK.play_sound()
-
-            elif game.player.kick_x == 870:
-                game.player.character_tilt_left.display(870, 380)
-                game.opponent.damage(random.randint(8, 12))
-                game.player.kick_x -= 36
-                game.player.is_advancing = False
-
-        elif not game.player.is_advancing:
-            if game.player.kick_x > 150:
-                game.player.idle_movement(game.player.kick_x, 380)
-                game.player.kick_x -= 36
-            else:
-                # Resetting variables for next time
-                game.player.is_advancing = True
-                game.player.kick_x = 150
-                game.player.tilt_direction = "left"
-                game.opponent.next_move()
-
-    # Character headbutt move animation
+        game.battle.active_character.MOVE_KICK.run()
     elif game.current == game.player.MOVE_HEADBUTT:
-        game.opponent.dog_normal.display(930, 440)
-
-        if game.player.is_advancing:
-            if game.player.headbutt_x == 150:
-                game.player.idle_movement(150,380)
-                game.player.headbutt_x += 24
-            elif game.player.headbutt_x < 870:
-                game.player.character_headbutt_stance.display(game.player.headbutt_x, 380)
-                game.player.headbutt_x += 24
-                if game.player.headbutt_x == 750:
-                    game.player.MOVE_HEADBUTT.play_sound()
-
-            elif game.player.headbutt_x == 870:
-                game.player.character_headbutt_stance.display(870, 380)
-                game.opponent.damage(random.randint(10, 20))
-                game.player.headbutt_x -= 36
-                game.player.is_advancing = False
-
-        elif not game.player.is_advancing:
-            if game.player.headbutt_x > 150:
-                game.player.idle_movement(game.player.headbutt_x,380)
-                game.player.headbutt_x -= 36
-            else:
-                # Resetting variables for next time
-                game.player.is_advancing = True
-                game.player.headbutt_x = 150
-                game.opponent.next_move()
-
-    # Character frostbeam move animation
+        game.battle.active_character.MOVE_HEADBUTT.run()
     elif game.current == game.player.MOVE_FROSTBEAM:
-        game.opponent.dog_normal.display(930, 440)
-        game.player.character_frostbeam_stance.display(150, 380)
-
-        if game.duration_time < 2*game.fps:
-            if game.duration_time == 0:
-                game.player.MOVE_FROSTBEAM.play_sound()
-            elif game.duration_time == game.fps:
-                game.opponent.damage(random.randint(15, 30))
-
-            frostbeam_start.display(215, 381)
-            for x in range(14):
-                frostbeam_middle.display(265+50*x, 383+2*x)
-            game.duration_time += 1
-
-        else:
-            # Resetting variables for next time
-            game.duration_time = 0
-            game.opponent.next_move()
+        game.battle.active_character.MOVE_FROSTBEAM.run()
 
     # Dog moves
     # Dog bark move animation
@@ -232,19 +138,7 @@ def dog_battle_display(game, victory_overlay, continue_button, return_to_title_b
 
     # Dog heal move animation
     elif game.current == game.opponent.MOVE_HEAL:
-        game.player.idle_movement(150,380)
-        game.opponent.dog_normal.display(930, 440)
-
-        if game.opponent.heal_heart_y < 410:
-            if game.opponent.heal_heart_y == 230:
-                game.player.MOVE_HEAL.play_sound()
-            heal_heart.display(1005, game.opponent.heal_heart_y)
-            game.opponent.heal_heart_y += 5
-
-        else:
-            game.opponent.heal(random.randint(5, 15))
-            game.opponent.heal_heart_y = 230
-            game.current = game.player.CHOOSE_ABILITY
+        game.battle.active_character.MOVE_HEAL.run()
 
     # Dog bite move animation
     elif game.current == game.opponent.MOVE_BITE:

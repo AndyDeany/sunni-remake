@@ -3,7 +3,7 @@ import random
 from lib.character import Character
 from lib.image import Image
 from lib.music import Audio
-from lib.move import Bark, Bite, Spin, Heal
+from lib.move import Bark, Bite, Spin, OpponentHeal
 
 
 class MemeDog(Character):
@@ -17,7 +17,7 @@ class MemeDog(Character):
         cls.MOVE_BARK = Bark()
         cls.MOVE_BITE = Bite()
         cls.MOVE_SPIN = Spin()
-        cls.MOVE_HEAL = Heal()
+        cls.MOVE_HEAL = OpponentHeal(1005, 230, 410)
 
     def __init__(self, game, max_hp, max_mana, *, level=1):
         super().__init__(game, "Meme Dog", max_hp, max_mana, level=level, display_stat_x=1015, display_stat_y_start=420)
@@ -29,7 +29,7 @@ class MemeDog(Character):
         self.display_stat_y_start = 420
         self.display_stat_y = self.display_stat_y_start
 
-        self.dog_normal = Image("images/sunni_dog_normal.png")
+        self.dog_normal = Image("images/sunni_dog_normal.png", (930, 440))
         self.dog_dead = Image("images/sunni_dog_dead.png")
         self.dog_backwards = Image("images/sunni_dog_backwards.png")
         self.dog_bark_stance = Image("images/sunni_dog_bark_stance.png")
@@ -43,6 +43,7 @@ class MemeDog(Character):
             return
         next_move = self.choose_move()
         self.change_mana(next_move)
+        self.game.battle.active_character = self
         self.game.current = next_move
 
     def choose_move(self):
@@ -73,6 +74,5 @@ class MemeDog(Character):
 
         return random.choice([*attack_options(), self.MOVE_HEAL])
 
-    def attack_sound(self):
-        """Plays a sound for when the dog attacks."""
-        self.game.music.play_sound(random.choice(self.basic_attack_sounds))
+    def idle_display(self):
+        self.dog_normal.display()
