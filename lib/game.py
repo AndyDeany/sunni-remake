@@ -49,7 +49,7 @@ class Game:
 
     def display_save_name(self, save_number, coords):
         with open(self.get_save_path(save_number), "r") as save_file:
-            save_name = save_file.readline()
+            save_name = save_file.readline().strip()
             save_name_text = Font.DEFAULT.render(save_name[:-1], True, Color.BLACK)
             self.screen.blit(save_name_text, coords)
             return save_name

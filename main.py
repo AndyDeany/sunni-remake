@@ -21,7 +21,6 @@ pygame.init()
 # Setting essential game variables
 game = Game()
 
-character_name_assigned = False
 opacity = 10    # Variable showing opacity of fading overlay for fading in/out
 fade_direction = "out"
 load_file = False
@@ -310,89 +309,67 @@ while ongoing:
         elif game.current == "start new game":
             load_game_screen.display(0, 0)
 
-            save1_name = game.display_save_name(1, (450, 230))
-            save2_name = game.display_save_name(2, (450, 349))
-            save3_name = game.display_save_name(3, (450, 468))
-            save4_name = game.display_save_name(4, (450, 587))
+            save_names = [game.display_save_name(1, (450, 230)), game.display_save_name(2, (450, 349)),
+                          game.display_save_name(3, (450, 468)), game.display_save_name(4, (450, 587))]
 
             if accepting_text:
                 enter_character_name.display(0, 0)
-                game.screen.blit(Font.SUNNI.render(input_text, True, Color.BLACK), (370,338))
                 if game.mouse.is_in(553,404,727,442) and not game.display_options:
                     continue_button_flared.display(0, 0)
-                    game.screen.blit(Font.SUNNI.render(input_text, True, Color.BLACK), (370,338))
                     if game.mouse.left:
                         accepting_text = False
-            elif not character_name_assigned:
-                character_name = input_text
-                input_text = ""
-                character_name_assigned = True
-            elif game.display_sure:
-                game.screen.blit(Font.DEFAULT.render("Character name: " + character_name, True, Color.MILD_BLUE), (10,10))
-                are_you_sure.display(0, 0)
-                if game.mouse.is_in(555,398,630,437) and not game.display_options:
-                    sure_yes_flared.display(0, 0)
-                    if game.mouse.left:
+                        character_name = input_text
+                        input_text = ""
+                Text(input_text, Font.SUNNI, Color.BLACK, (370, 338)).display()
+            else:
+                Text(f"Character name: {character_name}", Font.DEFAULT, Color.MILD_BLUE, (10, 10)).display()
+                save_selected = False
+                save_confirmed = False
+                if game.display_sure:
+                    are_you_sure.display(0, 0)
+                    if game.mouse.is_in(555, 398, 630, 437) and not game.display_options:
+                        sure_yes_flared.display(0, 0)
+                        if game.mouse.left:
+                            save_selected = True
+                            save_confirmed = True
+                            game.display_sure = False
+                    elif game.mouse.is_in(648,398,723,437) and not game.display_options:
+                        sure_no_flared.display(0, 0)
+                        if game.mouse.left:
+                            game.display_sure = False
+                elif not game.display_options:
+                    if game.mouse.is_in(355, 225, 925, 338):
+                        load1_flared.display(0, 0)
+                        game.display_save_name(1, (450, 230))
+                        if game.mouse.left:
+                            save_selected = True
+                            game.save_number = "1"
+                    elif game.mouse.is_in(355, 344, 925, 457):
+                        load2_flared.display(0, 0)
+                        game.display_save_name(2, (450, 349))
+                        if game.mouse.left:
+                            save_selected = True
+                            game.save_number = "2"
+                    elif game.mouse.is_in(355, 463, 925, 576):
+                        load3_flared.display(0, 0)
+                        game.display_save_name(3, (450, 468))
+                        if game.mouse.left:
+                            save_selected = True
+                            game.save_number = "3"
+                    elif game.mouse.is_in(355, 582, 925, 695):
+                        load4_flared.display(0, 0)
+                        game.display_save_name(4, (450, 587))
+                        if game.mouse.left:
+                            save_selected = True
+                            game.save_number = "4"
+                if save_selected:
+                    if save_names[int(game.save_number)-1] == "No save data" or save_confirmed:
                         pygame.mixer.music.stop()
                         game.music_playing = False
                         game.current = "choose character"
                         game.load_battle("Meme Dog")
-                        game.display_sure = False
-                        character_name_assigned = False
-                elif game.mouse.is_in(648,398,723,437) and not game.display_options:
-                    sure_no_flared.display(0, 0)
-                    if game.mouse.left:
-                        game.display_sure = False
-            else:
-                game.screen.blit(Font.DEFAULT.render("Character name: " + character_name, True, Color.MILD_BLUE), (10,10))
-                if game.mouse.is_in(355,225,925,338) and not game.display_options:
-                    load1_flared.display(0, 0)
-                    game.display_save_name(1, (450, 230))
-                    if game.mouse.left:
-                        game.save_number = "1"
-                        if save1_name != "No save data\n":
-                            game.display_sure = True
-                        else:
-                            pygame.mixer.music.stop()
-                            game.music_playing = False
-                            game.current = "choose character"
-                            game.load_battle("Meme Dog")
-                elif game.mouse.is_in(355,344,925,457) and not game.display_options:
-                    load2_flared.display(0, 0)
-                    game.display_save_name(2, (450, 349))
-                    if game.mouse.left:
-                        game.save_number = "2"
-                        if save2_name != "No save data\n":
-                            game.display_sure = True
-                        else:
-                            pygame.mixer.music.stop()
-                            game.music_playing = False
-                            game.current = "choose character"
-                            game.load_battle("Meme Dog")
-                elif game.mouse.is_in(355,463,925,576) and not game.display_options:
-                    load3_flared.display(0, 0)
-                    game.display_save_name(3, (450, 468))
-                    if game.mouse.left:
-                        game.save_number = "3"
-                        if save3_name != "No save data\n":
-                            game.display_sure = True
-                        else:
-                            pygame.mixer.music.stop()
-                            game.music_playing = False
-                            game.current = "choose character"
-                            game.load_battle("Meme Dog")
-                elif game.mouse.is_in(355,582,925,695) and not game.display_options:
-                    load4_flared.display(0, 0)
-                    game.display_save_name(4, (450, 587))
-                    if game.mouse.left:
-                        game.save_number = "4"
-                        if save4_name != "No save data\n":
-                            game.display_sure = True
-                        else:
-                            pygame.mixer.music.stop()
-                            game.music_playing = False
-                            game.current = "choose character"
-                            game.load_battle("Meme Dog")
+                    else:
+                        game.display_sure = True
 
             return_to_title_button.display(1082, 665)
             game.OPTIONS_BUTTON.display(10, 665)
@@ -400,7 +377,6 @@ while ongoing:
                 game.display_options = True
                 options_just_selected = True
             elif game.mouse.is_in(1082,665,1270,715) and game.mouse.left and not game.display_options:
-                character_name_assigned = False
                 game.current = "title"
                 if not game.music_playing:
                     pygame.mixer.music.load(game.file_directory + "audio\sunni_title_screen_music.ogg")
@@ -419,28 +395,28 @@ while ongoing:
             if game.mouse.is_in(355,225,925,338) and not game.display_options:
                 load1_flared.display(0, 0)
                 game.display_save_name(1, (450, 230))
-                if game.mouse.left and save1_name != "No save data\n":
+                if game.mouse.left and save1_name != "No save data":
                     game.save_number = "1"
                     save = open(game.file_directory + "saves/save1.txt", "r")
                     load_file = True
             elif game.mouse.is_in(355,344,925,457) and not game.display_options:
                 load2_flared.display(0, 0)
                 game.display_save_name(2, (450, 349))
-                if game.mouse.left and save2_name != "No save data\n":
+                if game.mouse.left and save2_name != "No save data":
                     game.save_number = "2"
                     save = open(game.file_directory + "saves/save2.txt", "r")
                     load_file = True
             elif game.mouse.is_in(355,463,925,576) and not game.display_options:
                 load3_flared.display(0, 0)
                 game.display_save_name(3, (450, 468))
-                if game.mouse.left and save3_name != "No save data\n":
+                if game.mouse.left and save3_name != "No save data":
                     game.save_number = "3"
                     save = open(game.file_directory + "saves/save3.txt", "r")
                     load_file = True
             elif game.mouse.is_in(355,582,925,695) and not game.display_options:
                 load4_flared.display(0, 0)
                 game.display_save_name(4, (450, 587))
-                if game.mouse.left and save4_name != "No save data\n":
+                if game.mouse.left and save4_name != "No save data":
                     game.save_number = "4"
                     save = open(game.file_directory + "saves/save4.txt", "r")
                     load_file = True
@@ -465,7 +441,6 @@ while ongoing:
                 game.display_options = True
                 options_just_selected = True
             elif game.mouse.is_in(1082,665,1270,715) and game.mouse.left and not game.display_options:
-                character_name_assigned = False
                 game.current = "title"
                 if not game.music_playing:
                     pygame.mixer.music.load(game.file_directory + "audio\sunni_title_screen_music.ogg")
