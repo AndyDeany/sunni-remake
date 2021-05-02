@@ -392,48 +392,30 @@ while ongoing:
             save3_name = game.display_save_name(3, (450, 468))
             save4_name = game.display_save_name(4, (450, 587))
 
-            if game.mouse.is_in(355,225,925,338) and not game.display_options:
+            if game.mouse.is_in(355, 225, 925, 338) and not game.display_options:
                 load1_flared.display(0, 0)
                 game.display_save_name(1, (450, 230))
                 if game.mouse.left and save1_name != "No save data":
                     game.save_number = "1"
-                    save = open(game.file_directory + "saves/save1.txt", "r")
-                    load_file = True
-            elif game.mouse.is_in(355,344,925,457) and not game.display_options:
+                    game.load_save()
+            elif game.mouse.is_in(355, 344, 925, 457) and not game.display_options:
                 load2_flared.display(0, 0)
                 game.display_save_name(2, (450, 349))
                 if game.mouse.left and save2_name != "No save data":
                     game.save_number = "2"
-                    save = open(game.file_directory + "saves/save2.txt", "r")
-                    load_file = True
-            elif game.mouse.is_in(355,463,925,576) and not game.display_options:
+                    game.load_save()
+            elif game.mouse.is_in(355, 463, 925, 576) and not game.display_options:
                 load3_flared.display(0, 0)
                 game.display_save_name(3, (450, 468))
                 if game.mouse.left and save3_name != "No save data":
                     game.save_number = "3"
-                    save = open(game.file_directory + "saves/save3.txt", "r")
-                    load_file = True
-            elif game.mouse.is_in(355,582,925,695) and not game.display_options:
+                    game.load_save()
+            elif game.mouse.is_in(355, 582, 925, 695) and not game.display_options:
                 load4_flared.display(0, 0)
                 game.display_save_name(4, (450, 587))
                 if game.mouse.left and save4_name != "No save data":
                     game.save_number = "4"
-                    save = open(game.file_directory + "saves/save4.txt", "r")
-                    load_file = True
-
-            if load_file:
-                character_name = save.readline()[:-1]
-                character_level = int(save.readline()[:-1])
-                game.load_battle(save.readline()[:-1])
-                character = save.readline()[:-1]
-                save.close()
-                load_file = False
-
-                pygame.mixer.music.stop()
-                game.music_playing = False
-
-                game.player = Player(game, character_name, character, level=character_level)
-                game.current = "choose ability"
+                    game.load_save()
 
             return_to_title_button.display(1082, 665)
             game.OPTIONS_BUTTON.display(10, 665)

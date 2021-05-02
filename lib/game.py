@@ -1,12 +1,13 @@
 import os
 
+import pygame
 
 from lib.character import Character
 from lib.color import Color
 from lib.font import Font
 from lib.mouse import Mouse
 from lib.image import Image
-from lib.meme_dog import MemeDog
+from lib.player import Player
 from lib.meme_dog_battle import MemeDogBattle
 
 
@@ -23,6 +24,7 @@ class Game:
         self.mouse = Mouse()
         self.music_playing = False
         self.fps = 30  # Setting fps
+        self.save_number = None
         self.fullscreen_enabled = False
         self.display_options = False
         self.options_just_selected = False
@@ -36,12 +38,13 @@ class Game:
         self.damage_decided = False     # Variable to show whether or not the damage that will be done has been calculated already, so it is not done multiple times in loops
         self.volume_multiplier = 1
 
-    def get_save_path(self, save_number):
+    def get_save_path(self, save_number=None):
         """Return the path to the save file of the given save number."""
+        save_number = save_number or self.save_number
         return f"{self.file_directory}saves/save{save_number}.txt"
 
     def save(self):
-        with open(self.get_save_path(self.save_number), "w") as save_file:
+        with open(self.get_save_path(), "w") as save_file:
             save_file.write(self.player.name + "\n")
             save_file.write(str(self.player.level) + "\n")
             save_file.write(self.opponent.name + "\n")
@@ -53,6 +56,19 @@ class Game:
             save_name_text = Font.DEFAULT.render(save_name[:-1], True, Color.BLACK)
             self.screen.blit(save_name_text, coords)
             return save_name
+
+    def load_save(self):
+        with open(self.get_save_path(), "r") as save_file:
+            save_lines = save_file.read().splitlines()
+        character_name = save_lines[0]
+        character_level = int(save_lines[1])
+        self.load_battle(save_lines[2])
+        character = save_lines[3]
+
+        pygame.mixer.music.stop()
+        self.music_playing = False
+        self.player = Player(self, character_name, character, level=character_level)
+        self.current = "choose ability"
 
     def load_battle(self, name):
         if name == "Meme Dog":
