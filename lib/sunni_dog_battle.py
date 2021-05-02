@@ -83,11 +83,11 @@ def dog_battle_display(game, kick_move_icon_faded,
             if game.mouse.is_in(1000,600,1120,650):
                 game.current = game.player.CHOOSE_ABILITY
                 game.player.level_up()
-                game.load_opponent("Kanye Snake")
+                game.load_battle("Kanye Snake")
                 game.save()
             elif game.mouse.is_in(80,600,268,650):
                 game.player.level_up()
-                game.load_opponent("Kanye Snake")
+                game.load_battle("Kanye Snake")
                 game.save()
                 game.current = "title"
 

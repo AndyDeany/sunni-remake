@@ -22,6 +22,8 @@ class MemeDog(Character):
         MOVE_SPIN: 25,
     }
 
+    INFO_X = 1070
+
     def __init__(self, game, max_hp, max_mana, *, level=1):
         super().__init__(game, "Meme Dog", max_hp, max_mana, level=level, display_stat_x=1015, display_stat_y_start=420)
         self.bite_x = 930

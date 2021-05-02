@@ -1,12 +1,8 @@
-from lib.character import Character
 import pygame
 
 
 from lib.image import Image
 
-# Defining a function to check if the mouse is in a certain area
-def mousein(mouse_x, mouse_y, start_x, start_y, end_x, end_y):
-    return mouse_x > start_x and mouse_x < end_x and mouse_y > start_y and mouse_y < end_y
 
 # Defining a function to load files from the directory
 def load(file_type, name):

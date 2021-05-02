@@ -1,4 +1,3 @@
-import os
 import time
 
 
@@ -6,16 +5,13 @@ import pygame
 
 
 from lib.sunni_keydown import Keys
-from lib.sunni_core_functions import *
 from lib.game import Game
 from lib.image import Surface, Image, Text
-from lib.character import Character
 from lib.player import Player
+from lib.character import Character
+from lib.battle import Battle
 from lib.color import Color
 from lib.font import Font
-from lib.sunni_snake_functions import *
-from lib.sunni_ghost_dog_functions import *
-from lib.sunni_default_battle_display import default_battle_display
 from lib.sunni_dog_battle import dog_battle_display
 
 
@@ -45,6 +41,9 @@ size = (1280, 720)
 game.screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Sunni (Alpha 3.0)")
 Surface.default_screen = game.screen
+Game.initialise()
+Character.initialise()
+Battle.initialise()
 
 
 # Images ---------------------------------------------------------------------------------------------------------------
@@ -75,7 +74,6 @@ load3_flared = Image("images/sunni_load3_flared.png")
 load4_flared = Image("images/sunni_load4_flared.png")
 
 # Battle screen
-battle_background_hallway =  Image("images/sunni_battle_background_hallway.png")
 
 # Victory and defeat overlays
 victory_overlay = Image("images/sunni_victory_overlay.png")
@@ -84,19 +82,13 @@ continue_button = Image("images/sunni_continue_button.png")
 try_again_button = Image("images/sunni_try_again_button.png")
 
 # Options menu
-options_button = Image("images/sunni_options_button.png")
 return_to_game_button = Image("images/sunni_return_to_game_button.png")
 return_to_title_button = Image("images/sunni_return_to_title_button.png")
-options_button = Image("images/sunni_options_button.png")
 volume_plus_button = Image("images/sunni_volume_plus_button.png")
 volume_minus_button = Image("images/sunni_volume_minus_button.png")
 volume_mute_button = Image("images/sunni_volume_mute_button.png")
 fullscreen_button = Image("images/sunni_fullscreen_button.png")
 windowed_button = Image("images/sunni_windowed_button.png")
-
-# Icons
-health_icon = Image("images/sunni_health_icon.png")
-mana_icon = Image("images/sunni_mana_icon.png")
 
 heal_move_icon_faded = Image("images/sunni_heal_move_icon_faded.png")
 heal_move_icon_solid = Image("images/sunni_heal_move_icon_solid.png")
@@ -341,7 +333,7 @@ while ongoing:
                 if game.mouse.is_in(555,398,630,437) and not game.display_options:
                     sure_yes_flared.display(0, 0)
                     if game.mouse.left:
-                        game.load_opponent("Meme Dog")
+                        game.load_battle("Meme Dog")
                         character_level = 1
                         pygame.mixer.music.stop()
                         game.music_playing = False
@@ -362,7 +354,7 @@ while ongoing:
                         if save1_name != "No save data\n":
                             display_sure = True
                         else:
-                            game.load_opponent("Meme Dog")
+                            game.load_battle("Meme Dog")
                             character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
@@ -375,7 +367,7 @@ while ongoing:
                         if save2_name != "No save data\n":
                             display_sure = True
                         else:
-                            game.load_opponent("Meme Dog")
+                            game.load_battle("Meme Dog")
                             character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
@@ -388,7 +380,7 @@ while ongoing:
                         if save3_name != "No save data\n":
                             display_sure = True
                         else:
-                            game.load_opponent("Meme Dog")
+                            game.load_battle("Meme Dog")
                             character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
@@ -401,14 +393,14 @@ while ongoing:
                         if save4_name != "No save data\n":
                             display_sure = True
                         else:
-                            game.load_opponent("Meme Dog")
+                            game.load_battle("Meme Dog")
                             character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
                             game.current = "choose character"
 
             return_to_title_button.display(1082, 665)
-            options_button.display(10, 665)
+            game.OPTIONS_BUTTON.display(10, 665)
             if (Keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
                 game.display_options = True
                 options_just_selected = True
@@ -461,7 +453,7 @@ while ongoing:
             if load_file:
                 character_name = save.readline()[:-1]
                 character_level = int(save.readline()[:-1])
-                game.load_opponent(save.readline()[:-1])
+                game.load_battle(save.readline()[:-1])
                 character = save.readline()[:-1]
                 save.close()
                 character_normal = Image(f"images\sunni_{character}_normal1.png")
@@ -482,7 +474,7 @@ while ongoing:
                 game.current = "choose ability"
 
             return_to_title_button.display(1082, 665)
-            options_button.display(10, 665)
+            game.OPTIONS_BUTTON.display(10, 665)
             if (Keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
                 game.display_options = True
                 options_just_selected = True
@@ -499,7 +491,8 @@ while ongoing:
         ## Battle screens - Start
         else:
             # Default things that are in every battle screen
-            default_battle_display(battle_background_hallway, health_icon, mana_icon, options_button, game)
+            if game.battle is not None:
+                game.battle.run()
 
             # Choose your character page
             if game.current == "choose character":

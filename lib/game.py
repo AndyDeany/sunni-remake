@@ -5,11 +5,17 @@ from lib.character import Character
 from lib.color import Color
 from lib.font import Font
 from lib.mouse import Mouse
-from lib.player import Player
+from lib.image import Image
 from lib.meme_dog import MemeDog
+from lib.meme_dog_battle import MemeDogBattle
 
 
 class Game:
+
+    @classmethod
+    def initialise(cls):
+        cls.OPTIONS_BUTTON = Image("images/sunni_options_button.png", (10, 665))
+
     def __init__(self):
         self.current = "title"
         self.file_directory = os.getcwd()[:-3]
@@ -21,6 +27,7 @@ class Game:
         self.display_options = False
         self.options_just_selected = False
         self.display_sure = False
+        self.battle = None
         self.player = None
         self.opponent = Character(self, None, 100, 100)
         self.display_mana_notification_time = 0     # Variable to allow the "Not enough mana" notification to appear when necessary
@@ -47,9 +54,9 @@ class Game:
             self.screen.blit(save_name_text, coords)
             return save_name
 
-    def load_opponent(self, name):
+    def load_battle(self, name):
         if name == "Meme Dog":
-            opponent = MemeDog(self, 100, 100)
+            Battle = MemeDogBattle
         elif name == "Kanye Snake":
             opponent = Character(self, name, 120, 120)
             opponent.snake_confuse_x = 930
@@ -65,7 +72,8 @@ class Game:
         else:
             raise ValueError(f"Unknown opponent: '{name}'")
 
-        self.opponent = opponent
+        self.battle = Battle(self)
+        self.opponent = self.battle.opponent
 
     def display_stat_change(self, display_x):
         self.screen.blit(self.stat_change_text, (display_x, self.player.display_stat_y))

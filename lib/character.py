@@ -1,9 +1,23 @@
+import math
+
+import pygame
+
 from lib.color import Color
+from lib.image import Image
 from lib.font import Font
 from lib.image import Text
 
 
 class Character:
+
+    INFO_X = None
+
+    @classmethod
+    def initialise(cls):
+        """Initialises class variables. Can only be called after a screen has been created."""
+        cls.HEALTH_ICON = Image("images/sunni_health_icon.png")
+        cls.MANA_ICON = Image("images/sunni_mana_icon.png")
+
     def __init__(self, game, name, max_hp, max_mana, *, level=1, display_stat_x=600, display_stat_y_start=600):
         self.game = game
         self.name = name
@@ -11,10 +25,12 @@ class Character:
 
         self.current_hp_display = None
         self.current_mana_display = None
-        self.max_hp = max_hp
-        self.current_hp = self.max_hp
-        self.max_mana = max_mana
-        self.current_mana = self.max_mana
+        self._max_hp = max_hp
+        self._current_hp = max_hp
+        self._max_mana = max_mana
+        self._current_mana = max_mana
+        self.render_mana()
+        self.render_hp()
         self.level = level
 
         self.stat_change_text = None
@@ -62,6 +78,23 @@ class Character:
     def max_mana(self, value):
         self._max_mana = value
         self.render_mana()
+
+    def display_info(self):
+        def draw_resource_bar(coords, resource_percentage, empty_color, full_color):
+            pygame.draw.rect(self.game.screen, empty_color, [*coords, 200, 30])
+            pygame.draw.rect(self.game.screen, full_color, [*coords, 200*resource_percentage, 30])
+            pygame.draw.rect(self.game.screen, Color.BLACK, [*coords, 200, 30], 1)
+
+        draw_resource_bar((self.INFO_X, 30), self.current_hp/self.max_hp, Color.EMPTY_RED, Color.HEALTH_RED)
+        draw_resource_bar((self.INFO_X, 60), self.current_mana/self.max_mana, Color.EMPTY_BLUE, Color.MANA_BLUE)
+
+        self.name_display.display(self.INFO_X+5, 2)
+        self.current_hp_display.display(self.INFO_X+5, 32)
+        self.current_mana_display.display(self.INFO_X+5, 62)
+
+        icon_x = self.INFO_X + math.copysign(200, self.game.screen.get_width() - self.INFO_X)
+        self.HEALTH_ICON.display(icon_x, 20)
+        self.MANA_ICON.display(icon_x, 50)
 
     def render_hp(self):
         """Re-renders the HP display of the character. Used when an hp value (current or max) has been changed."""

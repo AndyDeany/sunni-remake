@@ -21,6 +21,8 @@ class Player(Character):
         MOVE_HEAL: 10,
     }
 
+    INFO_X = 10
+
     def __init__(self, game, name, character, max_hp, max_mana, *, level=1):
         super().__init__(game, name, max_hp, max_mana, level=level, display_stat_x=170, display_stat_y_start=360)
         self.character = character
