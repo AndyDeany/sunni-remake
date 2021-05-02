@@ -1,18 +1,6 @@
 import pygame
 
 
-from lib.image import Image
-
-
-# Defining a function to load files from the directory
-def load(file_type, name):
-    file_location = file_directory + file_type + " Files\\" + name + "."
-    if location == "Image":
-        return pygame.image.load(file_location + "png").convert_alpha()
-    elif file_type == "Sound":
-        return pygame.mixer.music.load(file_location + "ogg")
-
-
 # Defining a function to delete save files
 def deletesave(savefile):
     line_number = 0
