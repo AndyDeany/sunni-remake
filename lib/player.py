@@ -1,28 +1,21 @@
-import pygame
-
 from lib.image import Image
 from lib.music import Audio
+from lib.move import Kick, Headbutt, Frostbeam, Heal
 from lib.character import Character, NotEnoughManaError
 
 
 class Player(Character):
-
-    MOVE_KICK = "kick move"
-    MOVE_HEADBUTT = "headbutt move"
-    MOVE_FROSTBEAM = "frostbeam move"
-    MOVE_HEAL = "heal move"
-
     DEAD = "player dead"
     CHOOSE_ABILITY = "choose ability"
 
-    MANA_COSTS = {
-        MOVE_KICK: -10,
-        MOVE_HEADBUTT: 20,
-        MOVE_FROSTBEAM: 30,
-        MOVE_HEAL: 10,
-    }
-
     INFO_X = 10
+
+    @classmethod
+    def initialise(cls):
+        cls.MOVE_KICK = Kick()
+        cls.MOVE_HEADBUTT = Headbutt()
+        cls.MOVE_FROSTBEAM = Frostbeam()
+        cls.MOVE_HEAL = Heal()
 
     def __init__(self, game, name, character, *, level=1):
         super().__init__(game, name, level=level, display_stat_x=170, display_stat_y_start=360)
@@ -50,10 +43,6 @@ class Player(Character):
         self.character_dead = Image(f"images/sunni_{character}_dead.png")
         self.character_headbutt_stance = Image(f"images/sunni_{character}_headbutt_stance.png")
         self.character_frostbeam_stance = Image(f"images/sunni_{character}_frostbeam_stance.png")
-
-        self.heal_sound = Audio("sunni_heal_move.ogg", 0.1)
-        self.basic_attack_sound = Audio("sunni_character_attack1.ogg")
-        self.frostbeam_sound = Audio("sunni_frostbeam_move.ogg", 0.2)
 
     def level_up(self, levels=1):
         old_level = self.level

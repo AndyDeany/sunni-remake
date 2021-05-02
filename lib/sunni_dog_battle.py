@@ -3,27 +3,23 @@ import random
 from lib.sunni_core_functions import *
 
 
-def dog_battle_display(game, kick_move_icon_faded,
-                       headbutt_move_icon_faded, frostbeam_move_icon_faded, heal_move_icon_faded, kick_move_icon_solid,
-                       headbutt_move_icon_solid, frostbeam_move_icon_solid, heal_move_icon_solid, kick_move_info,
-                       headbutt_move_info, frostbeam_move_info, heal_move_info, victory_overlay,
-                       continue_button, return_to_title_button, defeat_overlay, try_again_button,
-                       heal_heart, frostbeam_start, frostbeam_middle):
+def dog_battle_display(game, victory_overlay, continue_button, return_to_title_button, defeat_overlay,
+                       try_again_button, heal_heart, frostbeam_start, frostbeam_middle):
     # Default battle screen, where the player chooses which move to use
     if game.current == game.player.CHOOSE_ABILITY:
-        game.player.idle_movement(150,380)
+        game.player.idle_movement(150, 380)
         game.opponent.dog_normal.display(930, 440)
 
-        if game.mouse.is_in(960,430,1100,540):
-            kick_move_icon_faded.display(960, 390)
-            headbutt_move_icon_faded.display(1010, 390)
-            frostbeam_move_icon_faded.display(1060, 390)
+        if game.mouse.is_in(960, 430, 1100, 540):
+            game.player.MOVE_KICK.icon_faded.display(960, 390)
+            game.player.MOVE_HEADBUTT.icon_faded.display(1010, 390)
+            game.player.MOVE_FROSTBEAM.icon_faded.display(1060, 390)
 
             if game.mouse.left and not game.display_options:
                 game.current = "aggressive moves"
 
-        elif game.mouse.is_in(135,380,235,520):
-            heal_move_icon_faded.display(165, 330)
+        elif game.mouse.is_in(135, 380, 235, 520):
+            game.player.MOVE_HEAL.icon_faded.display(165, 330)
 
             if game.mouse.left and not game.display_options:
                 game.current = "defensive moves"
@@ -33,16 +29,16 @@ def dog_battle_display(game, kick_move_icon_faded,
         game.player.idle_movement(150, 380)
         game.opponent.dog_normal.display(930, 440)
 
-        kick_move_icon_solid.display(960, 390)
-        headbutt_move_icon_solid.display(1010, 390)
-        frostbeam_move_icon_solid.display(1060, 390)
+        game.player.MOVE_KICK.icon.display(960, 390)
+        game.player.MOVE_HEADBUTT.icon.display(1010, 390)
+        game.player.MOVE_FROSTBEAM.icon.display(1060, 390)
 
         if game.mouse.is_in(960,390,1000,430):
-            kick_move_info.display(930, 130)
+            game.player.MOVE_KICK.info.display(930, 130)
         elif game.mouse.is_in(1010,390,1050,430):
-            headbutt_move_info.display(930, 130)
+            game.player.MOVE_HEADBUTT.info.display(930, 130)
         elif game.mouse.is_in(1060,390,1100,430):
-            frostbeam_move_info.display(930, 130)
+            game.player.MOVE_FROSTBEAM.info.display(930, 130)
 
         if game.mouse.left and not game.display_options:
             if game.mouse.is_in(960,390,1000,430):
@@ -59,10 +55,10 @@ def dog_battle_display(game, kick_move_icon_faded,
         game.player.idle_movement(150,380)
         game.opponent.dog_normal.display(930, 440)
 
-        heal_move_icon_solid.display(165, 330)
+        game.player.MOVE_HEAL.icon.display(165, 330)
 
         if game.mouse.is_in(165,330,205,370):
-            heal_move_info.display(220, 130)
+            game.player.MOVE_HEAL.info.display(220, 130)
 
         if game.mouse.left and not game.display_options:
             if game.mouse.is_in(165, 330, 205, 370):
@@ -117,7 +113,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
         if game.player.heal_heart_y < 350:
             if game.player.heal_heart_y == 170:
-                game.player.heal_move_sound()
+                game.player.MOVE_HEAL.play_sound()
             heal_heart.display(160, game.player.heal_heart_y)
             game.player.heal_heart_y += 5
         else:
@@ -143,7 +139,7 @@ def dog_battle_display(game, kick_move_icon_faded,
                 image.display(game.player.kick_x, 380)
                 game.player.kick_x += 24
                 if game.player.kick_x == 750:
-                    game.player.attack_sound()
+                    game.player.MOVE_KICK.play_sound()
 
             elif game.player.kick_x == 870:
                 game.player.character_tilt_left.display(870, 380)
@@ -174,7 +170,7 @@ def dog_battle_display(game, kick_move_icon_faded,
                 game.player.character_headbutt_stance.display(game.player.headbutt_x, 380)
                 game.player.headbutt_x += 24
                 if game.player.headbutt_x == 750:
-                    game.player.attack_sound()
+                    game.player.MOVE_HEADBUTT.play_sound()
 
             elif game.player.headbutt_x == 870:
                 game.player.character_headbutt_stance.display(870, 380)
@@ -199,7 +195,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
         if game.duration_time < 2*game.fps:
             if game.duration_time == 0:
-                game.player.frostbeam_move_sound()
+                game.player.MOVE_FROSTBEAM.play_sound()
             elif game.duration_time == game.fps:
                 game.opponent.damage(random.randint(15, 30))
 
@@ -220,9 +216,9 @@ def dog_battle_display(game, kick_move_icon_faded,
 
         if game.duration_time < 2*game.fps:
             if game.duration_time == 0:
-                game.opponent.attack_sound()
+                game.opponent.MOVE_BARK.play_sound()
             elif game.duration_time == 2*int(game.fps/3):
-                game.opponent.attack_sound()
+                game.opponent.MOVE_BARK.play_sound()
             elif game.duration_time == game.fps:
                 game.player.damage(random.randint(5, 20))
 
@@ -241,7 +237,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
         if game.opponent.heal_heart_y < 410:
             if game.opponent.heal_heart_y == 230:
-                game.player.heal_move_sound()
+                game.player.MOVE_HEAL.play_sound()
             heal_heart.display(1005, game.opponent.heal_heart_y)
             game.opponent.heal_heart_y += 5
 
@@ -262,7 +258,7 @@ def dog_battle_display(game, kick_move_icon_faded,
                 game.opponent.dog_normal.display(game.opponent.bite_x, 440)
                 game.opponent.bite_x -= 24
                 if game.opponent.bite_x == 330:
-                    game.opponent.attack_sound()
+                    game.opponent.MOVE_BITE.play_sound()
 
             elif game.opponent.bite_x == 90:
                 game.opponent.dog_backwards.display(90, 440)
@@ -295,7 +291,7 @@ def dog_battle_display(game, kick_move_icon_faded,
                 game.opponent.dog_normal.display(180, 440)
                 game.opponent.spin_time = 0
                 game.opponent.is_advancing = False
-                game.opponent.attack_sound()
+                game.opponent.MOVE_SPIN.play_sound()
 
         elif game.opponent.is_retreating:
             if game.opponent.spin_x < 930:

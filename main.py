@@ -9,7 +9,9 @@ from lib.game import Game
 from lib.image import Surface, Image, Text
 from lib.music import Audio
 from lib.player import Player
+from lib.move import Move
 from lib.character import Character
+from lib.meme_dog import MemeDog
 from lib.battle import Battle
 from lib.color import Color
 from lib.font import Font
@@ -43,7 +45,10 @@ pygame.display.set_caption("Sunni (Alpha 3.0)")
 Surface.initialise(game)
 Game.initialise()
 Character.initialise()
+Player.initialise()
+MemeDog.initialise()
 Battle.initialise()
+Move.initialise(game)
 
 
 # Images ---------------------------------------------------------------------------------------------------------------
@@ -89,24 +94,6 @@ volume_minus_button = Image("images/sunni_volume_minus_button.png")
 volume_mute_button = Image("images/sunni_volume_mute_button.png")
 fullscreen_button = Image("images/sunni_fullscreen_button.png")
 windowed_button = Image("images/sunni_windowed_button.png")
-
-heal_move_icon_faded = Image("images/sunni_heal_move_icon_faded.png")
-heal_move_icon_solid = Image("images/sunni_heal_move_icon_solid.png")
-
-kick_move_icon_faded = Image("images/sunni_kick_move_icon_faded.png")
-kick_move_icon_solid = Image("images/sunni_kick_move_icon_solid.png")
-
-headbutt_move_icon_faded = Image("images/sunni_headbutt_move_icon_faded.png")
-headbutt_move_icon_solid = Image("images/sunni_headbutt_move_icon_solid.png")
-
-frostbeam_move_icon_faded = Image("images/sunni_frostbeam_move_icon_faded.png")
-frostbeam_move_icon_solid = Image("images/sunni_frostbeam_move_icon_solid.png")
-
-# Move information
-kick_move_info = Image("images/sunni_kick_move_info.png")
-heal_move_info = Image("images/sunni_heal_move_info.png")
-headbutt_move_info = Image("images/sunni_headbutt_move_info.png")
-frostbeam_move_info = Image("images/sunni_frostbeam_move_info.png")
 
 # Character
 character_choice1 = Image("images/sunni_character1_normal1.png")
@@ -445,11 +432,7 @@ while ongoing:
                 game.battle.run()
                 # Dog battle
                 if game.opponent.name == "Meme Dog":
-                    dog_battle_display(game, kick_move_icon_faded,
-                                       headbutt_move_icon_faded, frostbeam_move_icon_faded, heal_move_icon_faded,
-                                       kick_move_icon_solid, headbutt_move_icon_solid, frostbeam_move_icon_solid,
-                                       heal_move_icon_solid, kick_move_info, headbutt_move_info, frostbeam_move_info,
-                                       heal_move_info, victory_overlay, continue_button, return_to_title_button,
+                    dog_battle_display(game, victory_overlay, continue_button, return_to_title_button,
                                        defeat_overlay, try_again_button, heal_heart, frostbeam_start, frostbeam_middle)
 
                 # Snake battle

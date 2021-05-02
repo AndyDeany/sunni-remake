@@ -6,3 +6,7 @@ class MemeDogBattle(Battle):
     def __init__(self, game):
         super().__init__(game)
         self.opponent = MemeDog(self.game, 100, 100)
+
+    def run(self):
+        super().run()
+

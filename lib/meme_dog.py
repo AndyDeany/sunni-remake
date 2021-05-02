@@ -1,29 +1,23 @@
 import random
 
-import pygame
-
 from lib.character import Character
 from lib.image import Image
 from lib.music import Audio
+from lib.move import Bark, Bite, Spin, Heal
 
 
 class MemeDog(Character):
 
-    MOVE_BARK = "dog bark move"
-    MOVE_BITE = "dog bite move"
-    MOVE_SPIN = "dog spin move"
-    MOVE_HEAL = "dog heal move"
-
     DEAD = "dog dead"
 
-    MANA_COSTS = {
-        MOVE_BARK: -10,
-        MOVE_HEAL: 10,
-        MOVE_BITE: 15,
-        MOVE_SPIN: 25,
-    }
-
     INFO_X = 1070
+
+    @classmethod
+    def initialise(cls):
+        cls.MOVE_BARK = Bark()
+        cls.MOVE_BITE = Bite()
+        cls.MOVE_SPIN = Spin()
+        cls.MOVE_HEAL = Heal()
 
     def __init__(self, game, max_hp, max_mana, *, level=1):
         super().__init__(game, "Meme Dog", max_hp, max_mana, level=level, display_stat_x=1015, display_stat_y_start=420)

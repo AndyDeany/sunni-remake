@@ -122,10 +122,9 @@ class Character:
 
     def change_mana(self, move):
         """Change the character's mana based on the given move to be used."""
-        mana_cost = self.MANA_COSTS[move]
-        if self.current_mana - mana_cost < 0:
+        if self.current_mana - move.mana_cost < 0:
             raise NotEnoughManaError(move)
-        self.current_mana -= mana_cost
+        self.current_mana -= move.mana_cost
         self.current_mana = min(self.max_mana, self.current_mana)   # Don't let current mana go over max mana
 
     def damage(self, amount):
