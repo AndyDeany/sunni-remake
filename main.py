@@ -7,6 +7,7 @@ import pygame
 from lib.sunni_keydown import Keys
 from lib.game import Game
 from lib.image import Surface, Image, Text
+from lib.music import Audio
 from lib.player import Player
 from lib.character import Character
 from lib.battle import Battle
@@ -39,7 +40,7 @@ Keys.process_keydown(pygame.key.get_pressed(), accepting_text)
 size = (1280, 720)
 game.screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Sunni (Alpha 3.0)")
-Surface.default_screen = game.screen
+Surface.initialise(game)
 Game.initialise()
 Character.initialise()
 Battle.initialise()
@@ -197,6 +198,9 @@ game_title = Text("SUNNI", Font.TITLE, Color.MURKY_YELLOW)
 # Miscellaneous
 not_enough_mana = Text("You don't have enough mana to use that", Font.OPENING, Color.MANA_BLUE)
 
+# Audio
+title_screen_music = Audio("sunni_title_screen_music.ogg", 0.1)
+
 
 # Main program loop
 ongoing = True
@@ -256,7 +260,7 @@ while ongoing:
         game.screen.fill(Color.WHITE)
 
         # Title screen
-        if game.current == "title":
+        if game.current == "opening credits":
             if current_time < 8:    # change to 8
                 title_screen.display()
                 if game.mouse.left and current_time <= 6:
@@ -266,43 +270,35 @@ while ongoing:
                     game_title.display(555, 100)
                     if game.mouse.left:
                         start_time = time.time() - 8
-
             else:
-                if not game.music_playing:
-                    pygame.mixer.music.load(game.file_directory + "audio\sunni_title_screen_music.ogg")
-                    pygame.mixer.music.set_volume(0.1*game.volume_multiplier)
-                    pygame.mixer.music.play(-1)
-                    game.music_playing = True
-                    
-                main_menu.display()
-                
-                if game.mouse.is_in(535, 269, 744, 345) and not game.display_options:    # Play button
-                    menu_play_flared.display()
-                    if game.mouse.left:
-                        input_text = "Sunni"
-                        accepting_text = True
-                        maximum_characters = 16
-                        game.current = "start new game"
+                game.current = "title"
+                game.music.play_music(title_screen_music)
 
-                elif game.mouse.is_in(406,375,877,451) and not game.display_options:  # Load button
-                    menu_load_flared.display()
-                    if game.mouse.left:
-                        game.current = "load save file"
-
-                elif game.mouse.is_in(461,481,817,557) and not game.display_options:  # Options button
-                    menu_options_flared.display()
-                    if game.mouse.left:
-                        game.display_options = True
-                        options_just_selected = True
-
-                elif game.mouse.is_in(547,585,734,661) and not game.display_options:  # Exit button
-                    menu_exit_flared.display()
-                    if game.mouse.left:
-                        ongoing = False
-
-                elif Keys.escape and not game.display_options:
+        elif game.current == "title":
+            main_menu.display()
+            if game.mouse.is_in(535, 269, 744, 345) and not game.display_options:    # Play button
+                menu_play_flared.display()
+                if game.mouse.left:
+                    input_text = "Sunni"
+                    accepting_text = True
+                    maximum_characters = 16
+                    game.current = "start new game"
+            elif game.mouse.is_in(406,375,877,451) and not game.display_options:  # Load button
+                menu_load_flared.display()
+                if game.mouse.left:
+                    game.current = "load save file"
+            elif game.mouse.is_in(461,481,817,557) and not game.display_options:  # Options button
+                menu_options_flared.display()
+                if game.mouse.left:
                     game.display_options = True
                     options_just_selected = True
+            elif game.mouse.is_in(547,585,734,661) and not game.display_options:  # Exit button
+                menu_exit_flared.display()
+                if game.mouse.left:
+                    ongoing = False
+            elif Keys.escape and not game.display_options:
+                game.display_options = True
+                options_just_selected = True
 
         ## Starting the game screens
         # When 'play' is pressed; starting a new game save
@@ -364,8 +360,7 @@ while ongoing:
                             game.save_number = "4"
                 if save_selected:
                     if save_names[int(game.save_number)-1] == "No save data" or save_confirmed:
-                        pygame.mixer.music.stop()
-                        game.music_playing = False
+                        game.music.stop()
                         game.current = "choose character"
                         game.load_battle("Meme Dog")
                     else:
@@ -378,11 +373,7 @@ while ongoing:
                 options_just_selected = True
             elif game.mouse.is_in(1082,665,1270,715) and game.mouse.left and not game.display_options:
                 game.current = "title"
-                if not game.music_playing:
-                    pygame.mixer.music.load(game.file_directory + "audio\sunni_title_screen_music.ogg")
-                    pygame.mixer.music.set_volume(0.1*game.volume_multiplier)
-                    pygame.mixer.music.play(-1)
-                    game.music_playing = True
+                game.music.play_music(title_screen_music)
 
         # When 'load' is pressed; loading a previous save
         elif game.current == "load save file":
@@ -424,11 +415,7 @@ while ongoing:
                 options_just_selected = True
             elif game.mouse.is_in(1082,665,1270,715) and game.mouse.left and not game.display_options:
                 game.current = "title"
-                if not game.music_playing:
-                    pygame.mixer.music.load(game.file_directory + "audio\sunni_title_screen_music.ogg")
-                    pygame.mixer.music.set_volume(0.1*game.volume_multiplier)                
-                    pygame.mixer.music.play(-1)
-                    game.music_playing = True
+                game.music.play_music(title_screen_music)
 
         # Battle screens - Start
         else:

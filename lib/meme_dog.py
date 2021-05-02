@@ -4,6 +4,7 @@ import pygame
 
 from lib.character import Character
 from lib.image import Image
+from lib.music import Audio
 
 
 class MemeDog(Character):
@@ -39,6 +40,8 @@ class MemeDog(Character):
         self.dog_backwards = Image("images/sunni_dog_backwards.png")
         self.dog_bark_stance = Image("images/sunni_dog_bark_stance.png")
 
+        self.basic_attack_sounds = [Audio(f"sunni_dog_attack{n}.ogg") for n in range(1, 4)]
+
     def next_move(self):
         """Chooses and uses the dog's next move."""
         if self.current_hp == 0:
@@ -48,7 +51,6 @@ class MemeDog(Character):
         self.change_mana(next_move)
         self.game.current = next_move
 
-    # Defining a function to decide which move the dog is going to use
     def choose_move(self):
         """Return the name of the next move that the dog decides to use."""
         def attack_options():
@@ -79,6 +81,4 @@ class MemeDog(Character):
 
     def attack_sound(self):
         """Plays a sound for when the dog attacks."""
-        pygame.mixer.music.load(self.game.file_directory + f"audio/sunni_dog_attack{random.randint(1, 3)}.ogg")
-        pygame.mixer.music.set_volume(self.game.volume_multiplier)
-        pygame.mixer.music.play(0)
+        self.game.music.play_sound(random.choice(self.basic_attack_sounds))

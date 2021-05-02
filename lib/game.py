@@ -6,6 +6,7 @@ from lib.character import Character
 from lib.color import Color
 from lib.font import Font
 from lib.mouse import Mouse
+from lib.music import Music
 from lib.image import Image
 from lib.player import Player
 from lib.meme_dog_battle import MemeDogBattle
@@ -18,12 +19,12 @@ class Game:
         cls.OPTIONS_BUTTON = Image("images/sunni_options_button.png", (10, 665))
 
     def __init__(self):
-        self.current = "title"
+        self.current = "opening credits"
         self.file_directory = os.getcwd()[:-3]
         self.screen = None
         self.mouse = Mouse()
-        self.music_playing = False
         self.fps = 30  # Setting fps
+        self.music = Music(self)
         self.save_number = None
         self.fullscreen_enabled = False
         self.display_options = False

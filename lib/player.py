@@ -1,6 +1,7 @@
 import pygame
 
 from lib.image import Image
+from lib.music import Audio
 from lib.character import Character, NotEnoughManaError
 
 
@@ -50,6 +51,10 @@ class Player(Character):
         self.character_headbutt_stance = Image(f"images/sunni_{character}_headbutt_stance.png")
         self.character_frostbeam_stance = Image(f"images/sunni_{character}_frostbeam_stance.png")
 
+        self.heal_sound = Audio("sunni_heal_move.ogg", 0.1)
+        self.basic_attack_sound = Audio("sunni_character_attack1.ogg")
+        self.frostbeam_sound = Audio("sunni_frostbeam_move.ogg", 0.2)
+
     def level_up(self, levels=1):
         old_level = self.level
         self.level += levels
@@ -84,18 +89,12 @@ class Player(Character):
 
     # Defining a function to play a sound when heal heart is used
     def heal_move_sound(self):
-        pygame.mixer.music.load(self.game.file_directory + "audio/sunni_heal_move.ogg")
-        pygame.mixer.music.set_volume(0.1 * self.game.volume_multiplier)
-        pygame.mixer.music.play(0)
+        self.game.music.play_sound(self.heal_sound)
 
     # Defining a function to play a sound when the character attack (with kick or headbutt)
     def attack_sound(self):
-        pygame.mixer.music.load(self.game.file_directory + "audio/sunni_character_attack1.ogg")
-        pygame.mixer.music.set_volume(self.game.volume_multiplier)
-        pygame.mixer.music.play(0)
+        self.game.music.play_sound(self.basic_attack_sound)
 
     # Defining a function to play a sound when frostbeam is user
     def frostbeam_move_sound(self):
-        pygame.mixer.music.load(self.game.file_directory + "audio/sunni_frostbeam_move.ogg")
-        pygame.mixer.music.set_volume(0.2 * self.game.volume_multiplier)
-        pygame.mixer.music.play(0)
+        self.game.music.play_sound(self.frostbeam_sound)
