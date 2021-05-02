@@ -7,9 +7,8 @@ def dog_battle_display(game, kick_move_icon_faded,
                        headbutt_move_icon_faded, frostbeam_move_icon_faded, heal_move_icon_faded, kick_move_icon_solid,
                        headbutt_move_icon_solid, frostbeam_move_icon_solid, heal_move_icon_solid, kick_move_info,
                        headbutt_move_info, frostbeam_move_info, heal_move_info, victory_overlay,
-                       continue_button, return_to_title_button, character_dead, defeat_overlay, try_again_button,
-                       heal_heart, character_normal, character_tilt_left, character_tilt_right,
-                       character_headbutt_stance, character_frostbeam_stance, frostbeam_start, frostbeam_middle):
+                       continue_button, return_to_title_button, defeat_overlay, try_again_button,
+                       heal_heart, frostbeam_start, frostbeam_middle):
     # Default battle screen, where the player chooses which move to use
     if game.current == game.player.CHOOSE_ABILITY:
         game.player.idle_movement(150,380)
@@ -93,7 +92,7 @@ def dog_battle_display(game, kick_move_icon_faded,
 
     # Character dead/Defeat screen
     elif game.current == game.player.DEAD:
-        character_dead.display(150, 480)
+        game.player.character_dead.display(150, 480)
         game.opponent.dog_normal.display(930, 440)
         defeat_overlay.display(0, 0)
         try_again_button.display(1000, 600)
@@ -132,14 +131,14 @@ def dog_battle_display(game, kick_move_icon_faded,
 
         if game.player.is_advancing:
             if game.player.kick_x == 150:
-                character_normal.display(150, 380)
+                game.player.character_normal.display(150, 380)
                 game.player.kick_x += 24
             elif game.player.kick_x < 870:
                 if game.player.tilt_direction == "left":
-                    image = character_tilt_left
+                    image = game.player.character_tilt_left
                     game.player.tilt_direction = "right"
                 elif game.player.tilt_direction == "right":
-                    image = character_tilt_right
+                    image = game.player.character_tilt_right
                     game.player.tilt_direction = "left"
                 image.display(game.player.kick_x, 380)
                 game.player.kick_x += 24
@@ -147,7 +146,7 @@ def dog_battle_display(game, kick_move_icon_faded,
                     game.player.attack_sound()
 
             elif game.player.kick_x == 870:
-                character_tilt_left.display(870, 380)
+                game.player.character_tilt_left.display(870, 380)
                 game.opponent.damage(random.randint(8, 12))
                 game.player.kick_x -= 36
                 game.player.is_advancing = False
@@ -172,13 +171,13 @@ def dog_battle_display(game, kick_move_icon_faded,
                 game.player.idle_movement(150,380)
                 game.player.headbutt_x += 24
             elif game.player.headbutt_x < 870:
-                character_headbutt_stance.display(game.player.headbutt_x, 380)
+                game.player.character_headbutt_stance.display(game.player.headbutt_x, 380)
                 game.player.headbutt_x += 24
                 if game.player.headbutt_x == 750:
                     game.player.attack_sound()
 
             elif game.player.headbutt_x == 870:
-                character_headbutt_stance.display(870, 380)
+                game.player.character_headbutt_stance.display(870, 380)
                 game.opponent.damage(random.randint(10, 20))
                 game.player.headbutt_x -= 36
                 game.player.is_advancing = False
@@ -196,7 +195,7 @@ def dog_battle_display(game, kick_move_icon_faded,
     # Character frostbeam move animation
     elif game.current == game.player.MOVE_FROSTBEAM:
         game.opponent.dog_normal.display(930, 440)
-        character_frostbeam_stance.display(150, 380)
+        game.player.character_frostbeam_stance.display(150, 380)
 
         if game.duration_time < 2*game.fps:
             if game.duration_time == 0:

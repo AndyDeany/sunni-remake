@@ -18,7 +18,7 @@ class Character:
         cls.HEALTH_ICON = Image("images/sunni_health_icon.png")
         cls.MANA_ICON = Image("images/sunni_mana_icon.png")
 
-    def __init__(self, game, name, max_hp, max_mana, *, level=1, display_stat_x=600, display_stat_y_start=600):
+    def __init__(self, game, name, max_hp=100, max_mana=100, *, level=1, display_stat_x=600, display_stat_y_start=600):
         self.game = game
         self.name = name
         self.name_display = Text(self.name, Font.DEFAULT, Color.BLACK)

@@ -23,9 +23,11 @@ class Player(Character):
 
     INFO_X = 10
 
-    def __init__(self, game, name, character, max_hp, max_mana, *, level=1):
-        super().__init__(game, name, max_hp, max_mana, level=level, display_stat_x=170, display_stat_y_start=360)
+    def __init__(self, game, name, character, *, level=1):
+        super().__init__(game, name, level=level, display_stat_x=170, display_stat_y_start=360)
+        self.calculate_stats()
         self.character = character
+
         # Heal move variables
         self.heal_heart_y = 170
         # Kick move variables
@@ -33,18 +35,31 @@ class Player(Character):
         self.tilt_direction = "left"
         # Headbutt move variables
         self.headbutt_x = 150
-        # Other
+
         self.stage = 0
         self.num_idle_frames = 6
         self.idle_frames = [Image(f"images/sunni_{self.character}_normal{n}.png") for n in range(self.num_idle_frames)]
+
+        self.character_normal = Image(f"images/sunni_{character}_normal1.png")
+        self.character_backwards = Image(f"images/sunni_{character}_backwards.png")
+        self.character_scared = Image(f"images/sunni_{character}_scared.png")
+        self.character_scared_redflash = Image(f"images/sunni_{character}_scared_redflash.png")
+        self.character_tilt_left = Image(f"images/sunni_{character}_tilt_left.png")
+        self.character_tilt_right = Image(f"images/sunni_{character}_tilt_right.png")
+        self.character_dead = Image(f"images/sunni_{character}_dead.png")
+        self.character_headbutt_stance = Image(f"images/sunni_{character}_headbutt_stance.png")
+        self.character_frostbeam_stance = Image(f"images/sunni_{character}_frostbeam_stance.png")
 
     def level_up(self, levels=1):
         old_level = self.level
         self.level += levels
         if int(self.level) > int(old_level):    # i.e. if we actually levelled up
-            self.max_hp = 90 + 10*int(self.level)
-            self.max_mana = 95 + 5*int(self.level)
+            self.calculate_stats()
             self.fully_restore()
+
+    def calculate_stats(self):
+        self.max_hp = 90 + 10*int(self.level)
+        self.max_mana = 95 + 5*int(self.level)
 
     def idle_movement(self, x, y):
         character_image = self.idle_frames[int(self.stage)]

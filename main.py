@@ -327,23 +327,22 @@ while ongoing:
                 character_name = input_text
                 input_text = ""
                 character_name_assigned = True
-            elif display_sure:
+            elif game.display_sure:
                 game.screen.blit(Font.DEFAULT.render("Character name: " + character_name, True, Color.MILD_BLUE), (10,10))
                 are_you_sure.display(0, 0)
                 if game.mouse.is_in(555,398,630,437) and not game.display_options:
                     sure_yes_flared.display(0, 0)
                     if game.mouse.left:
-                        game.load_battle("Meme Dog")
-                        character_level = 1
                         pygame.mixer.music.stop()
                         game.music_playing = False
                         game.current = "choose character"
-                        display_sure = False
+                        game.load_battle("Meme Dog")
+                        game.display_sure = False
                         character_name_assigned = False
                 elif game.mouse.is_in(648,398,723,437) and not game.display_options:
                     sure_no_flared.display(0, 0)
                     if game.mouse.left:
-                        display_sure = False
+                        game.display_sure = False
             else:
                 game.screen.blit(Font.DEFAULT.render("Character name: " + character_name, True, Color.MILD_BLUE), (10,10))
                 if game.mouse.is_in(355,225,925,338) and not game.display_options:
@@ -352,52 +351,48 @@ while ongoing:
                     if game.mouse.left:
                         game.save_number = "1"
                         if save1_name != "No save data\n":
-                            display_sure = True
+                            game.display_sure = True
                         else:
-                            game.load_battle("Meme Dog")
-                            character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
                             game.current = "choose character"
+                            game.load_battle("Meme Dog")
                 elif game.mouse.is_in(355,344,925,457) and not game.display_options:
                     load2_flared.display(0, 0)
                     game.display_save_name(2, (450, 349))
                     if game.mouse.left:
                         game.save_number = "2"
                         if save2_name != "No save data\n":
-                            display_sure = True
+                            game.display_sure = True
                         else:
-                            game.load_battle("Meme Dog")
-                            character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
                             game.current = "choose character"
+                            game.load_battle("Meme Dog")
                 elif game.mouse.is_in(355,463,925,576) and not game.display_options:
                     load3_flared.display(0, 0)
                     game.display_save_name(3, (450, 468))
                     if game.mouse.left:
                         game.save_number = "3"
                         if save3_name != "No save data\n":
-                            display_sure = True
+                            game.display_sure = True
                         else:
-                            game.load_battle("Meme Dog")
-                            character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
                             game.current = "choose character"
+                            game.load_battle("Meme Dog")
                 elif game.mouse.is_in(355,582,925,695) and not game.display_options:
                     load4_flared.display(0, 0)
                     game.display_save_name(4, (450, 587))
                     if game.mouse.left:
                         game.save_number = "4"
                         if save4_name != "No save data\n":
-                            display_sure = True
+                            game.display_sure = True
                         else:
-                            game.load_battle("Meme Dog")
-                            character_level = 1
                             pygame.mixer.music.stop()
                             game.music_playing = False
                             game.current = "choose character"
+                            game.load_battle("Meme Dog")
 
             return_to_title_button.display(1082, 665)
             game.OPTIONS_BUTTON.display(10, 665)
@@ -456,21 +451,12 @@ while ongoing:
                 game.load_battle(save.readline()[:-1])
                 character = save.readline()[:-1]
                 save.close()
-                character_normal = Image(f"images\sunni_{character}_normal1.png")
-                character_backwards = Image(f"images\sunni_{character}_backwards.png")
-                character_scared = Image(f"images\sunni_{character}_scared.png")
-                character_scared_redflash = Image(f"images\sunni_{character}_scared_redflash.png")
-                character_tilt_left = Image(f"images\sunni_{character}_tilt_left.png")
-                character_tilt_right = Image(f"images\sunni_{character}_tilt_right.png")
-                character_dead = Image(f"images\sunni_{character}_dead.png")
-                character_headbutt_stance = Image(f"images\sunni_{character}_headbutt_stance.png")
-                character_frostbeam_stance = Image(f"images\sunni_{character}_frostbeam_stance.png")
                 load_file = False
 
                 pygame.mixer.music.stop()
                 game.music_playing = False
 
-                game.player = Player(game, character_name, character, 90 + 10*int(character_level), 95 + 5*int(character_level), level=character_level)
+                game.player = Player(game, character_name, character, level=character_level)
                 game.current = "choose ability"
 
             return_to_title_button.display(1082, 665)
@@ -486,44 +472,54 @@ while ongoing:
                     pygame.mixer.music.set_volume(0.1*game.volume_multiplier)                
                     pygame.mixer.music.play(-1)
                     game.music_playing = True
-                    
-        
-        ## Battle screens - Start
-        else:
-            # Default things that are in every battle screen
-            if game.battle is not None:
-                game.battle.run()
 
+        # Battle screens - Start
+        else:
             # Choose your character page
             if game.current == "choose character":
-                execfile(game.file_directory + "Python Files\sunni_character_selection.py")            
+                # Choose your character screen
+                game.battle.show_background()
+                choose_character_overlay.display(0, 0)
+                character_choice1.display(400, 300)
+                character_choice2.display(810, 300)
 
-            ## Enemy battle file opening - Start
-            # Dog battle
-            if game.opponent.name == "Meme Dog":
-                dog_battle_display(game, kick_move_icon_faded,
-                                   headbutt_move_icon_faded, frostbeam_move_icon_faded, heal_move_icon_faded,
-                                   kick_move_icon_solid, headbutt_move_icon_solid, frostbeam_move_icon_solid,
-                                   heal_move_icon_solid, kick_move_info, headbutt_move_info, frostbeam_move_info,
-                                   heal_move_info, victory_overlay, continue_button, return_to_title_button,
-                                   character_dead, defeat_overlay, try_again_button, heal_heart, character_normal,
-                                   character_tilt_left, character_tilt_right, character_headbutt_stance,
-                                   character_frostbeam_stance, frostbeam_start, frostbeam_middle)
+                if game.mouse.left and not game.display_options:
+                    character_chosen = False
+                    if game.mouse.is_in(400, 300, 470, 480):
+                        character = "character1"
+                        character_chosen = True
 
-            # Snake battle
-            elif game.opponent.name == "Kanye Snake":
-                execfile(game.file_directory + "Python Files\sunni_snake_battle.py")
+                    elif game.mouse.is_in(810, 300, 880, 480):
+                        character = "character2"
+                        character_chosen = True
 
-            # Ghost Dog battle
-            elif game.opponent.name == "Spook Dog":
-                execfile(game.file_directory + "Python Files\sunni_ghost_dog_battle.py")
+                    if character_chosen:
+                        game.player = Player(game, character_name, character)
+                        game.current = "choose ability"
+            # Default things that are in every battle screen
+            elif game.battle is not None:
+                game.battle.run()
+                # Dog battle
+                if game.opponent.name == "Meme Dog":
+                    dog_battle_display(game, kick_move_icon_faded,
+                                       headbutt_move_icon_faded, frostbeam_move_icon_faded, heal_move_icon_faded,
+                                       kick_move_icon_solid, headbutt_move_icon_solid, frostbeam_move_icon_solid,
+                                       heal_move_icon_solid, kick_move_info, headbutt_move_info, frostbeam_move_info,
+                                       heal_move_info, victory_overlay, continue_button, return_to_title_button,
+                                       defeat_overlay, try_again_button, heal_heart, frostbeam_start, frostbeam_middle)
 
-            else:   ## JUST FOR DEBUGGING ## (maybe make this a screen which says: "ERROR, please restart"
-                game.screen.fill(Color.DAMAGE_RED)    # or something instead. Or just remove this completely
-                game.screen.blit(Font.TITLE.render("ERROR", True, Color.BLACK), (600,300))
-            # Enemy battle file opening - End
-        # Battle screens - End
-        
+                # Snake battle
+                elif game.opponent.name == "Kanye Snake":
+                    execfile(game.file_directory + "Python Files\sunni_snake_battle.py")
+
+                # Ghost Dog battle
+                elif game.opponent.name == "Spook Dog":
+                    execfile(game.file_directory + "Python Files\sunni_ghost_dog_battle.py")
+
+                else:
+                    raise ValueError(f"Unknown opponent '{game.opponent.name}'.")
+
+
         # CODE THAT IS RUN THROUGH EVERY FRAME
         # Not enough mana notification
         if game.display_mana_notification_time > 0:
@@ -547,6 +543,6 @@ while ongoing:
 # Closing the program
 try:
     game.save()
-except NameError:   # incase the variables to be saved haven't been assigned yet
+except (NameError, AttributeError):   # incase the variables to be saved haven't been assigned yet
     pass
 pygame.quit()

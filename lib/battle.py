@@ -24,7 +24,7 @@ class Battle:
         self.game.opponent = value
 
     def run(self):
-        self.BATTLE_BACKGROUND_HALLWAY.display()
+        self.show_background()
         self.player.display_info()
         self.opponent.display_info()
 
@@ -35,4 +35,5 @@ class Battle:
             self.game.display_options = True
             self.game.options_just_selected = True
 
-
+    def show_background(self):
+        self.BATTLE_BACKGROUND_HALLWAY.display()
