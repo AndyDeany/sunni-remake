@@ -215,16 +215,16 @@ while ongoing:
                 if game.mouse.left:
                     game.keys.start_text_input(16, default_text="Sunni")
                     game.current = "start new game"
-            elif game.mouse.is_in(406,375,877,451) and not game.options.is_showing:    # Load button
+            elif game.mouse.is_in(406, 375, 877, 451) and not game.options.is_showing:    # Load button
                 menu_load_flared.display()
                 if game.mouse.left:
                     game.current = "load save file"
-            elif game.mouse.is_in(461,481,817,557) and not game.options.is_showing:    # Options button
+            elif game.mouse.is_in(461, 481, 817, 557) and not game.options.is_showing:    # Options button
                 menu_options_flared.display()
                 if game.mouse.left:
                     game.options.is_showing = True
                     options_just_selected = True
-            elif game.mouse.is_in(547,585,734,661) and not game.options.is_showing:    # Exit button
+            elif game.mouse.is_in(547, 585, 734, 661) and not game.options.is_showing:    # Exit button
                 menu_exit_flared.display()
                 if game.mouse.left:
                     ongoing = False
@@ -261,7 +261,7 @@ while ongoing:
                         if game.mouse.left:
                             save_confirmed = True
                             game.display_sure = False
-                    elif game.mouse.is_in(648,398,723,437) and not game.options.is_showing:
+                    elif game.mouse.is_in(648, 398, 723, 437) and not game.options.is_showing:
                         sure_no_flared.display(0, 0)
                         if game.mouse.left:
                             game.save_number = None
@@ -297,10 +297,10 @@ while ongoing:
 
             game.RETURN_TO_TITLE_BUTTON.display(1082, 665)
             game.OPTIONS_BUTTON.display(10, 665)
-            if (game.keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.options.is_showing:
+            if (game.keys.escape or (game.mouse.is_in(10, 665, 100, 715) and game.mouse.left == 1)) and not game.options.is_showing:
                 game.options.is_showing = True
                 options_just_selected = True
-            elif game.mouse.is_in(1082,665,1270,715) and game.mouse.left and not game.options.is_showing:
+            elif game.mouse.is_in(1082, 665, 1270, 715) and game.mouse.left and not game.options.is_showing:
                 game.current = "title"
                 game.music.play_music(game.TITLE_SCREEN_MUSIC)
 
@@ -339,10 +339,10 @@ while ongoing:
 
             game.RETURN_TO_TITLE_BUTTON.display(1082, 665)
             game.OPTIONS_BUTTON.display(10, 665)
-            if (game.keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.options.is_showing:
+            if (game.keys.escape or (game.mouse.is_in(10, 665, 100, 715) and game.mouse.left == 1)) and not game.options.is_showing:
                 game.options.is_showing = True
                 options_just_selected = True
-            elif game.mouse.is_in(1082,665,1270,715) and game.mouse.left and not game.options.is_showing:
+            elif game.mouse.is_in(1082, 665, 1270, 715) and game.mouse.left and not game.options.is_showing:
                 game.current = "title"
                 game.music.play_music(game.TITLE_SCREEN_MUSIC)
 
