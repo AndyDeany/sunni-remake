@@ -49,7 +49,7 @@ class Battle:
 
         # Options button
         self.game.OPTIONS_BUTTON.display(10, 665)
-        if (Keys.escape or (self.game.mouse.is_in(10, 665, 100, 715) and self.game.mouse.left == 1))\
+        if (self.game.keys.escape or (self.game.mouse.is_in(10, 665, 100, 715) and self.game.mouse.left == 1))\
                 and not self.game.display_options and self.game.current != "choose_character":   # Focus on choosing your character!
             self.game.display_options = True
             self.game.options_just_selected = True

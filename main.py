@@ -27,14 +27,8 @@ opacity = 10    # Variable showing opacity of fading overlay for fading in/out
 fade_direction = "out"
 load_file = False
 
-accepting_text = False
-maximum_characters = 0
-input_text = ""
-keys_pressed = 0
 
-
-Keys.initialise()
-Keys.process_keydown(pygame.key.get_pressed(), accepting_text)
+game.keys = Keys(game)
 
 
 # Setting up screen
@@ -171,29 +165,28 @@ ongoing = True
 clock = pygame.time.Clock()     # used to manage how fast the screen updates
 start_time = time.time()
 
-
 while ongoing:
     current_time = time.time() - start_time     # Storing the current amount of time that the program has been running
     game.mouse.reset_buttons()
-    Keys.initialise()
     game.mouse.update_coordinates()
+    game.keys.reset()
 
     # Main event loop (dealing with user input)
     for event in pygame.event.get():                    # i.e. Whenever the user does something                                                                                                                          
         if event.type == pygame.QUIT:                   # i.e. The user clicks close                                    
             ongoing = False                             # Show that the user is finished
-
+        elif event.type == pygame.TEXTINPUT:
+            game.keys.process_text_input(event)
         elif event.type == pygame.MOUSEBUTTONDOWN:      # Checking if the mouse button is being pressed down
             game.mouse.process_button_down()
         elif event.type == pygame.MOUSEBUTTONUP:        # Checking whether the mouse button was pressed and released
             game.mouse.process_button_up()
         elif event.type == pygame.KEYDOWN:
-            Keys.process_keydown(pygame.key.get_pressed(), accepting_text)
-            if accepting_text:
-                input_text = Keys.process_single_character_input(keys_pressed, maximum_characters, input_text)
+            game.keys.process_key_down(event)
+            game.keys.process_text_input_special_keys()
             
         elif event.type == pygame.KEYUP:
-            Keys.process_keyup(pygame.key.get_pressed())
+            game.keys.process_key_up(event)
 
     # Opening credits
     if current_time < 5:
@@ -237,9 +230,7 @@ while ongoing:
             if game.mouse.is_in(535, 269, 744, 345) and not game.display_options:   # Play button
                 menu_play_flared.display()
                 if game.mouse.left:
-                    input_text = "Sunni"
-                    accepting_text = True
-                    maximum_characters = 16
+                    game.keys.start_text_input(16, default_text="Sunni")
                     game.current = "start new game"
             elif game.mouse.is_in(406,375,877,451) and not game.display_options:    # Load button
                 menu_load_flared.display()
@@ -254,7 +245,7 @@ while ongoing:
                 menu_exit_flared.display()
                 if game.mouse.left:
                     ongoing = False
-            elif Keys.escape and not game.display_options:
+            elif game.keys.escape and not game.display_options:
                 game.display_options = True
                 options_just_selected = True
 
@@ -265,57 +256,55 @@ while ongoing:
             save_names = [game.display_save_name(1, (450, 230)), game.display_save_name(2, (450, 349)),
                           game.display_save_name(3, (450, 468)), game.display_save_name(4, (450, 587))]
 
-            if accepting_text:
+            if game.keys.receiving_text_input:
                 enter_character_name.display(0, 0)
-                if game.mouse.is_in(553,404,727,442) and not game.display_options:
-                    continue_button_flared.display(0, 0)
-                    if game.mouse.left:
-                        accepting_text = False
-                        character_name = input_text
-                        input_text = ""
-                Text(input_text, Font.SUNNI, Color.BLACK, (370, 338)).display()
+                if game.keys.text_input:    # Only allow the user to continue with a name entered.
+                    if game.keys.enter or game.keys.numpad_enter:
+                        game.keys.stop_text_input()
+                    if game.mouse.is_in(553, 404, 727, 442) and not game.display_options:
+                        continue_button_flared.display(0, 0)
+                        if game.mouse.left:
+                            game.keys.stop_text_input()
+                Text(game.keys.text_input, Font.SUNNI, Color.BLACK, (370, 338)).display()
+                if not game.keys.receiving_text_input:
+                    character_name = game.keys.text_input
             else:
                 Text(f"Character name: {character_name}", Font.DEFAULT, Color.MILD_BLUE, (10, 10)).display()
-                save_selected = False
                 save_confirmed = False
                 if game.display_sure:
                     are_you_sure.display(0, 0)
                     if game.mouse.is_in(555, 398, 630, 437) and not game.display_options:
                         sure_yes_flared.display(0, 0)
                         if game.mouse.left:
-                            save_selected = True
                             save_confirmed = True
                             game.display_sure = False
                     elif game.mouse.is_in(648,398,723,437) and not game.display_options:
                         sure_no_flared.display(0, 0)
                         if game.mouse.left:
+                            game.save_number = None
                             game.display_sure = False
                 elif not game.display_options:
                     if game.mouse.is_in(355, 225, 925, 338):
                         load1_flared.display(0, 0)
                         game.display_save_name(1, (450, 230))
                         if game.mouse.left:
-                            save_selected = True
                             game.save_number = "1"
                     elif game.mouse.is_in(355, 344, 925, 457):
                         load2_flared.display(0, 0)
                         game.display_save_name(2, (450, 349))
                         if game.mouse.left:
-                            save_selected = True
                             game.save_number = "2"
                     elif game.mouse.is_in(355, 463, 925, 576):
                         load3_flared.display(0, 0)
                         game.display_save_name(3, (450, 468))
                         if game.mouse.left:
-                            save_selected = True
                             game.save_number = "3"
                     elif game.mouse.is_in(355, 582, 925, 695):
                         load4_flared.display(0, 0)
                         game.display_save_name(4, (450, 587))
                         if game.mouse.left:
-                            save_selected = True
                             game.save_number = "4"
-                if save_selected:
+                if game.save_number is not None:
                     if save_names[int(game.save_number)-1] == "No save data" or save_confirmed:
                         game.music.stop()
                         game.current = "choose character"
@@ -325,7 +314,7 @@ while ongoing:
 
             game.RETURN_TO_TITLE_BUTTON.display(1082, 665)
             game.OPTIONS_BUTTON.display(10, 665)
-            if (Keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
+            if (game.keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
                 game.display_options = True
                 options_just_selected = True
             elif game.mouse.is_in(1082,665,1270,715) and game.mouse.left and not game.display_options:
@@ -367,7 +356,7 @@ while ongoing:
 
             game.RETURN_TO_TITLE_BUTTON.display(1082, 665)
             game.OPTIONS_BUTTON.display(10, 665)
-            if (Keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
+            if (game.keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
                 game.display_options = True
                 options_just_selected = True
             elif game.mouse.is_in(1082,665,1270,715) and game.mouse.left and not game.display_options:
@@ -385,16 +374,14 @@ while ongoing:
                 character_choice2.display(810, 300)
 
                 if game.mouse.left and not game.display_options:
-                    character_chosen = False
+                    character = None
                     if game.mouse.is_in(400, 300, 470, 480):
                         character = "character1"
-                        character_chosen = True
 
                     elif game.mouse.is_in(810, 300, 880, 480):
                         character = "character2"
-                        character_chosen = True
 
-                    if character_chosen:
+                    if character is not None:
                         game.player = Player(game, character_name, character)
                         game.current = "choose ability"
             # Default things that are in every battle screen
@@ -402,11 +389,6 @@ while ongoing:
                 game.battle.run_all()
 
         # CODE THAT IS RUN THROUGH EVERY FRAME
-        # Input text handling
-        if accepting_text:
-            Keys.process_keyheld()
-            input_text = Keys.process_multiple_character_input(game.fps, maximum_characters, input_text)
-                
         # Options page
         if game.display_options:
             execfile(game.file_directory + "Python Files\sunni_options_page.py")        
