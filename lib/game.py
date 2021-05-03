@@ -40,9 +40,6 @@ class Game:
         self.opponent = Character(self, None, 100, 100)
         self.display_mana_notification_time = 0     # Variable to allow the "Not enough mana" notification to appear when necessary
         self.mana_notification_duration = 2 * self.fps  # 2 seconds
-        self.duration_time = 0          # Variable to show how long something has been occuring (will be changed by other parts of the program)
-        self.damage_decided = False     # Variable to show whether or not the damage that will be done has been calculated already, so it is not done multiple times in loops
-        self.volume_multiplier = 1
 
     def get_save_path(self, save_number=None):
         """Return the path to the save file of the given save number."""

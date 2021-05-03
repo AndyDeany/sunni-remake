@@ -4,6 +4,7 @@ import pygame
 class Music:
     def __init__(self, game):
         self.game = game
+        self.volume = 1.0
 
     def play_music(self, audio):
         self.stop()
@@ -13,7 +14,7 @@ class Music:
         self.play(audio, loop=False)
 
     def play(self, audio, *, loop):
-        audio.__play__(self.game.volume_multiplier, loop=loop)
+        audio.__play__(self.volume, loop=loop)
 
     @staticmethod
     def stop():
@@ -21,11 +22,11 @@ class Music:
 
 
 class Audio:
-    def __init__(self, file_name, volume=1.0):
+    def __init__(self, file_name, volume_multiplier=1.0):
         self.path = f"../audio/{file_name}"
-        self.volume = volume
+        self.volume_multiplier = volume_multiplier  # Used for adjusting tracks that are naturally too loud/quiet
 
-    def __play__(self, volume_multiplier, *, loop):
+    def __play__(self, volume, *, loop):
         pygame.mixer.music.load(self.path)
-        pygame.mixer.music.set_volume(self.volume * volume_multiplier)
+        pygame.mixer.music.set_volume(volume * self.volume_multiplier)
         pygame.mixer.music.play(-1 if loop else 0)

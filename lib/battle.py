@@ -23,6 +23,14 @@ class Battle:
     def opponent(self, value):
         self.game.opponent = value
 
+    @property
+    def current(self):
+        return self.game.current
+
+    @current.setter
+    def current(self, value):
+        self.game.current = value
+
     def run(self):
         self.show_background()
         self.player.display_info()

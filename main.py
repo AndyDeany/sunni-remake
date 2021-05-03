@@ -15,7 +15,6 @@ from lib.meme_dog import MemeDog
 from lib.battle import Battle
 from lib.color import Color
 from lib.font import Font
-from lib.sunni_dog_battle import dog_battle_display
 
 
 pygame.init()
@@ -333,7 +332,7 @@ while ongoing:
                     else:
                         game.display_sure = True
 
-            game.return_to_title_button.display(1082, 665)
+            game.RETURN_TO_TITLE_BUTTON.display(1082, 665)
             game.OPTIONS_BUTTON.display(10, 665)
             if (Keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
                 game.display_options = True
@@ -375,7 +374,7 @@ while ongoing:
                     game.save_number = "4"
                     game.load_save()
 
-            game.return_to_title_button.display(1082, 665)
+            game.RETURN_TO_TITLE_BUTTON.display(1082, 665)
             game.OPTIONS_BUTTON.display(10, 665)
             if (Keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
                 game.display_options = True
@@ -410,20 +409,6 @@ while ongoing:
             # Default things that are in every battle screen
             elif game.battle is not None:
                 game.battle.run()
-                # Dog battle
-                if game.opponent.name == "Meme Dog":
-                    dog_battle_display(game)
-
-                # Snake battle
-                elif game.opponent.name == "Kanye Snake":
-                    execfile(game.file_directory + "Python Files\sunni_snake_battle.py")
-
-                # Ghost Dog battle
-                elif game.opponent.name == "Spook Dog":
-                    execfile(game.file_directory + "Python Files\sunni_ghost_dog_battle.py")
-
-                else:
-                    raise ValueError(f"Unknown opponent '{game.opponent.name}'.")
 
 
         # CODE THAT IS RUN THROUGH EVERY FRAME
