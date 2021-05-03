@@ -4,7 +4,7 @@ import time
 import pygame
 
 
-from lib.sunni_keydown import Keys
+from lib.keys import Keys
 from lib.game import Game
 from lib.image import Surface, Image, Text
 from lib.music import Audio

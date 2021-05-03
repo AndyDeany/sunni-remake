@@ -1,7 +1,6 @@
 from lib.image import Image, Text
 from lib.font import Font
 from lib.color import Color
-from lib.sunni_keydown import Keys
 
 
 class Battle:
