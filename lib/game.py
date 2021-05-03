@@ -24,7 +24,7 @@ class Game:
         cls.RETURN_TO_TITLE_BUTTON = Image("sunni_return_to_title_button.png", (80, 600))
 
     def __init__(self):
-        self.current = "opening credits"
+        self.current = "opening sequence"
         self.file_directory = os.getcwd()[:-3]
         self.screen = None
         self.mouse = Mouse()

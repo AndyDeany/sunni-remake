@@ -1,3 +1,6 @@
+import pygame
+
+
 class Mouse:
     def __init__(self):
         self.x = 0
@@ -11,20 +14,25 @@ class Mouse:
         self.middle_held = 0
         self.right_held = 0
 
+    @staticmethod
+    def get_mouse_state():
+        return pygame.mouse.get_pressed(num_buttons=3)
+
     def reset_buttons(self):
         self.left = 0
         self.middle = 0
         self.right = 0
 
-    def update_coordinates(self, mouse_pos):
-        self.x, self.y = mouse_pos
+    def update_coordinates(self):
+        self.x, self.y = pygame.mouse.get_pos()
 
-    def process_button_down(self, mouse_state):
+    def process_button_down(self):
         """Process a pygame.MOUSEBUTTONDOWN event."""
-        self.left_held, self.middle_held, self.right_held = mouse_state
+        self.left_held, self.middle_held, self.right_held = self.get_mouse_state()
 
-    def process_button_up(self, mouse_state):
+    def process_button_up(self):
         """Process a pygame.MOUSEBUTTONUP event."""
+        mouse_state = self.get_mouse_state()
         if self.left_held and not mouse_state[0]:
             self.left = 1
             self.left_held = 0

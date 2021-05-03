@@ -176,24 +176,20 @@ start_time = time.time()
 
 
 while ongoing:
-    # Obtaining information
     current_time = time.time() - start_time     # Storing the current amount of time that the program has been running
-    # print(f"{game.opponent.name}: {game.current}")
     game.mouse.reset_buttons()
-
     Keys.initialise()
-        
-    game.mouse.update_coordinates(pygame.mouse.get_pos())
+    game.mouse.update_coordinates()
 
     # Main event loop (dealing with user input)
     for event in pygame.event.get():                    # i.e. Whenever the user does something                                                                                                                          
         if event.type == pygame.QUIT:                   # i.e. The user clicks close                                    
             ongoing = False                             # Show that the user is finished
-            
+
         elif event.type == pygame.MOUSEBUTTONDOWN:      # Checking if the mouse button is being pressed down
-            game.mouse.process_button_down(pygame.mouse.get_pressed())
+            game.mouse.process_button_down()
         elif event.type == pygame.MOUSEBUTTONUP:        # Checking whether the mouse button was pressed and released
-            game.mouse.process_button_up(pygame.mouse.get_pressed())
+            game.mouse.process_button_up()
         elif event.type == pygame.KEYDOWN:
             Keys.process_keydown(pygame.key.get_pressed(), accepting_text)
             if accepting_text:
@@ -202,11 +198,11 @@ while ongoing:
         elif event.type == pygame.KEYUP:
             Keys.process_keyup(pygame.key.get_pressed())
 
-    # Opening screen
-    if current_time < 5:    # change to 5
+    # Opening credits
+    if current_time < 5:
         game.screen.fill(Color.MILD_BLUE)
         welcome_l1.display(480, 100)
-        if game.mouse.left and current_time <= 2:      # Enabling the user to skip through the starting sequence by clicking
+        if game.mouse.left and current_time <= 2:   # Enables the user to skip through the starting sequence by clicking
             start_time = time.time() - 0.5
             
         if current_time > 0.5:
@@ -225,15 +221,13 @@ while ongoing:
     # Other screens
     else:
         game.screen.fill(Color.WHITE)
-
-        # Title screen
-        if game.current == "opening credits":
-            if current_time < 8:    # change to 8
+        if game.current == "opening sequence":
+            if current_time < 8:
                 title_screen.display()
                 if game.mouse.left and current_time <= 6:
                     start_time = time.time() - 6
 
-                if current_time > 6:    # change to 6
+                if current_time > 6:
                     game_title.display(555, 100)
                     if game.mouse.left:
                         start_time = time.time() - 8
@@ -243,23 +237,23 @@ while ongoing:
 
         elif game.current == "title":
             main_menu.display()
-            if game.mouse.is_in(535, 269, 744, 345) and not game.display_options:    # Play button
+            if game.mouse.is_in(535, 269, 744, 345) and not game.display_options:   # Play button
                 menu_play_flared.display()
                 if game.mouse.left:
                     input_text = "Sunni"
                     accepting_text = True
                     maximum_characters = 16
                     game.current = "start new game"
-            elif game.mouse.is_in(406,375,877,451) and not game.display_options:  # Load button
+            elif game.mouse.is_in(406,375,877,451) and not game.display_options:    # Load button
                 menu_load_flared.display()
                 if game.mouse.left:
                     game.current = "load save file"
-            elif game.mouse.is_in(461,481,817,557) and not game.display_options:  # Options button
+            elif game.mouse.is_in(461,481,817,557) and not game.display_options:    # Options button
                 menu_options_flared.display()
                 if game.mouse.left:
                     game.display_options = True
                     options_just_selected = True
-            elif game.mouse.is_in(547,585,734,661) and not game.display_options:  # Exit button
+            elif game.mouse.is_in(547,585,734,661) and not game.display_options:    # Exit button
                 menu_exit_flared.display()
                 if game.mouse.left:
                     ongoing = False
@@ -410,10 +404,9 @@ while ongoing:
             elif game.battle is not None:
                 game.battle.run()
 
-
         # CODE THAT IS RUN THROUGH EVERY FRAME
         # Not enough mana notification
-        if game.display_mana_notification_time > 0:
+        if game.display_mana_notification_time > 0:  # should be in base Battle() class. probably in a late_run() method
             not_enough_mana.display(300, 200)
             game.display_mana_notification_time -= 1
 
@@ -427,7 +420,6 @@ while ongoing:
             execfile(game.file_directory + "Python Files\sunni_options_page.py")        
 
     pygame.display.flip()   # Updating the screen at the end of drawing
-
     clock.tick(game.fps)          # Setting fps limit
 
 
