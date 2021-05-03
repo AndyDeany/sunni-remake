@@ -3,8 +3,7 @@ import random
 from lib.sunni_core_functions import *
 
 
-def dog_battle_display(game, victory_overlay, continue_button, return_to_title_button,
-                       defeat_overlay, try_again_button):
+def dog_battle_display(game):
     # Default battle screen, where the player chooses which move to use
     if game.current == game.player.CHOOSE_ABILITY:
         game.player.idle_movement(150, 380)
@@ -70,9 +69,9 @@ def dog_battle_display(game, victory_overlay, continue_button, return_to_title_b
     elif game.current == game.opponent.DEAD:
         game.player.idle_movement(150,380)
         game.opponent.dog_dead.display(930, 440)
-        victory_overlay.display(0, 0)
-        continue_button.display(1000, 600)
-        return_to_title_button.display(80, 600)   # Stopping the return to title button being faded out by the overlay
+        game.victory_overlay.display()
+        game.continue_button.display()
+        game.return_to_title_button.display()
 
         if game.mouse.left and not game.display_options:
             if game.mouse.is_in(1000,600,1120,650):
@@ -90,9 +89,9 @@ def dog_battle_display(game, victory_overlay, continue_button, return_to_title_b
     elif game.current == game.player.DEAD:
         game.player.character_dead.display(150, 480)
         game.opponent.dog_normal.display(930, 440)
-        defeat_overlay.display(0, 0)
-        try_again_button.display(1000, 600)
-        return_to_title_button.display(80, 600)   # Stopping the return to title button being faded out by the overlay
+        game.defeat_overlay.display()
+        game.try_again_button.display()
+        game.return_to_title_button.display()
 
         if game.mouse.left and not game.display_options:
             if game.mouse.is_in(1000, 600, 1200, 700):
@@ -105,24 +104,7 @@ def dog_battle_display(game, victory_overlay, continue_button, return_to_title_b
                 game.save()
                 game.current = "title"
 
-    # Character moves
-    elif game.current == game.player.MOVE_HEAL:
-        game.battle.active_character.MOVE_HEAL.run()
-    elif game.current == game.player.MOVE_KICK:
-        game.battle.active_character.MOVE_KICK.run()
-    elif game.current == game.player.MOVE_HEADBUTT:
-        game.battle.active_character.MOVE_HEADBUTT.run()
-    elif game.current == game.player.MOVE_FROSTBEAM:
-        game.battle.active_character.MOVE_FROSTBEAM.run()
-
-    # Dog moves
-    elif game.current == game.opponent.MOVE_BARK:
-        game.battle.active_character.MOVE_BARK.run()
-    elif game.current == game.opponent.MOVE_HEAL:
-        game.battle.active_character.MOVE_HEAL.run()
-    elif game.current == game.opponent.MOVE_BITE:
-        game.current.run()
-    elif game.current == game.opponent.MOVE_SPIN:
+    else:   # Moves
         game.current.run()
 
     game.player.display_stat_change()

@@ -253,7 +253,6 @@ class Bite(MemeDogMove):
         self.backward_step = 42
 
     def run(self):
-        print(self.user.x, self.user.y, self.advancing, self.opponent.current_hp)
         self.opponent.idle_display()
         if self.advancing:
             if self.user.x > self.end_x:

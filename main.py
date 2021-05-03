@@ -78,17 +78,8 @@ load2_flared = Image("images/sunni_load2_flared.png")
 load3_flared = Image("images/sunni_load3_flared.png")
 load4_flared = Image("images/sunni_load4_flared.png")
 
-# Battle screen
-
-# Victory and defeat overlays
-victory_overlay = Image("images/sunni_victory_overlay.png")
-defeat_overlay = Image("images/sunni_defeat_overlay.png")
-continue_button = Image("images/sunni_continue_button.png")
-try_again_button = Image("images/sunni_try_again_button.png")
-
 # Options menu
 return_to_game_button = Image("images/sunni_return_to_game_button.png")
-return_to_title_button = Image("images/sunni_return_to_title_button.png")
 volume_plus_button = Image("images/sunni_volume_plus_button.png")
 volume_minus_button = Image("images/sunni_volume_minus_button.png")
 volume_mute_button = Image("images/sunni_volume_mute_button.png")
@@ -342,7 +333,7 @@ while ongoing:
                     else:
                         game.display_sure = True
 
-            return_to_title_button.display(1082, 665)
+            game.return_to_title_button.display(1082, 665)
             game.OPTIONS_BUTTON.display(10, 665)
             if (Keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
                 game.display_options = True
@@ -384,7 +375,7 @@ while ongoing:
                     game.save_number = "4"
                     game.load_save()
 
-            return_to_title_button.display(1082, 665)
+            game.return_to_title_button.display(1082, 665)
             game.OPTIONS_BUTTON.display(10, 665)
             if (Keys.escape or (game.mouse.is_in(10,665,100,715) and game.mouse.left == 1)) and not game.display_options:
                 game.display_options = True
@@ -421,8 +412,7 @@ while ongoing:
                 game.battle.run()
                 # Dog battle
                 if game.opponent.name == "Meme Dog":
-                    dog_battle_display(game, victory_overlay, continue_button, return_to_title_button,
-                                       defeat_overlay, try_again_button)
+                    dog_battle_display(game)
 
                 # Snake battle
                 elif game.opponent.name == "Kanye Snake":

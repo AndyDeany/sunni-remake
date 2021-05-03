@@ -17,6 +17,11 @@ class Game:
     @classmethod
     def initialise(cls):
         cls.OPTIONS_BUTTON = Image("images/sunni_options_button.png", (10, 665))
+        cls.VICTORY_OVERLAY = Image("images/sunni_victory_overlay.png", (0, 0))
+        cls.DEFEAT_OVERLAY = Image("images/sunni_defeat_overlay.png", (0, 0))
+        cls.CONTINUE_BUTTON = Image("images/sunni_continue_button.png", (1000, 600))
+        cls.TRY_AGAIN_BUTTON = Image("images/sunni_try_again_button.png", (1000, 600))
+        cls.RETURN_TO_TITLE_BUTTON = Image("images/sunni_return_to_title_button.png", (80, 600))
 
     def __init__(self):
         self.current = "opening credits"
@@ -90,7 +95,6 @@ class Game:
 
         self.battle = Battle(self)
         self.opponent = self.battle.opponent
-        self.battle.active_character = self.player
 
     def display_stat_change(self, display_x):
         self.screen.blit(self.stat_change_text, (display_x, self.player.display_stat_y))

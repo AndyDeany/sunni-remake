@@ -39,9 +39,6 @@ class Player(Character):
         self.character_headbutt_stance = Image(f"images/sunni_{character}_headbutt_stance.png")
         self.character_frostbeam_stance = Image(f"images/sunni_{character}_frostbeam_stance.png", (self.x, self.y))
 
-        if self.game.battle is not None:
-            self.game.battle.active_character = self
-
     def level_up(self, levels=1):
         old_level = self.level
         self.level += levels
@@ -72,7 +69,6 @@ class Player(Character):
         if self.current_hp == 0:
             self.game.current = self.DEAD
             return
-        self.game.battle.active_character = self
         self.game.current = self.CHOOSE_ABILITY
 
     def idle_display(self):

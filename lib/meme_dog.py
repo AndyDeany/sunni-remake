@@ -38,7 +38,6 @@ class MemeDog(Character):
             return
         next_move = self.choose_move()
         self.change_mana(next_move)
-        self.game.battle.active_character = self
         self.game.current = next_move
 
     def choose_move(self):
