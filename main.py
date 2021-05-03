@@ -162,9 +162,6 @@ welcome_l4 = Text("Enjoy!", Font.OPENING, Color.BLACK)
 # Title screen - Start
 game_title = Text("SUNNI", Font.TITLE, Color.MURKY_YELLOW)
 
-# Miscellaneous
-not_enough_mana = Text("You don't have enough mana to use that", Font.OPENING, Color.MANA_BLUE)
-
 # Audio
 title_screen_music = Audio("sunni_title_screen_music.ogg", 0.1)
 
@@ -402,14 +399,9 @@ while ongoing:
                         game.current = "choose ability"
             # Default things that are in every battle screen
             elif game.battle is not None:
-                game.battle.run()
+                game.battle.run_all()
 
         # CODE THAT IS RUN THROUGH EVERY FRAME
-        # Not enough mana notification
-        if game.display_mana_notification_time > 0:  # should be in base Battle() class. probably in a late_run() method. Along with the display_mana_notification_time variable and the not_enough_mana Image
-            not_enough_mana.display(300, 200)
-            game.display_mana_notification_time -= 1
-
         # Input text handling
         if accepting_text:
             Keys.process_keyheld()

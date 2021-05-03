@@ -58,9 +58,9 @@ class Player(Character):
         try:
             self.change_mana(move)
         except NotEnoughManaError:
-            self.game.show_mana_notification()
+            self.game.battle.show_mana_notification()
         else:
-            self.game.hide_mana_notification()
+            self.game.battle.hide_mana_notification()
             self.game.current = move
 
     def next_move(self):

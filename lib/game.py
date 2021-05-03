@@ -36,8 +36,6 @@ class Game:
         self.battle = None
         self.player = None
         self.opponent = Character(self, None, 100, 100)
-        self.display_mana_notification_time = 0     # Variable to allow the "Not enough mana" notification to appear when necessary. move to Battle() base class
-        self.mana_notification_duration = 2 * self.fps  # 2 seconds
 
     def get_save_path(self, save_number=None):
         """Return the path to the save file of the given save number."""
@@ -57,7 +55,7 @@ class Game:
         with open(self.get_save_path(save_number), "r") as save_file:
             save_name = save_file.readline().strip()
             save_name_text = Text(save_name, Font.DEFAULT, Color.BLACK)
-            save_name_text.display(coords)
+            save_name_text.display(*coords)
             return save_name
 
     def load_save(self):
@@ -92,11 +90,3 @@ class Game:
 
         self.battle = Battle(self)
         self.opponent = self.battle.opponent
-
-    def show_mana_notification(self):
-        """Show the 'not enough mana' notification to the player."""
-        self.display_mana_notification_time = self.mana_notification_duration
-
-    def hide_mana_notification(self):
-        """Stop displaying the 'not enough mana' notification to the player, if it's showing."""
-        self.display_mana_notification_time = 0
