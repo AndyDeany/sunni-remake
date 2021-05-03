@@ -51,9 +51,9 @@ class Battle:
         # Options button
         self.game.OPTIONS_BUTTON.display(10, 665)
         if (self.game.keys.escape or (self.game.mouse.is_in(10, 665, 100, 715) and self.game.mouse.left == 1))\
-                and not self.game.display_options and self.game.current != "choose_character":   # Focus on choosing your character!
-            self.game.display_options = True
-            self.game.options_just_selected = True
+                and not self.game.options.is_showing and self.game.current != "choose_character":   # Focus on choosing your character!
+            self.game.options.is_showing = True
+            self.game.options.just_selected = True
 
         # Default battle screen, where the player chooses which move to use
         if self.current == self.player.CHOOSE_ABILITY:
@@ -76,7 +76,7 @@ class Battle:
                         icon_x = offensive_first_icon_x + icon_offset*index
                         move.icon_faded.display(icon_x, offensive_icon_y)
 
-                    if self.game.mouse.left and not self.game.display_options:
+                    if self.game.mouse.left and not self.game.options.is_showing:
                         self.player.selected_moves = self.player.offensive_moves
 
                 elif self.game.mouse.is_in(135, 380, 235, 520):
@@ -84,7 +84,7 @@ class Battle:
                         icon_x = defensive_first_icon_x + icon_offset*index
                         move.icon_faded.display(icon_x, defensive_icon_y)
 
-                    if self.game.mouse.left and not self.game.display_options:
+                    if self.game.mouse.left and not self.game.options.is_showing:
                         self.player.selected_moves = self.player.defensive_moves
             else:
                 if self.player.selected_moves == self.player.offensive_moves:
@@ -103,10 +103,10 @@ class Battle:
                     move.icon.display(icon_x, icon_y)
                     if self.game.mouse.is_in(icon_x, icon_y, icon_x + icon_width, icon_y + icon_height):
                         move.info.display(info_x, 130)
-                        if self.game.mouse.left and not self.game.display_options:
+                        if self.game.mouse.left and not self.game.options.is_showing:
                             self.player.use_move(move)
 
-                if self.game.mouse.left and not (self.game.mouse.is_in(*character_boundaries) or self.game.display_options):
+                if self.game.mouse.left and not (self.game.mouse.is_in(*character_boundaries) or self.game.options.is_showing):
                     self.player.selected_moves = None
 
         # Opponent dead/Victory screen
@@ -117,7 +117,7 @@ class Battle:
             self.game.CONTINUE_BUTTON.display()
             self.game.RETURN_TO_TITLE_BUTTON.display()
 
-            if self.game.mouse.left and not self.game.display_options:
+            if self.game.mouse.left and not self.game.options.is_showing:
                 if self.game.mouse.is_in(1000, 600, 1120, 650):
                     self.current = self.player.CHOOSE_ABILITY
                 elif self.game.mouse.is_in(80, 600, 268, 650):
@@ -135,7 +135,7 @@ class Battle:
             self.game.TRY_AGAIN_BUTTON.display()
             self.game.RETURN_TO_TITLE_BUTTON.display()
 
-            if self.game.mouse.left and not self.game.display_options:
+            if self.game.mouse.left and not self.game.options.is_showing:
                 if self.game.mouse.is_in(1000, 600, 1200, 700):
                     self.current = self.player.CHOOSE_ABILITY
                     self.player.level_up(0.25)

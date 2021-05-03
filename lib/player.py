@@ -4,6 +4,10 @@ from lib.character import Character, NotEnoughManaError
 
 
 class Player(Character):
+
+    CHARACTER_1 = "character1"
+    CHARACTER_2 = "character2"
+
     DEAD = "player dead"
     CHOOSE_ABILITY = "choose ability"
 

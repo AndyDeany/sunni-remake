@@ -1,11 +1,14 @@
 import os
 
+import pygame
+
 from lib.character import Character
 from lib.color import Color
 from lib.font import Font
 from lib.mouse import Mouse
-from lib.music import Music
+from lib.music import Music, Audio
 from lib.image import Image, Text
+from lib.options import Options
 from lib.player import Player
 from lib.battle import Battle
 from lib.meme_dog import MemeDog
@@ -22,17 +25,18 @@ class Game:
         cls.TRY_AGAIN_BUTTON = Image("sunni_try_again_button.png", (1000, 600))
         cls.RETURN_TO_TITLE_BUTTON = Image("sunni_return_to_title_button.png", (80, 600))
 
+        cls.TITLE_SCREEN_MUSIC = Audio("sunni_title_screen_music.ogg", 0.1)
+
     def __init__(self):
         self.current = "opening sequence"
         self.file_directory = os.getcwd()[:-3]
         self.screen = None
         self.mouse = Mouse()
-        self.fps = 30  # Setting fps
+        self.clock = pygame.time.Clock()
+        self.fps = 30
         self.music = Music(self)
+        self.options = Options(self)
         self.save_number = None
-        self.fullscreen_enabled = False
-        self.display_options = False
-        self.options_just_selected = False
         self.display_sure = False
         self.battle = None
         self.player = None
