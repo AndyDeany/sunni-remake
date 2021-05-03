@@ -22,9 +22,6 @@ class Player(Character):
         self.calculate_stats()
         self.character = character
 
-        # Heal move variables
-        self.heal_heart_y = 170
-        self.tilt_direction = "left"
         self.x = 150
         self.y = 380
 

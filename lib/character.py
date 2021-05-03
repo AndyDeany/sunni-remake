@@ -105,8 +105,13 @@ class Character:
         self.current_mana_display = Text(f"Mana: {self.current_mana}/{self.max_mana}", Font.DEFAULT, Color.BLACK)
 
     def display_stat_change(self):
-        self.stat_change_text.display(self.display_stat_x, self.display_stat_y)
-        self.display_stat_y -= 3
+        if self.display_stat_change_time > 0:
+            self.stat_change_text.display(self.display_stat_x, self.display_stat_y)
+            self.display_stat_y -= 3
+            self.display_stat_change_time -= 1
+        elif self.display_stat_change_time == 0:
+            self.reset_display_stat_y()
+            self.display_stat_change_time -= 1
 
     def reset_display_stat_y(self):
         """Reset the display_stat_y attribute to its starting value."""

@@ -116,112 +116,14 @@ def dog_battle_display(game, victory_overlay, continue_button, return_to_title_b
         game.battle.active_character.MOVE_FROSTBEAM.run()
 
     # Dog moves
-    # Dog bark move animation
     elif game.current == game.opponent.MOVE_BARK:
-        game.player.idle_movement(150,380)
-
-        if game.duration_time < 2*game.fps:
-            if game.duration_time == 0:
-                game.opponent.MOVE_BARK.play_sound()
-            elif game.duration_time == 2*int(game.fps/3):
-                game.opponent.MOVE_BARK.play_sound()
-            elif game.duration_time == game.fps:
-                game.player.damage(random.randint(5, 20))
-
-            game.opponent.dog_bark_stance.display(930, 440)
-            game.duration_time += 1
-
-        else:
-            # Resetting variables for next time
-            game.duration_time = 0
-            game.player.next_move()
-
-    # Dog heal move animation
+        game.battle.active_character.MOVE_BARK.run()
     elif game.current == game.opponent.MOVE_HEAL:
         game.battle.active_character.MOVE_HEAL.run()
-
-    # Dog bite move animation
     elif game.current == game.opponent.MOVE_BITE:
-        game.player.idle_movement(150, 380)
-
-        if game.opponent.is_advancing:
-            if game.opponent.bite_x == 930:
-                game.opponent.dog_normal.display(930, 440)
-                game.opponent.bite_x -= 24
-            elif game.opponent.bite_x > 90:
-                game.opponent.dog_normal.display(game.opponent.bite_x, 440)
-                game.opponent.bite_x -= 24
-                if game.opponent.bite_x == 330:
-                    game.opponent.MOVE_BITE.play_sound()
-
-            elif game.opponent.bite_x == 90:
-                game.opponent.dog_backwards.display(90, 440)
-                game.player.damage(random.randint(10, 20))
-                game.opponent.bite_x += 42
-                game.opponent.is_advancing = False
-
-        elif not game.opponent.is_advancing:
-            if game.opponent.bite_x < 930:
-                game.opponent.dog_backwards.display(game.opponent.bite_x, 440)
-                game.opponent.bite_x += 42
-            else:
-                # Resetting variables for next time
-                game.opponent.is_advancing = True
-                game.opponent.bite_x = 930
-                game.player.next_move()
-
-    # Dog spin move animation
+        game.current.run()
     elif game.current == game.opponent.MOVE_SPIN:
-        game.player.idle_movement(150,380)
+        game.current.run()
 
-        if game.opponent.is_advancing:
-            if game.opponent.spin_x == 930:
-                game.opponent.dog_normal.display(930, 440)
-                game.opponent.spin_x -= 25
-            elif game.opponent.spin_x > 180:
-                game.opponent.dog_normal.display(game.opponent.spin_x, 440)
-                game.opponent.spin_x -= 25
-            elif game.opponent.spin_x == 180:
-                game.opponent.dog_normal.display(180, 440)
-                game.opponent.spin_time = 0
-                game.opponent.is_advancing = False
-                game.opponent.MOVE_SPIN.play_sound()
-
-        elif game.opponent.is_retreating:
-            if game.opponent.spin_x < 930:
-                game.opponent.dog_backwards.display(game.opponent.spin_x, 440)
-                game.opponent.spin_x += 30
-            else:
-                game.opponent.is_advancing = True
-                game.opponent.is_retreating = False
-                game.opponent.spin_x = 930
-                game.player.next_move()
-
-        if game.opponent.spin_time < game.fps:
-            if game.opponent.spin_time == 15:
-                game.player.damage(random.randint(10, 30))
-            if game.opponent.spin_direction == "backwards":
-                game.opponent.dog_backwards.display(180, 440)
-                game.opponent.spin_direction = "forwards"
-            elif game.opponent.spin_direction == "forwards":
-                game.opponent.dog_normal.display(180, 440)
-                game.opponent.spin_direction = "backwards"
-            game.opponent.spin_time += 1
-            if game.opponent.spin_time == game.fps-1:
-                game.opponent.is_retreating = True
-        else:
-            game.opponent.spin_time = game.fps
-
-    if game.player.display_stat_change_time > 0:
-        game.player.display_stat_change()
-        game.player.display_stat_change_time -= 1
-    elif game.player.display_stat_change_time == 0:
-        game.player.reset_display_stat_y()
-        game.player.display_stat_change_time -= 1
-
-    if game.opponent.display_stat_change_time > 0:
-        game.opponent.display_stat_change()
-        game.opponent.display_stat_change_time -= 1
-    elif game.opponent.display_stat_change_time == 0:
-        game.opponent.reset_display_stat_y()
-        game.opponent.display_stat_change_time -= 1
+    game.player.display_stat_change()
+    game.opponent.display_stat_change()

@@ -156,9 +156,6 @@ ghost_dog_side_claw_fade60 = Image("images/sunni_ghost_dog_side_claw_fade60.png"
 ghost_dog_side_claw_fade80 = Image("images/sunni_ghost_dog_side_claw_fade80.png")
 
 
-# Moves
-# Heal
-
 # Miscellaneous
 blank_overlay = Image("images/sunni_blank_overlay.png")
 choose_character_overlay = Image("images/sunni_choose_character_overlay.png")
@@ -280,7 +277,6 @@ while ongoing:
                 game.display_options = True
                 options_just_selected = True
 
-        ## Starting the game screens
         # When 'play' is pressed; starting a new game save
         elif game.current == "start new game":
             load_game_screen.display(0, 0)
