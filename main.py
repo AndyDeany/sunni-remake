@@ -406,7 +406,7 @@ while ongoing:
 
         # CODE THAT IS RUN THROUGH EVERY FRAME
         # Not enough mana notification
-        if game.display_mana_notification_time > 0:  # should be in base Battle() class. probably in a late_run() method
+        if game.display_mana_notification_time > 0:  # should be in base Battle() class. probably in a late_run() method. Along with the display_mana_notification_time variable and the not_enough_mana Image
             not_enough_mana.display(300, 200)
             game.display_mana_notification_time -= 1
 

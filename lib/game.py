@@ -1,13 +1,11 @@
 import os
 
-import pygame
-
 from lib.character import Character
 from lib.color import Color
 from lib.font import Font
 from lib.mouse import Mouse
 from lib.music import Music
-from lib.image import Image
+from lib.image import Image, Text
 from lib.player import Player
 from lib.meme_dog_battle import MemeDogBattle
 
@@ -38,7 +36,7 @@ class Game:
         self.battle = None
         self.player = None
         self.opponent = Character(self, None, 100, 100)
-        self.display_mana_notification_time = 0     # Variable to allow the "Not enough mana" notification to appear when necessary
+        self.display_mana_notification_time = 0     # Variable to allow the "Not enough mana" notification to appear when necessary. move to Battle() base class
         self.mana_notification_duration = 2 * self.fps  # 2 seconds
 
     def get_save_path(self, save_number=None):
@@ -58,8 +56,8 @@ class Game:
     def display_save_name(self, save_number, coords):
         with open(self.get_save_path(save_number), "r") as save_file:
             save_name = save_file.readline().strip()
-            save_name_text = Font.DEFAULT.render(save_name, True, Color.BLACK)
-            self.screen.blit(save_name_text, coords)
+            save_name_text = Text(save_name, Font.DEFAULT, Color.BLACK)
+            save_name_text.display(coords)
             return save_name
 
     def load_save(self):
@@ -94,10 +92,6 @@ class Game:
 
         self.battle = Battle(self)
         self.opponent = self.battle.opponent
-
-    def display_stat_change(self, display_x):
-        self.screen.blit(self.stat_change_text, (display_x, self.player.display_stat_y))
-        self.player.display_stat_y -= 3
 
     def show_mana_notification(self):
         """Show the 'not enough mana' notification to the player."""
