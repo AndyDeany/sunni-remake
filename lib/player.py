@@ -27,17 +27,17 @@ class Player(Character):
 
         self.stage = 0
         self.num_idle_frames = 6
-        self.idle_frames = [Image(f"images/sunni_{self.character}_normal{n}.png") for n in range(self.num_idle_frames)]
+        self.idle_frames = [Image(f"sunni_{self.character}_normal{n}.png") for n in range(self.num_idle_frames)]
 
-        self.character_normal = Image(f"images/sunni_{character}_normal1.png")
-        self.character_backwards = Image(f"images/sunni_{character}_backwards.png")
-        self.character_scared = Image(f"images/sunni_{character}_scared.png")
-        self.character_scared_redflash = Image(f"images/sunni_{character}_scared_redflash.png")
-        self.character_tilt_left = Image(f"images/sunni_{character}_tilt_left.png")
-        self.character_tilt_right = Image(f"images/sunni_{character}_tilt_right.png")
-        self.character_dead = Image(f"images/sunni_{character}_dead.png")
-        self.character_headbutt_stance = Image(f"images/sunni_{character}_headbutt_stance.png")
-        self.character_frostbeam_stance = Image(f"images/sunni_{character}_frostbeam_stance.png", (self.x, self.y))
+        self.character_normal = Image(f"sunni_{character}_normal1.png")
+        self.character_backwards = Image(f"sunni_{character}_backwards.png")
+        self.character_scared = Image(f"sunni_{character}_scared.png")
+        self.character_scared_redflash = Image(f"sunni_{character}_scared_redflash.png")
+        self.character_tilt_left = Image(f"sunni_{character}_tilt_left.png")
+        self.character_tilt_right = Image(f"sunni_{character}_tilt_right.png")
+        self.character_dead = Image(f"sunni_{character}_dead.png")
+        self.character_headbutt_stance = Image(f"sunni_{character}_headbutt_stance.png")
+        self.character_frostbeam_stance = Image(f"sunni_{character}_frostbeam_stance.png", (self.x, self.y))
 
     def level_up(self, levels=1):
         old_level = self.level

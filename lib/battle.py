@@ -6,7 +6,7 @@ class Battle:
 
     @classmethod
     def initialise(cls):
-        cls.BATTLE_BACKGROUND_HALLWAY = Image("images/sunni_battle_background_hallway.png", (0, 0))
+        cls.BATTLE_BACKGROUND_HALLWAY = Image("sunni_battle_background_hallway.png", (0, 0))
 
     def __init__(self, game):
         self.game = game
