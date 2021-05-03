@@ -7,7 +7,8 @@ from lib.mouse import Mouse
 from lib.music import Music
 from lib.image import Image, Text
 from lib.player import Player
-from lib.meme_dog_battle import MemeDogBattle
+from lib.battle import Battle
+from lib.meme_dog import MemeDog
 
 
 class Game:
@@ -72,7 +73,7 @@ class Game:
 
     def load_battle(self, name):
         if name == "Meme Dog":
-            Battle = MemeDogBattle
+            self.opponent = MemeDog(self)
         elif name == "Kanye Snake":
             opponent = Character(self, name, 120, 120)
             opponent.snake_confuse_x = 930
@@ -88,5 +89,4 @@ class Game:
         else:
             raise ValueError(f"Unknown opponent: '{name}'")
 
-        self.battle = Battle(self)
-        self.opponent = self.battle.opponent
+        self.battle = Battle(self, self.opponent)

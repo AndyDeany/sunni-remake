@@ -19,13 +19,13 @@ class MemeDog(Character):
         cls.MOVE_SPIN = Spin()
         cls.MOVE_HEAL = OpponentHeal(1005, 230, 410)
 
-    def __init__(self, game, max_hp, max_mana, *, level=1):
+    def __init__(self, game, max_hp=100, max_mana=100, *, level=1):
         super().__init__(game, "Meme Dog", max_hp, max_mana, level=level, display_stat_x=1015, display_stat_y_start=420)
         self.x = 930
         self.y = 440
 
-        self.dog_normal = Image("sunni_dog_normal.png", (930, 440))
-        self.dog_dead = Image("sunni_dog_dead.png")
+        self.dog_normal = Image("sunni_dog_normal.png", (self.x, self.y))
+        self.dog_dead = Image("sunni_dog_dead.png", (self.x, self.y))
         self.dog_backwards = Image("sunni_dog_backwards.png")
         self.dog_bark_stance = Image("sunni_dog_bark_stance.png")
 
@@ -70,3 +70,6 @@ class MemeDog(Character):
 
     def idle_display(self):
         self.dog_normal.display()
+
+    def dead_display(self):
+        self.dog_dead.display()

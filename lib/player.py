@@ -20,6 +20,9 @@ class Player(Character):
         super().__init__(game, name, level=level, display_stat_x=170, display_stat_y_start=360)
         self.calculate_stats()
         self.character = character
+        self.offensive_moves = [self.MOVE_KICK, self.MOVE_HEADBUTT, self.MOVE_FROSTBEAM]
+        self.defensive_moves = [self.MOVE_HEAL]
+        self.selected_moves = None
 
         self.x = 150
         self.y = 380
@@ -60,6 +63,7 @@ class Player(Character):
         except NotEnoughManaError:
             self.game.battle.show_mana_notification()
         else:
+            self.selected_moves = None
             self.game.battle.hide_mana_notification()
             self.game.current = move
 
@@ -72,3 +76,6 @@ class Player(Character):
 
     def idle_display(self):
         self.idle_movement(self.x, self.y)
+
+    def dead_display(self):
+        self.character_dead.display(150, 480)
