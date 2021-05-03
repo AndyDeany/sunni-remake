@@ -44,6 +44,8 @@ class Game:
     def get_save_path(self, save_number=None):
         """Return the path to the save file of the given save number."""
         save_number = save_number or self.save_number
+        if save_number is None:
+            raise ValueError("'get_save_path()' requires a 'save_number' that is not 'None'")
         return f"{self.file_directory}saves/save{save_number}.txt"
 
     def save(self):

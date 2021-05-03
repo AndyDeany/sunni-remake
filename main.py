@@ -425,8 +425,7 @@ while ongoing:
 
 # Closing the program
 try:
-    if game.save_number is not None:
-        game.save()
-except (NameError, AttributeError):   # incase the variables to be saved haven't been assigned yet
+    game.save()
+except (NameError, AttributeError, ValueError):   # incase saving is not yet possible
     pass
 pygame.quit()
