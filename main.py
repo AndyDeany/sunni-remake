@@ -235,9 +235,7 @@ while ongoing:
         # When 'play' is pressed; starting a new game save
         elif game.current == "start new game":
             load_game_screen.display(0, 0)
-
-            save_names = [game.display_save_name(1, (450, 230)), game.display_save_name(2, (450, 349)),
-                          game.display_save_name(3, (450, 468)), game.display_save_name(4, (450, 587))]
+            save_names = [game.display_save_name(n, (450, 230 + 119*n)) for n in range(1, 5)]
 
             if game.keys.receiving_text_input:
                 enter_character_name.display(0, 0)
