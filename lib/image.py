@@ -11,6 +11,7 @@ class Surface:
 
     def __init__(self, default_coords: tuple):
         self.default_x, self.default_y = default_coords
+        self.image = None
 
     def display(self, x=None, y=None, *, screen=None):
         x = x if x is not None else self.default_x

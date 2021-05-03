@@ -1399,7 +1399,6 @@ class Keys:
 
     @classmethod
     def process_single_character_input(cls, keys_pressed, maximum_characters, input_text):
-        # -*- coding: utf-8 -*-
         if cls.backspace_held and input_text != "":
             input_text = input_text[:-1]
 

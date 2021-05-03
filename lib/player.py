@@ -1,5 +1,4 @@
 from lib.image import Image
-from lib.music import Audio
 from lib.move import Kick, Headbutt, Frostbeam, Heal
 from lib.character import Character, NotEnoughManaError
 

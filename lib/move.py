@@ -316,4 +316,3 @@ class Spin(MemeDogMove):
             self.spin_duration = 0
             self.user.x = self.start_x
             self.opponent.next_move()
-
