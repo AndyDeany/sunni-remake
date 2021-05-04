@@ -165,7 +165,7 @@ while game.is_running:
                         save.button_flared.display()
                         save.display_name()
                         if game.mouse.left:
-                            game.select_save(save.number)
+                            game.select_save(save)
 
             if game.selected_save is not None:
                 if game.selected_save.is_empty or save_confirmed:

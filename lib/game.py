@@ -67,10 +67,7 @@ class Game:
 
     def select_save(self, save):
         """Sets the save with the given number as the selected save."""
-        if isinstance(save, int):
-            self.selected_save = self.saves[save]
-        else:
-            self.selected_save = save
+        self.selected_save = save
 
     def display_save_names(self):
         """Displays all save names (for showing on the saves page)."""
