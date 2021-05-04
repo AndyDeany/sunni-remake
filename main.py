@@ -191,9 +191,6 @@ while ongoing:
             if game.mouse.left and current_time <= 5:
                 start_time = time.time() - 5
 
-    # Other screens
-    elif game.options.is_showing:
-        game.options.display()
     elif game.current == "opening sequence":
         if current_time < 8:
             title_screen.display()
@@ -207,6 +204,9 @@ while ongoing:
         else:
             game.current = "title"
             game.music.play_music(game.TITLE_SCREEN_MUSIC)
+
+    elif game.options.is_showing:   # Options takes priority from all screens outside the opening sequence
+        game.options.display()
 
     elif game.current == "title":
         main_menu.display()

@@ -1,24 +1,14 @@
 import pygame
 
 
-def set_pygame_volume(volume):
-    """Sets the pygame.mixer.music volume without letting it go to 0 unless it actually should be."""
-    volume *= 0.01  # Adjusting from percentage
-    if 0.0005 < volume < 0.0078125:
-        print("hi")
-        volume = 0.0078125
-    pygame.mixer.music.set_volume(volume)
-
-
 class Audio:
     def __init__(self, file_name, volume_multiplier=1.0):
         self.path = f"../audio/{file_name}"
+        self.sound = pygame.mixer.Sound(self.path)
         self.volume_multiplier = volume_multiplier  # Used for adjusting tracks that are naturally too loud/quiet
 
-    def __play__(self, volume, *, loop):
-        pygame.mixer.music.load(self.path)
-        set_pygame_volume(volume * self.volume_multiplier)
-        pygame.mixer.music.play(-1 if loop else 0)
+    def __play__(self, channel, *, loop):
+        channel.play(self.sound, -1 if loop else 0)
 
 
 class Music:
@@ -26,30 +16,42 @@ class Music:
         self.game = game
         self._volume = 100
         self.is_muted = False
-        self.currently_playing = None
+        self.current_music = None
+        self.current_sound = None
+
+        self.music_channel = pygame.mixer.Channel(0)
+        self.sound_channel = pygame.mixer.Channel(1)    # Can add more if multiple sounds need to play simultaneously
 
     def play_music(self, audio: Audio):
-        self.stop()
-        self.play(audio, loop=True)
-        self.currently_playing = audio
+        self.stop_music()
+        audio.__play__(self.music_channel, loop=True)
+        self.current_music = audio
+        if not self.is_muted:
+            self.set_unmuted_pygame_volume()
 
     def play_sound(self, audio: Audio):
-        self.play(audio, loop=False)
+        audio.__play__(self.sound_channel, loop=False)
+        self.current_sound = audio
+        if not self.is_muted:
+            self.set_unmuted_pygame_volume()
 
-    def play(self, audio: Audio, *, loop: bool):
-        audio.__play__(self.volume, loop=loop)
+    def stop_music(self):
+        self.music_channel.stop()
 
-    @staticmethod
-    def stop():
-        pygame.mixer.music.stop()
+    def stop_sounds(self):
+        self.sound_channel.stop()
 
-    @staticmethod
-    def pause():
-        pygame.mixer.music.pause()
+    def pause_music(self):
+        self.music_channel.pause()
 
-    @staticmethod
-    def unpause():
-        pygame.mixer.music.unpause()
+    def unpause_music(self):
+        self.music_channel.unpause()
+
+    def pause_sounds(self):
+        self.sound_channel.pause()
+
+    def unpause_sounds(self):
+        self.sound_channel.unpause()
 
     @property
     def volume(self):
@@ -60,15 +62,28 @@ class Music:
         self._volume = value
         self.set_unmuted_pygame_volume()
 
+    @staticmethod
+    def pygame_volume(volume):
+        """Converts the given volume to one that can be fed to pygame.mixer's set_volume() method."""
+        volume *= 0.01  # Adjusting from percentage
+        if 0.0005 < volume < 0.0078125:
+            volume = 0.0078125  # pygame's min volume. This stops it going silent when volume is low but not muted.
+        return volume
+
     def set_unmuted_pygame_volume(self):
         self.is_muted = False
-        volume = self.volume
-        if self.currently_playing is not None:
-            volume *= self.currently_playing.volume_multiplier
-        set_pygame_volume(volume)
+        music_volume = self.volume
+        if self.current_music is not None:
+            music_volume *= self.current_music.volume_multiplier
+        self.music_channel.set_volume(self.pygame_volume(music_volume))
+        sound_volume = self.volume
+        if self.current_sound is not None:
+            sound_volume *= self.current_sound.volume_multiplier
+        self.sound_channel.set_volume(self.pygame_volume(sound_volume))
 
     def mute(self):
-        pygame.mixer.music.set_volume(0)
+        self.music_channel.set_volume(0)
+        self.sound_channel.set_volume(0)
         self.is_muted = True
 
     def unmute(self):

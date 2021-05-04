@@ -71,7 +71,7 @@ class Game:
         self.load_battle(save_lines[2])
         character = save_lines[3]
 
-        self.music.stop()
+        self.music.stop_music()
         self.player = Player(self, character_name, character, level=character_level)
         self.current = "choose ability"
 

@@ -34,11 +34,11 @@ class Options:
     def show(self):
         self.just_selected = True
         self.is_showing = True
-        self.game.music.pause()
+        self.game.music.pause_sounds()
 
     def hide(self):
         self.is_showing = False
-        self.game.music.unpause()
+        self.game.music.unpause_sounds()
 
     def display(self):
         if self.just_selected:
