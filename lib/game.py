@@ -3,20 +3,23 @@ import time
 
 import pygame
 
-from lib.character import Character
 from lib.mouse import Mouse
 from lib.keys import Keys
 from lib.music import Music
-from lib.image import Image
+from lib.image import Image, Surface
 from lib.options import Options
 from lib.save import Save
-from lib.player import Player
+
 from lib.opening_sequence import OpeningSequence
 from lib.main_menu import MainMenu
 from lib.new_game_page import NewGamePage
 from lib.load_game_page import LoadGamePage
+
+from lib.character import Character
 from lib.battle import Battle
+from lib.player import Player
 from lib.meme_dog import MemeDog
+from lib.move import Move
 
 
 class Game:
@@ -49,15 +52,24 @@ class Game:
         self.is_running = True
         self.battle = None
         self.main_menu = MainMenu(self)
-        OpeningSequence.initialise()
-        NewGamePage.initialise()
-        LoadGamePage.initialise()
         self.opening_sequence = OpeningSequence(self)
         self.opening_sequence.visit()
         self.new_game_page = NewGamePage(self)
         self.load_game_page = LoadGamePage(self)
         self.player = None
         self.opponent = Character(self, None, 100, 100)
+        self.initialise()
+        OpeningSequence.initialise()
+        NewGamePage.initialise()
+        LoadGamePage.initialise()
+        Surface.initialise(self)
+        Options.initialise()
+        Move.initialise(self)
+        Character.initialise()
+        Player.initialise()
+        MainMenu.initialise()
+        MemeDog.initialise()
+        Battle.initialise()
 
     @property
     def icon(self):

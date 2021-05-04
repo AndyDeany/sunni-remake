@@ -1,16 +1,8 @@
 import pygame
 
 from lib.game import Game
-from lib.options import Options
-from lib.main_menu import MainMenu
-from lib.image import Surface, Image, Text
-from lib.player import Player
-from lib.move import Move
-from lib.character import Character
-from lib.meme_dog import MemeDog
-from lib.battle import Battle
-from lib.color import Color
-from lib.font import Font
+from lib.image import Image
+from lib.page import Page
 
 
 pygame.init()
@@ -24,15 +16,6 @@ load_file = False
 
 # Setting up screen
 pygame.display.set_caption("Sunni (Alpha 3.0)")
-Surface.initialise(game)
-Game.initialise()
-Options.initialise()
-Move.initialise(game)
-Character.initialise()
-Player.initialise()
-MainMenu.initialise()
-MemeDog.initialise()
-Battle.initialise()
 
 
 # Images ---------------------------------------------------------------------------------------------------------------
@@ -115,27 +98,17 @@ while game.is_running:
 
     if game.current == game.opening_sequence:
         game.current.run()
-
     elif game.options.is_showing:   # Options takes priority from all screens outside the opening sequence
         game.options.display()
-
-    elif game.current == game.main_menu:
+    elif isinstance(game.current, Page):
         game.current.run()
-
-    elif game.current == game.new_game_page:
-        game.current.run()
-
-    elif game.current == game.load_game_page:
-        game.current.run()
-
     elif game.battle is not None:
         game.battle.run_all()
-
     else:
         print(f"Probably not meant to be here! {game.current=}")
 
-    pygame.display.flip()   # Updating the screen at the end of drawing
-    game.clock.tick(game.fps)          # Setting fps limit
+    pygame.display.flip()       # Updating the screen at the end of drawing
+    game.clock.tick(game.fps)   # Setting fps limit
 
 
 # Closing the program
