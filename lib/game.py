@@ -6,7 +6,7 @@ import pygame
 from lib.character import Character
 from lib.mouse import Mouse
 from lib.keys import Keys
-from lib.music import Music, Audio
+from lib.music import Music
 from lib.image import Image
 from lib.options import Options
 from lib.save import Save
@@ -31,6 +31,7 @@ class Game:
     def __init__(self):
         self.options = Options(self)
         self.screen = pygame.display.set_mode(self.options.window_size)
+        self.icon = Image("sunni_game_icon.png")
         self.keys = Keys(self)
         self.current = None
         self.file_directory = os.getcwd()[:-3]
@@ -51,6 +52,15 @@ class Game:
         self.opening_sequence.visit()
         self.player = None
         self.opponent = Character(self, None, 100, 100)
+
+    @property
+    def icon(self):
+        return self._icon
+
+    @icon.setter
+    def icon(self, icon: Image):
+        self._icon = icon
+        pygame.display.set_icon(icon.image)
 
     def save(self):
         self.selected_save.save(self.player.name, self.player.level, self.opponent.name, self.player.character)

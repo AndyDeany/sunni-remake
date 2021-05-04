@@ -19,7 +19,7 @@ class Key:
         self.just_pressed = True
         self.is_pressed = True
 
-    def up(self):
+    def up(self):   # pylint: disable=invalid-name
         self.is_pressed = False
 
 

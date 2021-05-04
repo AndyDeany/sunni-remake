@@ -111,7 +111,7 @@ class Battle:
                         if self.game.mouse.left:
                             self.player.use_move(move)
 
-                if self.game.mouse.left and not (self.game.mouse.is_in(*character_boundaries) or self.game.options.is_showing):
+                if self.game.mouse.left and not self.game.mouse.is_in(*character_boundaries):
                     self.player.selected_moves = None
 
         # Opponent dead/Victory screen

@@ -36,10 +36,6 @@ Battle.initialise()
 
 
 # Images ---------------------------------------------------------------------------------------------------------------
-# Game icon
-game_icon = Image("sunni_game_icon.png")
-pygame.display.set_icon(game_icon.image)  # Setting the icon
-
 # Load screens
 load_game_screen = Image("sunni_load_game_screen.png", (0, 0))
 enter_character_name = Image("sunni_enter_character_name.png")
@@ -103,22 +99,13 @@ ghost_dog_side_claw_fade60 = Image("sunni_ghost_dog_side_claw_fade60.png")
 ghost_dog_side_claw_fade80 = Image("sunni_ghost_dog_side_claw_fade80.png")
 
 
-
-
-# Text -----------------------------------------------------------------------------------------------------------------
-# Opening screen - Start
-
-
-# Title screen - Start
-
-
 # Main program loop
 while game.is_running:
     game.run()
 
     # Main event loop (dealing with user input)
-    for event in pygame.event.get():                    # i.e. Whenever the user does something                                                                                                                          
-        if event.type == pygame.QUIT:                   # i.e. The user clicks close                                    
+    for event in pygame.event.get():                    # i.e. Whenever the user does something
+        if event.type == pygame.QUIT:                   # i.e. The user clicks close
             game.is_running = False                     # Show that the user is finished
         elif event.type == pygame.TEXTINPUT:
             game.keys.process_text_input(event)

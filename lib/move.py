@@ -31,7 +31,7 @@ class Move:
         raise NotImplementedError(f"{type(self)}.run() not implemented.")
 
 
-class PlayerMove(Move):
+class PlayerMove(Move):     # noqa pylint: disable=abstract-method
     def __init__(self, mana_cost):
         super().__init__(mana_cost)
         self.icon = None
@@ -209,7 +209,7 @@ def opponent_move(player_move_subclass):
 OpponentHeal = opponent_move(Heal)
 
 
-class MemeDogMove(Move):
+class MemeDogMove(Move):    # noqa pylint: disable=abstract-method
     def __init__(self, mana_cost):
         super().__init__(mana_cost)
         self.sounds = [Audio(f"sunni_dog_attack{n}.ogg") for n in range(1, 4)]
