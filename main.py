@@ -183,7 +183,7 @@ while game.is_running:
             if game.selected_save is not None:
                 if game.selected_save.is_empty or save_confirmed:
                     game.music.stop_music()
-                    game.current = "choose character"
+                    game.current = Player.CHOOSE_CHARACTER
                     game.load_battle("Meme Dog")
                 else:
                     game.display_sure = True
