@@ -46,3 +46,8 @@ or is transparent for 1 column of pixels on the left (probably the latter)
 * Potential/Foreseen: Next battle's dead body shows after winning a fight due to `game.opponent`
 being changed to the next opponent pre-emptively in `game.load_next_battle`...
 Try think of a fix if this is an issue as predicted.
+
+### Other
+* Remove docstring ignores from `.pylintrc` at some point.
+
+* Once you've deleted old files, remove them from the ignored files in `.pylintrc` too.
