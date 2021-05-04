@@ -1,4 +1,5 @@
 import os
+import time
 
 import pygame
 
@@ -11,6 +12,7 @@ from lib.options import Options
 from lib.save import Save
 from lib.player import Player
 from lib.main_menu import MainMenu
+from lib.opening_sequence import OpeningSequence
 from lib.battle import Battle
 from lib.meme_dog import MemeDog
 
@@ -30,11 +32,13 @@ class Game:
         self.options = Options(self)
         self.screen = pygame.display.set_mode(self.options.window_size)
         self.keys = Keys(self)
-        self.current = "opening sequence"
+        self.current = None
         self.file_directory = os.getcwd()[:-3]
         self.mouse = Mouse()
         self.clock = pygame.time.Clock()
         self.fps = 30
+        self.start_time = time.time()
+        self.current_time = 0   # The amount of time the program as been running
         self.music = Music(self)
         self.saves = [Save(n) for n in range(4)]
         self.selected_save = None
@@ -42,6 +46,9 @@ class Game:
         self.is_running = True
         self.battle = None
         self.main_menu = MainMenu(self)
+        OpeningSequence.initialise()
+        self.opening_sequence = OpeningSequence(self)
+        self.opening_sequence.visit()
         self.player = None
         self.opponent = Character(self, None, 100, 100)
 
@@ -95,3 +102,8 @@ class Game:
         elif self.mouse.is_in(1082, 665, 1270, 715) and self.mouse.left:
             self.main_menu.visit()
 
+    def run(self):
+        self.current_time = time.time() - self.start_time
+        self.mouse.reset_buttons()
+        self.mouse.update_coordinates()
+        self.keys.reset()

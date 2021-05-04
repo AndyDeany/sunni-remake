@@ -39,7 +39,7 @@ class MainMenu(Page):
 
     def visit(self):
         """Go to the main menu."""
-        self.game.current = self.game.main_menu
+        super().visit()
         if self.game.music.current_music != self.MUSIC:
             self.game.music.play_music(self.MUSIC)
         self.game.select_save(None)

@@ -4,3 +4,6 @@ class Page:
 
     def run(self):
         raise NotImplementedError
+
+    def visit(self):
+        self.game.current = self

@@ -44,9 +44,6 @@ Battle.initialise()
 game_icon = Image("sunni_game_icon.png")
 pygame.display.set_icon(game_icon.image)  # Setting the icon
 
-# Title screen
-title_screen = Image("sunni_title_screen.png", (0, 0))
-
 # Load screens
 load_game_screen = Image("sunni_load_game_screen.png", (0, 0))
 enter_character_name = Image("sunni_enter_character_name.png")
@@ -120,24 +117,14 @@ choose_character_overlay = Image("sunni_choose_character_overlay.png")
 
 # Text -----------------------------------------------------------------------------------------------------------------
 # Opening screen - Start
-# REMOVE THIS, MAYBE ADD ANOTHER OPENING SCREEN WITH A LOGO + COMPANY NAME. MAKE CREDITS FOR NAMES)
-welcome_l1 = Text("Welcome to Sunni!", Font.OPENING, Color.BLACK)
-welcome_l2 = Text("This is coded entirely with Python and the pygame module!", Font.OPENING, Color.BLACK)
-welcome_l3 = Text("created by Andrew and co.", Font.OPENING, Color.BLACK)
-welcome_l4 = Text("Enjoy!", Font.OPENING, Color.BLACK)
+
 
 # Title screen - Start
-game_title = Text("SUNNI", Font.TITLE, Color.MURKY_YELLOW)
 
 
 # Main program loop
-start_time = time.time()
-
 while game.is_running:
-    current_time = time.time() - start_time     # Storing the current amount of time that the program has been running
-    game.mouse.reset_buttons()
-    game.mouse.update_coordinates()
-    game.keys.reset()
+    game.run()
 
     # Main event loop (dealing with user input)
     for event in pygame.event.get():                    # i.e. Whenever the user does something                                                                                                                          
@@ -155,37 +142,8 @@ while game.is_running:
         elif event.type == pygame.KEYUP:
             game.keys.process_key_up(event)
 
-    # Opening credits
-    if current_time < 5:
-        game.screen.fill(Color.MILD_BLUE)
-        welcome_l1.display(480, 100)
-        if game.mouse.left and current_time <= 2:   # Enables the user to skip through the starting sequence by clicking
-            start_time = time.time() - 0.5
-        if current_time > 0.5:
-            welcome_l2.display(150, 140)
-            if game.mouse.left and current_time <= 2:
-                start_time = time.time() - 2
-        if current_time > 2:
-            welcome_l3.display(690, 500)
-            if game.mouse.left and current_time <= 3:
-                start_time = time.time() - 3
-        if current_time > 3:
-            welcome_l4.display(590, 300)
-            if game.mouse.left and current_time <= 5:
-                start_time = time.time() - 5
-
-    elif game.current == "opening sequence":
-        if current_time < 8:
-            title_screen.display()
-            if game.mouse.left and current_time <= 6:
-                start_time = time.time() - 6
-
-            if current_time > 6:
-                game_title.display(555, 100)
-                if game.mouse.left:
-                    start_time = time.time() - 8
-        else:
-            game.main_menu.visit()
+    if game.current == game.opening_sequence:
+        game.current.run()
 
     elif game.options.is_showing:   # Options takes priority from all screens outside the opening sequence
         game.options.display()
