@@ -10,7 +10,6 @@ from lib.image import Image, Surface
 from lib.options import Options
 from lib.save import Save
 
-from lib.page import Page
 from lib.opening_sequence import OpeningSequence
 from lib.main_menu import MainMenu
 from lib.new_game_page import NewGamePage
@@ -61,7 +60,7 @@ class Game:
         self.load_game_page = LoadGamePage(self)
 
         self.player = None
-        self.opponent = Character(self, None, 100, 100)
+        self.opponent = None
 
         self.initialise()
         OpeningSequence.initialise()
