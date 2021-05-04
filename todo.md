@@ -9,9 +9,6 @@ potentially could be used with saves as well. Need an `on_click()`/`click()` met
 
 * use SCALED screen mode in fullscreen to make it """1080p""" (at least by mouse movement standards).
 
-* Change MemeDog AI to check the actual mana costs of
-moves and add them to the returned list in `attack_options()`
-
 * Probably shouldn't store an instance of each page in `Game()`
 as this means assets are never unloaded=memhog.
 Just create a new one to go to the page.
