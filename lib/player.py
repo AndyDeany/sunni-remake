@@ -21,7 +21,7 @@ class Player(Character):
         cls.MOVE_FROSTBEAM = Frostbeam()
         cls.MOVE_HEAL = Heal(160, 170, 350)
 
-    def __init__(self, game, name="Sunni", character=CHARACTER_1, *, level=1):
+    def __init__(self, game, name="Sunni", character=None, *, level=1):
         super().__init__(game, name, level=level, display_stat_x=170, display_stat_y_start=360)
         self.calculate_stats()
         self.x = 150
@@ -74,18 +74,18 @@ class Player(Character):
         try:
             self.change_mana(move)
         except NotEnoughManaError:
-            self.game.battle.show_mana_notification()
+            self.game.page.show_mana_notification()
         else:
             self.selected_moves = None
-            self.game.battle.hide_mana_notification()
-            self.game.current = move
+            self.game.page.hide_mana_notification()
+            self.game.page.current = move
 
     def next_move(self):
         """Continues to find out the player's next move."""
         if self.current_hp == 0:
-            self.game.current = self.DEAD
+            self.game.page.current = self.DEAD
             return
-        self.game.current = self.CHOOSE_ABILITY
+        self.game.page.current = self.CHOOSE_ABILITY
 
     def idle_display(self):
         self.idle_movement(self.x, self.y)

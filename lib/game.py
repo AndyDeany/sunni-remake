@@ -41,7 +41,7 @@ class Game:
         self.icon = Image("sunni_game_icon.png")
         self.caption = "Sunni (Alpha 3.0)"
         self.keys = Keys(self)
-        self.current = None
+        self.page = None
         self.file_directory = os.getcwd()[:-3]
         self.mouse = Mouse()
         self.clock = pygame.time.Clock()
@@ -52,7 +52,7 @@ class Game:
         self.saves = [Save(n) for n in range(4)]
         self.selected_save = None
         self.is_running = True
-        self.battle = None
+        self.next_battle = None
 
         self.main_menu = MainMenu(self)
         self.opening_sequence = OpeningSequence(self)
@@ -108,12 +108,11 @@ class Game:
 
     def load(self):
         """Load the game state represented by self.selected_save."""
-        self.load_battle(self.selected_save.opponent_name)
-        self.music.stop_music()
         self.player = self.selected_save.create_player(self)
-        self.current = Player.CHOOSE_ABILITY
+        self.load_next_battle(self.selected_save.opponent_name)
+        self.commence_next_battle()
 
-    def load_battle(self, name):
+    def load_next_battle(self, name):
         if name == "Meme Dog":
             self.opponent = MemeDog(self)
         elif name == "Kanye Snake":
@@ -131,7 +130,13 @@ class Game:
         else:
             raise ValueError(f"Unknown opponent: '{name}'")
 
-        self.battle = Battle(self, self.opponent)
+        self.next_battle = Battle(self, self.opponent)
+
+    def commence_next_battle(self):
+        """Commence the previously loaded next_battle."""
+        self.music.stop_music()
+        self.page = self.next_battle
+        self.next_battle = None
 
     def run_options_and_return_to_title_logic(self):
         self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
@@ -158,28 +163,6 @@ class Game:
             elif event.type == pygame.KEYUP:
                 self.keys.process_key_up(event)
 
-    def run(self):
-        """Code that is executed once per frame - the body of the main program loop."""
-        self.current_time = time.time() - self.start_time
-        self.mouse.reset_buttons()
-        self.mouse.update_coordinates()
-        self.keys.reset()
-        self.event_handling()
-
-        if self.current == self.opening_sequence:
-            self.current.run()
-        elif self.options.is_showing:  # Options takes priority from all screens aside from the opening sequence
-            self.options.display()
-        elif isinstance(self.current, Page):
-            self.current.run()
-        elif self.battle is not None:
-            self.battle.run_all()
-        else:
-            print(f"Probably not meant to be here! {self.current=}")
-
-        pygame.display.flip()       # Updating the screen at the end of drawing
-        self.clock.tick(self.fps)   # Setting fps limit
-
     def loop(self):
         """Run the main program loop."""
         while self.is_running:
@@ -192,3 +175,19 @@ class Game:
             pass
 
         pygame.quit()
+
+    def run(self):
+        """Code that is executed once per frame - the body of the main program loop."""
+        self.current_time = time.time() - self.start_time
+        self.mouse.reset_buttons()
+        self.mouse.update_coordinates()
+        self.keys.reset()
+        self.event_handling()
+
+        if self.options.is_showing and not self.page == self.opening_sequence:
+            self.options.display()
+        else:
+            self.page.run()
+
+        pygame.display.flip()       # Updating the screen at the end of drawing
+        self.clock.tick(self.fps)   # Setting fps limit

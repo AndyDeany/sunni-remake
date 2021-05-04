@@ -1,3 +1,4 @@
+from lib.page import Page
 from lib.image import Image, Text
 from lib.font import Font
 from lib.color import Color
@@ -5,7 +6,7 @@ from lib.player import Player
 from lib.move import Move
 
 
-class Battle:
+class Battle(Page):
 
     @classmethod
     def initialise(cls):
@@ -15,12 +16,17 @@ class Battle:
         cls.CHARACTER_CHOICE2 = Image("sunni_character2_normal1.png")
 
     def __init__(self, game, opponent):
-        self.game = game
+        super().__init__(game)
         self.opponent = opponent
 
         self.not_enough_mana = Text("You don't have enough mana to use that", Font.OPENING, Color.MANA_BLUE, (300, 200))
         self.mana_notification_duration = 0
         self.mana_notification_total_duration = 2 * self.game.fps
+
+        if self.game.player.character is None:
+            self.current = Player.CHOOSE_CHARACTER
+        else:
+            self.current = Player.CHOOSE_ABILITY
 
     @property
     def player(self):
@@ -34,24 +40,16 @@ class Battle:
     def opponent(self, value):
         self.game.opponent = value
 
-    @property
-    def current(self):
-        return self.game.current
-
-    @current.setter
-    def current(self, value):
-        self.game.current = value
-
-    def run_all(self):
+    def run(self):
         """Runs the early_run(), run(), and late_run() methods."""
         self.show_background()
-        if self.game.current == Player.CHOOSE_CHARACTER:
+        if self.current == Player.CHOOSE_CHARACTER:
             self.run_choose_character()
             return
-        self.run()
+        self.run_main()
         self.late_run()
 
-    def run(self):
+    def run_main(self):
         self.player.display_info()
         self.opponent.display_info()
 
@@ -122,19 +120,15 @@ class Battle:
             self.game.CONTINUE_BUTTON.display()
             self.game.RETURN_TO_TITLE_BUTTON.display()
 
-            # levelup, changing battle to kanye snake, saving, should all really be done here
-            # but need to find a way to do that whilst still running the code for this battle
+            if self.game.next_battle is None:
+                self.player.level_up()
+                self.game.load_next_battle("Kanye Snake")
+                self.game.save()
 
             if self.game.mouse.left:
                 if self.game.mouse.is_in(1000, 600, 1120, 650):
-                    self.player.level_up()
-                    self.game.load_battle("Kanye Snake")
-                    self.game.save()
-                    self.current = self.player.CHOOSE_ABILITY
+                    self.game.commence_next_battle()
                 elif self.game.mouse.is_in(80, 600, 268, 650):
-                    self.player.level_up()
-                    self.game.load_battle("Kanye Snake")
-                    self.game.save()
                     self.game.main_menu.visit()
 
         # Player dead/Defeat screen
@@ -151,7 +145,7 @@ class Battle:
                 if self.game.mouse.is_in(1000, 600, 1200, 700):
                     self.player.level_up(0.25)
                     self.game.save()
-                    self.current = self.player.CHOOSE_ABILITY
+                    self.current = Player.CHOOSE_ABILITY
                     self.player.fully_restore()
                     self.game.opponent.fully_restore()
                 elif self.game.mouse.is_in(80, 600, 268, 650):
@@ -197,4 +191,4 @@ class Battle:
                 self.player.character = Player.CHARACTER_2
 
             if self.player.character is not None:
-                self.game.current = Player.CHOOSE_ABILITY
+                self.current = Player.CHOOSE_ABILITY

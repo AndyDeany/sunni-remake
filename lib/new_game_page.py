@@ -69,8 +69,7 @@ class NewGamePage(SavePage):
 
         if self.game.selected_save is not None:
             if self.game.selected_save.is_empty or save_confirmed:
-                self.game.music.stop_music()
-                self.game.current = Player.CHOOSE_CHARACTER
-                self.game.load_battle("Meme Dog")
+                self.game.load_next_battle("Meme Dog")
+                self.game.commence_next_battle()
             else:
                 self.display_sure = True

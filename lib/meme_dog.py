@@ -34,11 +34,11 @@ class MemeDog(Character):
     def next_move(self):
         """Chooses and uses the dog's next move."""
         if self.current_hp == 0:
-            self.game.current = self.DEAD
+            self.game.page.current = self.DEAD
             return
         next_move = self.choose_move()
         self.change_mana(next_move)
-        self.game.current = next_move
+        self.game.page.current = next_move
 
     def choose_move(self):
         """Return the name of the next move that the dog decides to use."""
