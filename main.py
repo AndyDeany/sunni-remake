@@ -204,6 +204,7 @@ while ongoing:
         else:
             game.current = "title"
             game.music.play_music(game.TITLE_SCREEN_MUSIC)
+            game.save_number = None
 
     elif game.options.is_showing:   # Options takes priority from all screens outside the opening sequence
         game.options.display()
@@ -298,6 +299,7 @@ while ongoing:
         elif game.mouse.is_in(1082, 665, 1270, 715) and game.mouse.left and not game.options.is_showing:
             game.current = "title"
             game.music.play_music(game.TITLE_SCREEN_MUSIC)
+            game.save_number = None
 
     # When 'load' is pressed; loading a previous save
     elif game.current == "load save file":
@@ -339,6 +341,7 @@ while ongoing:
         elif game.mouse.is_in(1082, 665, 1270, 715) and game.mouse.left and not game.options.is_showing:
             game.current = "title"
             game.music.play_music(game.TITLE_SCREEN_MUSIC)
+            game.save_number = None
 
     elif game.current == "choose character":
         game.battle.show_background()
