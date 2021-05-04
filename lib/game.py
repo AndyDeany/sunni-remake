@@ -183,7 +183,7 @@ class Game:
         self.keys.reset()
         self.event_handling()
 
-        if self.options.is_showing and not self.page == self.opening_sequence:
+        if self.options.is_showing and self.page != self.opening_sequence:
             self.options.display()
         else:
             self.page.run()

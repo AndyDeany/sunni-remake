@@ -22,7 +22,7 @@ class Save:
         with open(self.file_name, "r") as save_file:
             save_lines = save_file.read().splitlines()
         self.player_name = save_lines[0]
-        self.player_level = int(save_lines[1])
+        self.player_level = float(save_lines[1])
         self.opponent_name = save_lines[2]
         self.player_character = save_lines[3]
 

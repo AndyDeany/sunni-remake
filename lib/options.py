@@ -3,7 +3,6 @@ import pygame
 from lib.image import Image, Text
 from lib.color import Color
 from lib.font import Font
-from lib.player import Player
 
 
 class Options:

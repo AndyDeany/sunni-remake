@@ -54,12 +54,16 @@ class Player(Character):
         self.character_headbutt_stance = Image(f"sunni_{character}_headbutt_stance.png")
         self.character_frostbeam_stance = Image(f"sunni_{character}_frostbeam_stance.png", (self.x, self.y))
 
-    def level_up(self, levels=1):
+    def level_up(self, levels=1, restore=True):
+        """Level the player up by the given number of levels (default 1).
+        Restores the player to full if they pass an integer level and `restore==True` (default).
+        """
         old_level = self.level
         self.level += levels
         if int(self.level) > int(old_level):    # i.e. if we actually levelled up
             self.calculate_stats()
-            self.fully_restore()
+            if restore:
+                self.fully_restore()
 
     def calculate_stats(self):
         self.max_hp = 90 + 10*int(self.level)
@@ -84,6 +88,8 @@ class Player(Character):
         """Continues to find out the player's next move."""
         if self.current_hp == 0:
             self.game.page.current = self.DEAD
+            self.level_up(0.25, restore=False)
+            self.game.save()
             return
         self.game.page.current = self.CHOOSE_ABILITY
 
