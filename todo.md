@@ -22,6 +22,11 @@ just make you sure you go through and do it.
 * Go through attributes of game in `Game().__init__()` and see if any are only
 used in one class (that isn't game). If so, move it there!
 
+* Could make `CHOOSE_ABILITY`, `opponent.DEAD`, and `player.DEAD` members of the
+`Move` class somehow so that `Battle().current` is always a `Move`? Unsure if
+this makes complete sense. Perhaps it can be a subclass of a new
+`State` (or `BattleState`) parent class that `Move` will also inherit from.
+
 * Could (distant-ish future) have like a `Playthrough` class which takes most of `Game`'s logic.
 This would be so that when you load into a save or start a new one,
 a new `Playthrough()` instance could be created with all attributes
