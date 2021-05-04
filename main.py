@@ -192,181 +192,173 @@ while ongoing:
                 start_time = time.time() - 5
 
     # Other screens
-    else:
-        game.screen.fill(Color.WHITE)
-        if game.current == "opening sequence":
-            if current_time < 8:
-                title_screen.display()
-                if game.mouse.left and current_time <= 6:
-                    start_time = time.time() - 6
+    elif game.options.is_showing:
+        game.options.display()
+    elif game.current == "opening sequence":
+        if current_time < 8:
+            title_screen.display()
+            if game.mouse.left and current_time <= 6:
+                start_time = time.time() - 6
 
-                if current_time > 6:
-                    game_title.display(555, 100)
-                    if game.mouse.left:
-                        start_time = time.time() - 8
-            else:
-                game.current = "title"
-                game.music.play_music(game.TITLE_SCREEN_MUSIC)
-
-        elif game.current == "title":
-            main_menu.display()
-            if game.mouse.is_in(535, 269, 744, 345) and not game.options.is_showing:   # Play button
-                menu_play_flared.display()
+            if current_time > 6:
+                game_title.display(555, 100)
                 if game.mouse.left:
-                    game.keys.start_text_input(16, default_text="Sunni")
-                    game.current = "start new game"
-            elif game.mouse.is_in(406, 375, 877, 451) and not game.options.is_showing:    # Load button
-                menu_load_flared.display()
-                if game.mouse.left:
-                    game.current = "load save file"
-            elif game.mouse.is_in(461, 481, 817, 557) and not game.options.is_showing:    # Options button
-                menu_options_flared.display()
-                if game.mouse.left:
-                    game.options.is_showing = True
-                    options_just_selected = True
-            elif game.mouse.is_in(547, 585, 734, 661) and not game.options.is_showing:    # Exit button
-                menu_exit_flared.display()
-                if game.mouse.left:
-                    ongoing = False
-            elif game.keys.escape and not game.options.is_showing:
-                game.options.is_showing = True
-                options_just_selected = True
-
-        # When 'play' is pressed; starting a new game save
-        elif game.current == "start new game":
-            load_game_screen.display(0, 0)
-            save_names = [game.display_save_name(n, (450, 230 + 119*n)) for n in range(1, 5)]
-
-            if game.keys.receiving_text_input:
-                enter_character_name.display(0, 0)
-                if game.keys.text_input:    # Only allow the user to continue with a name entered.
-                    if game.keys.enter or game.keys.numpad_enter:
-                        game.keys.stop_text_input()
-                    if game.mouse.is_in(553, 404, 727, 442) and not game.options.is_showing:
-                        continue_button_flared.display(0, 0)
-                        if game.mouse.left:
-                            game.keys.stop_text_input()
-                Text(game.keys.text_input, Font.SUNNI, Color.BLACK, (370, 338)).display()
-                if not game.keys.receiving_text_input:
-                    character_name = game.keys.text_input
-            else:
-                Text(f"Character name: {character_name}", Font.DEFAULT, Color.MILD_BLUE, (10, 10)).display()
-                save_confirmed = False
-                if game.display_sure:
-                    are_you_sure.display(0, 0)
-                    if game.mouse.is_in(555, 398, 630, 437) and not game.options.is_showing:
-                        sure_yes_flared.display(0, 0)
-                        if game.mouse.left:
-                            save_confirmed = True
-                            game.display_sure = False
-                    elif game.mouse.is_in(648, 398, 723, 437) and not game.options.is_showing:
-                        sure_no_flared.display(0, 0)
-                        if game.mouse.left:
-                            game.save_number = None
-                            game.display_sure = False
-                elif not game.options.is_showing:
-                    if game.mouse.is_in(355, 225, 925, 338):
-                        load1_flared.display(0, 0)
-                        game.display_save_name(1, (450, 230))
-                        if game.mouse.left:
-                            game.save_number = "1"
-                    elif game.mouse.is_in(355, 344, 925, 457):
-                        load2_flared.display(0, 0)
-                        game.display_save_name(2, (450, 349))
-                        if game.mouse.left:
-                            game.save_number = "2"
-                    elif game.mouse.is_in(355, 463, 925, 576):
-                        load3_flared.display(0, 0)
-                        game.display_save_name(3, (450, 468))
-                        if game.mouse.left:
-                            game.save_number = "3"
-                    elif game.mouse.is_in(355, 582, 925, 695):
-                        load4_flared.display(0, 0)
-                        game.display_save_name(4, (450, 587))
-                        if game.mouse.left:
-                            game.save_number = "4"
-                if game.save_number is not None:
-                    if save_names[int(game.save_number)-1] == "No save data" or save_confirmed:
-                        game.music.stop()
-                        game.current = "choose character"
-                        game.load_battle("Meme Dog")
-                    else:
-                        game.display_sure = True
-
-            game.RETURN_TO_TITLE_BUTTON.display(1082, 665)
-            game.OPTIONS_BUTTON.display(10, 665)
-            if (game.keys.escape or (game.mouse.is_in(10, 665, 100, 715) and game.mouse.left == 1)) and not game.options.is_showing:
-                game.options.is_showing = True
-                options_just_selected = True
-            elif game.mouse.is_in(1082, 665, 1270, 715) and game.mouse.left and not game.options.is_showing:
-                game.current = "title"
-                game.music.play_music(game.TITLE_SCREEN_MUSIC)
-
-        # When 'load' is pressed; loading a previous save
-        elif game.current == "load save file":
-            load_game_screen.display(0, 0)
-            save1_name = game.display_save_name(1, (450, 230))
-            save2_name = game.display_save_name(2, (450, 349))
-            save3_name = game.display_save_name(3, (450, 468))
-            save4_name = game.display_save_name(4, (450, 587))
-
-            if game.mouse.is_in(355, 225, 925, 338) and not game.options.is_showing:
-                load1_flared.display(0, 0)
-                game.display_save_name(1, (450, 230))
-                if game.mouse.left and save1_name != "No save data":
-                    game.save_number = "1"
-                    game.load_save()
-            elif game.mouse.is_in(355, 344, 925, 457) and not game.options.is_showing:
-                load2_flared.display(0, 0)
-                game.display_save_name(2, (450, 349))
-                if game.mouse.left and save2_name != "No save data":
-                    game.save_number = "2"
-                    game.load_save()
-            elif game.mouse.is_in(355, 463, 925, 576) and not game.options.is_showing:
-                load3_flared.display(0, 0)
-                game.display_save_name(3, (450, 468))
-                if game.mouse.left and save3_name != "No save data":
-                    game.save_number = "3"
-                    game.load_save()
-            elif game.mouse.is_in(355, 582, 925, 695) and not game.options.is_showing:
-                load4_flared.display(0, 0)
-                game.display_save_name(4, (450, 587))
-                if game.mouse.left and save4_name != "No save data":
-                    game.save_number = "4"
-                    game.load_save()
-
-            game.RETURN_TO_TITLE_BUTTON.display(1082, 665)
-            game.OPTIONS_BUTTON.display(10, 665)
-            if (game.keys.escape or (game.mouse.is_in(10, 665, 100, 715) and game.mouse.left == 1)) and not game.options.is_showing:
-                game.options.is_showing = True
-                options_just_selected = True
-            elif game.mouse.is_in(1082, 665, 1270, 715) and game.mouse.left and not game.options.is_showing:
-                game.current = "title"
-                game.music.play_music(game.TITLE_SCREEN_MUSIC)
-
+                    start_time = time.time() - 8
         else:
-            # Choose your character page
-            if game.current == "choose character":
-                game.battle.show_background()
-                choose_character_overlay.display(0, 0)
-                character_choice1.display(400, 300)
-                character_choice2.display(810, 300)
+            game.current = "title"
+            game.music.play_music(game.TITLE_SCREEN_MUSIC)
 
-                if game.mouse.left and not game.options.is_showing:
-                    character = None
-                    if game.mouse.is_in(400, 300, 470, 480):
-                        character = Player.CHARACTER_1
-                    elif game.mouse.is_in(810, 300, 880, 480):
-                        character = Player.CHARACTER_2
+    elif game.current == "title":
+        main_menu.display()
+        if game.mouse.is_in(535, 269, 744, 345) and not game.options.is_showing:   # Play button
+            menu_play_flared.display()
+            if game.mouse.left:
+                game.keys.start_text_input(16, default_text="Sunni")
+                game.current = "start new game"
+        elif game.mouse.is_in(406, 375, 877, 451) and not game.options.is_showing:    # Load button
+            menu_load_flared.display()
+            if game.mouse.left:
+                game.current = "load save file"
+        elif game.mouse.is_in(461, 481, 817, 557) and not game.options.is_showing:    # Options button
+            menu_options_flared.display()
+            if game.mouse.left:
+                game.options.show()
+        elif game.mouse.is_in(547, 585, 734, 661) and not game.options.is_showing:    # Exit button
+            menu_exit_flared.display()
+            if game.mouse.left:
+                ongoing = False
+        elif game.keys.escape and not game.options.is_showing:
+            game.options.show()
 
-                    if character is not None:
-                        game.player = Player(game, character_name, character)
-                        game.current = game.player.CHOOSE_ABILITY
-            # Default things that are in every battle screen
-            elif game.battle is not None:
-                game.battle.run_all()
+    # When 'play' is pressed; starting a new game save
+    elif game.current == "start new game":
+        load_game_screen.display(0, 0)
+        save_names = [game.display_save_name(n, (450, 230 + 119*n)) for n in range(1, 5)]
 
-        game.options.run()
+        if game.keys.receiving_text_input:
+            enter_character_name.display(0, 0)
+            if game.keys.text_input:    # Only allow the user to continue with a name entered.
+                if game.keys.enter or game.keys.numpad_enter:
+                    game.keys.stop_text_input()
+                if game.mouse.is_in(553, 404, 727, 442) and not game.options.is_showing:
+                    continue_button_flared.display(0, 0)
+                    if game.mouse.left:
+                        game.keys.stop_text_input()
+            Text(game.keys.text_input, Font.SUNNI, Color.BLACK, (370, 338)).display()
+            if not game.keys.receiving_text_input:
+                character_name = game.keys.text_input
+        else:
+            Text(f"Character name: {character_name}", Font.DEFAULT, Color.MILD_BLUE, (10, 10)).display()
+            save_confirmed = False
+            if game.display_sure:
+                are_you_sure.display(0, 0)
+                if game.mouse.is_in(555, 398, 630, 437) and not game.options.is_showing:
+                    sure_yes_flared.display(0, 0)
+                    if game.mouse.left:
+                        save_confirmed = True
+                        game.display_sure = False
+                elif game.mouse.is_in(648, 398, 723, 437) and not game.options.is_showing:
+                    sure_no_flared.display(0, 0)
+                    if game.mouse.left:
+                        game.save_number = None
+                        game.display_sure = False
+            elif not game.options.is_showing:
+                if game.mouse.is_in(355, 225, 925, 338):
+                    load1_flared.display(0, 0)
+                    game.display_save_name(1, (450, 230))
+                    if game.mouse.left:
+                        game.save_number = "1"
+                elif game.mouse.is_in(355, 344, 925, 457):
+                    load2_flared.display(0, 0)
+                    game.display_save_name(2, (450, 349))
+                    if game.mouse.left:
+                        game.save_number = "2"
+                elif game.mouse.is_in(355, 463, 925, 576):
+                    load3_flared.display(0, 0)
+                    game.display_save_name(3, (450, 468))
+                    if game.mouse.left:
+                        game.save_number = "3"
+                elif game.mouse.is_in(355, 582, 925, 695):
+                    load4_flared.display(0, 0)
+                    game.display_save_name(4, (450, 587))
+                    if game.mouse.left:
+                        game.save_number = "4"
+            if game.save_number is not None:
+                if save_names[int(game.save_number)-1] == "No save data" or save_confirmed:
+                    game.music.stop()
+                    game.current = "choose character"
+                    game.load_battle("Meme Dog")
+                else:
+                    game.display_sure = True
+
+        game.RETURN_TO_TITLE_BUTTON.display(1082, 665)
+        game.OPTIONS_BUTTON.display(10, 665)
+        if (game.keys.escape or (game.mouse.is_in(10, 665, 100, 715) and game.mouse.left == 1)) and not game.options.is_showing:
+            game.options.show()
+        elif game.mouse.is_in(1082, 665, 1270, 715) and game.mouse.left and not game.options.is_showing:
+            game.current = "title"
+            game.music.play_music(game.TITLE_SCREEN_MUSIC)
+
+    # When 'load' is pressed; loading a previous save
+    elif game.current == "load save file":
+        load_game_screen.display(0, 0)
+        save1_name = game.display_save_name(1, (450, 230))
+        save2_name = game.display_save_name(2, (450, 349))
+        save3_name = game.display_save_name(3, (450, 468))
+        save4_name = game.display_save_name(4, (450, 587))
+
+        if game.mouse.is_in(355, 225, 925, 338) and not game.options.is_showing:
+            load1_flared.display(0, 0)
+            game.display_save_name(1, (450, 230))
+            if game.mouse.left and save1_name != "No save data":
+                game.save_number = "1"
+                game.load_save()
+        elif game.mouse.is_in(355, 344, 925, 457) and not game.options.is_showing:
+            load2_flared.display(0, 0)
+            game.display_save_name(2, (450, 349))
+            if game.mouse.left and save2_name != "No save data":
+                game.save_number = "2"
+                game.load_save()
+        elif game.mouse.is_in(355, 463, 925, 576) and not game.options.is_showing:
+            load3_flared.display(0, 0)
+            game.display_save_name(3, (450, 468))
+            if game.mouse.left and save3_name != "No save data":
+                game.save_number = "3"
+                game.load_save()
+        elif game.mouse.is_in(355, 582, 925, 695) and not game.options.is_showing:
+            load4_flared.display(0, 0)
+            game.display_save_name(4, (450, 587))
+            if game.mouse.left and save4_name != "No save data":
+                game.save_number = "4"
+                game.load_save()
+
+        game.RETURN_TO_TITLE_BUTTON.display(1082, 665)
+        game.OPTIONS_BUTTON.display(10, 665)
+        if (game.keys.escape or (game.mouse.is_in(10, 665, 100, 715) and game.mouse.left == 1)) and not game.options.is_showing:
+            game.options.show()
+        elif game.mouse.is_in(1082, 665, 1270, 715) and game.mouse.left and not game.options.is_showing:
+            game.current = "title"
+            game.music.play_music(game.TITLE_SCREEN_MUSIC)
+
+    elif game.current == "choose character":
+        game.battle.show_background()
+        choose_character_overlay.display(0, 0)
+        character_choice1.display(400, 300)
+        character_choice2.display(810, 300)
+
+        if game.mouse.left and not game.options.is_showing:
+            character = None
+            if game.mouse.is_in(400, 300, 470, 480):
+                character = Player.CHARACTER_1
+            elif game.mouse.is_in(810, 300, 880, 480):
+                character = Player.CHARACTER_2
+
+            if character is not None:
+                game.player = Player(game, character_name, character)
+                game.current = game.player.CHOOSE_ABILITY
+
+    elif game.battle is not None:
+        game.battle.run_all()
 
     pygame.display.flip()   # Updating the screen at the end of drawing
     game.clock.tick(game.fps)          # Setting fps limit

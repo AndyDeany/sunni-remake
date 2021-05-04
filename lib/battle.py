@@ -52,8 +52,7 @@ class Battle:
         self.game.OPTIONS_BUTTON.display(10, 665)
         if (self.game.keys.escape or (self.game.mouse.is_in(10, 665, 100, 715) and self.game.mouse.left == 1))\
                 and not self.game.options.is_showing and self.game.current != "choose_character":   # Focus on choosing your character!
-            self.game.options.is_showing = True
-            self.game.options.just_selected = True
+            self.game.options.show()
 
         # Default battle screen, where the player chooses which move to use
         if self.current == self.player.CHOOSE_ABILITY:

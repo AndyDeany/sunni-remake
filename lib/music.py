@@ -43,6 +43,14 @@ class Music:
     def stop():
         pygame.mixer.music.stop()
 
+    @staticmethod
+    def pause():
+        pygame.mixer.music.pause()
+
+    @staticmethod
+    def unpause():
+        pygame.mixer.music.unpause()
+
     @property
     def volume(self):
         return self._volume

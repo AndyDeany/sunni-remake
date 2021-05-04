@@ -23,20 +23,30 @@ class Options:
 
     def __init__(self, game):
         self.game = game
-        self.just_selected = True
+        self.just_selected = False
         self.is_showing = False
 
         self.fullscreen_enabled = False
         self.window_size = (1280, 720)
 
-    def run(self):
-        if self.is_showing:
-            self.display()
+        self.frozen_game = None
+
+    def show(self):
+        self.just_selected = True
+        self.is_showing = True
+        self.game.music.pause()
+
+    def hide(self):
+        self.is_showing = False
+        self.game.music.unpause()
 
     def display(self):
         if self.just_selected:
             self.just_selected = False
+            self.frozen_game = pygame.display.get_surface().copy()
             return
+        self.game.screen.blit(self.frozen_game, (0, 0))
+
         self.VOLUME_MINUS_BUTTON.display(430, 250)
         self.VOLUME_PLUS_BUTTON.display(490, 250)
         self.VOLUME_MUTE_BUTTON.display(570, 250)
@@ -46,7 +56,7 @@ class Options:
 
         self.RETURN_TO_GAME_BUTTON.display(10, 665)
         if self.game.keys.escape or (self.game.mouse.left and self.game.mouse.is_in(10, 665, 204, 715)):
-            self.is_showing = False
+            self.hide()
 
         if self.game.current not in ("choose character", "title"):
             self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
@@ -54,7 +64,7 @@ class Options:
                 self.game.save()  # TODO: Ask the player which save file they want to use?
                 self.game.current = "title"
                 self.game.music.play_music(self.game.TITLE_SCREEN_MUSIC)
-                self.is_showing = False
+                self.hide()
 
         # Showing the buttons as solid only if they can be clicked
         Text(f"Volume Level: {self.game.music.volume}%", Font.OPENING, Color.MILD_BLUE).display(80, 250)
