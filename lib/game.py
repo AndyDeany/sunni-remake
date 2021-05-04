@@ -11,8 +11,10 @@ from lib.image import Image
 from lib.options import Options
 from lib.save import Save
 from lib.player import Player
-from lib.main_menu import MainMenu
 from lib.opening_sequence import OpeningSequence
+from lib.main_menu import MainMenu
+from lib.new_game_page import NewGamePage
+from lib.load_game_page import LoadGamePage
 from lib.battle import Battle
 from lib.meme_dog import MemeDog
 
@@ -48,8 +50,12 @@ class Game:
         self.battle = None
         self.main_menu = MainMenu(self)
         OpeningSequence.initialise()
+        NewGamePage.initialise()
+        LoadGamePage.initialise()
         self.opening_sequence = OpeningSequence(self)
         self.opening_sequence.visit()
+        self.new_game_page = NewGamePage(self)
+        self.load_game_page = LoadGamePage(self)
         self.player = None
         self.opponent = Character(self, None, 100, 100)
 

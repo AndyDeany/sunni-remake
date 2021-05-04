@@ -20,12 +20,11 @@ class MainMenu(Page):
         if self.game.mouse.is_in(535, 269, 744, 345):       # Play button
             self.PLAY_BUTTON_FLARED.display()
             if self.game.mouse.left:
-                self.game.keys.start_text_input(16, default_text="Sunni")
-                self.game.current = "start new game"
+                self.game.new_game_page.visit()
         elif self.game.mouse.is_in(406, 375, 877, 451):     # Load button
             self.LOAD_BUTTON_FLARED.display()
             if self.game.mouse.left:
-                self.game.current = "load save file"
+                self.game.load_game_page.visit()
         elif self.game.mouse.is_in(461, 481, 817, 557):     # Options button
             self.OPTIONS_BUTTON_FLARED.display()
             if self.game.mouse.left:

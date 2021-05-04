@@ -37,12 +37,6 @@ Battle.initialise()
 
 # Images ---------------------------------------------------------------------------------------------------------------
 # Load screens
-load_game_screen = Image("sunni_load_game_screen.png", (0, 0))
-enter_character_name = Image("sunni_enter_character_name.png")
-continue_button_flared = Image("sunni_continue_button_flared.png")
-are_you_sure = Image("sunni_are_you_sure.png")
-sure_yes_flared = Image("sunni_sure_yes_flared.png", (0, 0))
-sure_no_flared = Image("sunni_sure_no_flared.png", (0, 0))
 
 # Snake
 snake_normal = Image("sunni_snake_normal.png")
@@ -128,74 +122,17 @@ while game.is_running:
     elif game.current == game.main_menu:
         game.current.run()
 
-    elif game.current == "start new game":
-        load_game_screen.display()
-        game.display_save_names()
+    elif game.current == game.new_game_page:
+        game.current.run()
 
-        if game.keys.receiving_text_input:
-            enter_character_name.display(0, 0)
-            if game.keys.text_input:    # Only allow the user to continue with a name entered.
-                if game.keys.enter or game.keys.numpad_enter:
-                    game.keys.stop_text_input()
-                if game.mouse.is_in(553, 404, 727, 442):
-                    continue_button_flared.display(0, 0)
-                    if game.mouse.left:
-                        game.keys.stop_text_input()
-            Text(game.keys.text_input, Font.SUNNI, Color.BLACK, (370, 338)).display()
-            if not game.keys.receiving_text_input:
-                game.player = Player(game, game.keys.text_input)
-        else:
-            Text(f"Character name: {game.player.name}", Font.DEFAULT, Color.MILD_BLUE, (10, 10)).display()
-            save_confirmed = False
-            if game.display_sure:
-                are_you_sure.display(0, 0)
-                if game.mouse.is_in(555, 398, 630, 437):
-                    sure_yes_flared.display()
-                    if game.mouse.left:
-                        save_confirmed = True
-                        game.display_sure = False
-                elif game.mouse.is_in(648, 398, 723, 437):
-                    sure_no_flared.display()
-                    if game.mouse.left:
-                        game.select_save(None)
-                        game.display_sure = False
-            else:
-                for save in game.saves:
-                    if game.mouse.is_in(*save.button_boundaries):
-                        save.button_flared.display()
-                        save.display_name()
-                        if game.mouse.left:
-                            game.select_save(save)
-
-            if game.selected_save is not None:
-                if game.selected_save.is_empty or save_confirmed:
-                    game.music.stop_music()
-                    game.current = Player.CHOOSE_CHARACTER
-                    game.load_battle("Meme Dog")
-                else:
-                    game.display_sure = True
-
-        game.run_options_and_return_to_title_logic()
-
-    elif game.current == "load save file":
-        load_game_screen.display()
-        game.display_save_names()
-
-        for save in game.saves:
-            if game.mouse.is_in(*save.button_boundaries):
-                save.button_flared.display()
-                save.display_name()
-                if game.mouse.left and not save.is_empty:
-                    game.select_save(save)
-                    game.load()
-
-        game.run_options_and_return_to_title_logic()
+    elif game.current == game.load_game_page:
+        game.current.run()
 
     elif game.battle is not None:
         game.battle.run_all()
 
     else:
-        print("Probably not meant to be here!")
+        print(f"Probably not meant to be here! {game.current=}")
 
     pygame.display.flip()   # Updating the screen at the end of drawing
     game.clock.tick(game.fps)          # Setting fps limit
