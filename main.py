@@ -233,7 +233,7 @@ while ongoing:
     # When 'play' is pressed; starting a new game save
     elif game.current == "start new game":
         load_game_screen.display(0, 0)
-        save_names = [game.display_save_name(n, (450, 230 + 119*n)) for n in range(1, 5)]
+        save_names = [game.display_save_name(n+1, (450, 230 + 119*n)) for n in range(4)]
 
         if game.keys.receiving_text_input:
             enter_character_name.display(0, 0)
@@ -285,7 +285,7 @@ while ongoing:
                         game.save_number = "4"
             if game.save_number is not None:
                 if save_names[int(game.save_number)-1] == "No save data" or save_confirmed:
-                    game.music.stop()
+                    game.music.stop_music()
                     game.current = "choose character"
                     game.load_battle("Meme Dog")
                 else:
