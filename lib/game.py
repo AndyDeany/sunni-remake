@@ -6,9 +6,11 @@ from lib.character import Character
 from lib.color import Color
 from lib.font import Font
 from lib.mouse import Mouse
+from lib.keys import Keys
 from lib.music import Music, Audio
 from lib.image import Image, Text
 from lib.options import Options
+from lib.save import Save
 from lib.player import Player
 from lib.battle import Battle
 from lib.meme_dog import MemeDog
@@ -28,52 +30,43 @@ class Game:
         cls.TITLE_SCREEN_MUSIC = Audio("sunni_title_screen_music.ogg", 0.1)
 
     def __init__(self):
+        self.options = Options(self)
+        self.screen = pygame.display.set_mode(self.options.window_size)
+        self.keys = Keys(self)
         self.current = "opening sequence"
         self.file_directory = os.getcwd()[:-3]
-        self.screen = None
         self.mouse = Mouse()
         self.clock = pygame.time.Clock()
         self.fps = 30
         self.music = Music(self)
-        self.options = Options(self)
-        self.save_number = None
+        self.saves = [Save(n) for n in range(4)]
+        self.selected_save = None
         self.display_sure = False
         self.battle = None
         self.player = None
         self.opponent = Character(self, None, 100, 100)
 
-    def get_save_path(self, save_number=None):
-        """Return the path to the save file of the given save number."""
-        save_number = save_number or self.save_number
-        if save_number is None:
-            raise ValueError("'get_save_path()' requires a 'save_number' that is not 'None'")
-        return f"{self.file_directory}saves/save{save_number}.txt"
-
     def save(self):
-        with open(self.get_save_path(), "w") as save_file:
-            save_file.write(self.player.name + "\n")
-            save_file.write(str(self.player.level) + "\n")
-            save_file.write(self.opponent.name + "\n")
-            save_file.write(self.player.character + "\n")
+        self.selected_save.save(self.player.name, self.player.level, self.opponent.name, self.player.character)
 
-    def display_save_name(self, save_number, coords):
-        with open(self.get_save_path(save_number), "r") as save_file:
-            save_name = save_file.readline().strip()
-            save_name_text = Text(save_name, Font.DEFAULT, Color.BLACK)
-            save_name_text.display(*coords)
-            return save_name
+    def select_save(self, save):
+        """Sets the save with the given number as the selected save."""
+        if isinstance(save, int):
+            self.selected_save = self.saves[save]
+        else:
+            self.selected_save = save
 
-    def load_save(self):
-        with open(self.get_save_path(), "r") as save_file:
-            save_lines = save_file.read().splitlines()
-        character_name = save_lines[0]
-        character_level = int(save_lines[1])
-        self.load_battle(save_lines[2])
-        character = save_lines[3]
+    def display_save_names(self):
+        """Displays all save names (for showing on the saves page)."""
+        for save in self.saves:
+            save.display_name()
 
+    def load(self):
+        """Load the game state represented by self.selected_save."""
+        self.load_battle(self.selected_save.opponent_name)
         self.music.stop_music()
-        self.player = Player(self, character_name, character, level=character_level)
-        self.current = "choose ability"
+        self.player = self.selected_save.create_player(self)
+        self.current = Player.CHOOSE_ABILITY
 
     def load_battle(self, name):
         if name == "Meme Dog":
@@ -94,3 +87,13 @@ class Game:
             raise ValueError(f"Unknown opponent: '{name}'")
 
         self.battle = Battle(self, self.opponent)
+
+    def run_options_and_return_to_title_logic(self):
+        self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
+        self.OPTIONS_BUTTON.display(10, 665)
+        if self.keys.escape or (self.mouse.is_in(10, 665, 100, 715) and self.mouse.left):
+            self.options.show()
+        elif self.mouse.is_in(1082, 665, 1270, 715) and self.mouse.left:
+            self.current = "title"
+            self.select_save(None)
+

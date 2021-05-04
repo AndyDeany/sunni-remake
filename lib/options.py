@@ -64,7 +64,7 @@ class Options:
                 self.game.save()  # TODO: Ask the player which save file they want to use?
                 self.game.current = "title"
                 self.game.music.play_music(self.game.TITLE_SCREEN_MUSIC)
-                self.game.save_number = None
+                self.game.select_save(None)
                 self.hide()
 
         # Showing the buttons as solid only if they can be clicked
