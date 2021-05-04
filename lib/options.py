@@ -4,7 +4,6 @@ from lib.image import Image, Text
 from lib.color import Color
 from lib.font import Font
 from lib.player import Player
-from lib.battle import Battle
 
 
 class Options:
@@ -60,7 +59,7 @@ class Options:
         if self.game.keys.escape or (self.game.mouse.left and self.game.mouse.is_in(10, 665, 204, 715)):
             self.hide()
 
-        if self.game.page not in (Player.CHOOSE_CHARACTER, self.game.main_menu):
+        if self.game.page != self.game.main_menu:
             self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
             if self.game.mouse.left and self.game.mouse.is_in(1082, 665, 1270, 715):
                 self.game.save()  # TODO: Ask the player which save file they want to use?

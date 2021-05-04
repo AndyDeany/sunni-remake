@@ -14,7 +14,10 @@ as this means assets are never unloaded=memhog.
 Just create a new one to go to the page.
 This can be done by making `visit()` a classmethod which sets cls.game.page = cls(cls.game).
 Alternatively, scrap the `visit()` method and just write `current = Page()` to go to a page.
-The code from `visit()` can just be in the `Page().__init__()` method
+The code from `visit()` can just be in the `Page().__init__()` method.
+Will also have to use `isinstance(self.game.page, PageClass)` instead of
+`self.game.page == self.game.page_class` if you do this. Which is fine,
+just make you sure you go through and do it.
 
 * Go through attributes of game in `Game().__init__()` and see if any are only
 used in one class (that isn't game). If so, move it there!
