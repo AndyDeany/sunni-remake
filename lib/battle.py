@@ -115,15 +115,20 @@ class Battle:
             self.game.CONTINUE_BUTTON.display()
             self.game.RETURN_TO_TITLE_BUTTON.display()
 
+            # levelup, changing battle to kanye snake, saving, should all really be done here
+            # but need to find a way to do that whilst still running the code for this battle
+
             if self.game.mouse.left:
                 if self.game.mouse.is_in(1000, 600, 1120, 650):
-                    self.current = self.player.CHOOSE_ABILITY
-                elif self.game.mouse.is_in(80, 600, 268, 650):
-                    self.current = "title"
-                if self.current != self.game.opponent.DEAD:
                     self.player.level_up()
                     self.game.load_battle("Kanye Snake")
                     self.game.save()
+                    self.current = self.player.CHOOSE_ABILITY
+                elif self.game.mouse.is_in(80, 600, 268, 650):
+                    self.player.level_up()
+                    self.game.load_battle("Kanye Snake")
+                    self.game.save()
+                    self.game.main_menu.visit()
 
         # Player dead/Defeat screen
         elif self.current == self.player.DEAD:
@@ -133,16 +138,19 @@ class Battle:
             self.game.TRY_AGAIN_BUTTON.display()
             self.game.RETURN_TO_TITLE_BUTTON.display()
 
+            # Repeated code from below need moving here, similar to above victory screen code.
+
             if self.game.mouse.left:
                 if self.game.mouse.is_in(1000, 600, 1200, 700):
-                    self.current = self.player.CHOOSE_ABILITY
                     self.player.level_up(0.25)
+                    self.game.save()
+                    self.current = self.player.CHOOSE_ABILITY
                     self.player.fully_restore()
                     self.game.opponent.fully_restore()
-                    self.game.save()
                 elif self.game.mouse.is_in(80, 600, 268, 650):
+                    self.player.level_up(0.25)
                     self.game.save()
-                    self.current = "title"
+                    self.game.main_menu.visit()
 
         elif isinstance(self.current, Move):  # Moves
             self.current.run()

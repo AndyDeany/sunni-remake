@@ -37,9 +37,11 @@ class Music:
 
     def stop_music(self):
         self.music_channel.stop()
+        self.current_music = None
 
     def stop_sounds(self):
         self.sound_channel.stop()
+        self.current_sound = None
 
     def pause_music(self):
         self.music_channel.pause()

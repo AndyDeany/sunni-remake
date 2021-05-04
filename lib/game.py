@@ -3,15 +3,14 @@ import os
 import pygame
 
 from lib.character import Character
-from lib.color import Color
-from lib.font import Font
 from lib.mouse import Mouse
 from lib.keys import Keys
 from lib.music import Music, Audio
-from lib.image import Image, Text
+from lib.image import Image
 from lib.options import Options
 from lib.save import Save
 from lib.player import Player
+from lib.main_menu import MainMenu
 from lib.battle import Battle
 from lib.meme_dog import MemeDog
 
@@ -27,8 +26,6 @@ class Game:
         cls.TRY_AGAIN_BUTTON = Image("sunni_try_again_button.png", (1000, 600))
         cls.RETURN_TO_TITLE_BUTTON = Image("sunni_return_to_title_button.png", (80, 600))
 
-        cls.TITLE_SCREEN_MUSIC = Audio("sunni_title_screen_music.ogg", 0.1)
-
     def __init__(self):
         self.options = Options(self)
         self.screen = pygame.display.set_mode(self.options.window_size)
@@ -42,7 +39,9 @@ class Game:
         self.saves = [Save(n) for n in range(4)]
         self.selected_save = None
         self.display_sure = False
+        self.is_running = True
         self.battle = None
+        self.main_menu = MainMenu(self)
         self.player = None
         self.opponent = Character(self, None, 100, 100)
 
@@ -94,6 +93,5 @@ class Game:
         if self.keys.escape or (self.mouse.is_in(10, 665, 100, 715) and self.mouse.left):
             self.options.show()
         elif self.mouse.is_in(1082, 665, 1270, 715) and self.mouse.left:
-            self.current = "title"
-            self.select_save(None)
+            self.main_menu.visit()
 

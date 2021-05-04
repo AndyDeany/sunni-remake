@@ -4,9 +4,9 @@ import time
 import pygame
 
 
-from lib.keys import Keys
 from lib.game import Game
 from lib.options import Options
+from lib.main_menu import MainMenu
 from lib.image import Surface, Image, Text
 from lib.player import Player
 from lib.move import Move
@@ -34,6 +34,7 @@ Options.initialise()
 Move.initialise(game)
 Character.initialise()
 Player.initialise()
+MainMenu.initialise()
 MemeDog.initialise()
 Battle.initialise()
 
@@ -45,13 +46,6 @@ pygame.display.set_icon(game_icon.image)  # Setting the icon
 
 # Title screen
 title_screen = Image("sunni_title_screen.png", (0, 0))
-
-# Main menu
-main_menu = Image("sunni_main_menu.png", (0, 0))
-menu_exit_flared = Image("sunni_menu_exit_flared.png", (166, 476))
-menu_load_flared = Image("sunni_menu_load_flared.png", (82, 106))
-menu_options_flared = Image("sunni_menu_options_flared.png", (82, 212))
-menu_play_flared = Image("sunni_menu_play_flared.png", (79, 0))
 
 # Load screens
 load_game_screen = Image("sunni_load_game_screen.png", (0, 0))
@@ -137,10 +131,9 @@ game_title = Text("SUNNI", Font.TITLE, Color.MURKY_YELLOW)
 
 
 # Main program loop
-ongoing = True
 start_time = time.time()
 
-while ongoing:
+while game.is_running:
     current_time = time.time() - start_time     # Storing the current amount of time that the program has been running
     game.mouse.reset_buttons()
     game.mouse.update_coordinates()
@@ -149,7 +142,7 @@ while ongoing:
     # Main event loop (dealing with user input)
     for event in pygame.event.get():                    # i.e. Whenever the user does something                                                                                                                          
         if event.type == pygame.QUIT:                   # i.e. The user clicks close                                    
-            ongoing = False                             # Show that the user is finished
+            game.is_running = False                     # Show that the user is finished
         elif event.type == pygame.TEXTINPUT:
             game.keys.process_text_input(event)
         elif event.type == pygame.MOUSEBUTTONDOWN:      # Checking if the mouse button is being pressed down
@@ -192,33 +185,13 @@ while ongoing:
                 if game.mouse.left:
                     start_time = time.time() - 8
         else:
-            game.current = "title"
-            game.music.play_music(game.TITLE_SCREEN_MUSIC)
+            game.main_menu.visit()
 
     elif game.options.is_showing:   # Options takes priority from all screens outside the opening sequence
         game.options.display()
 
-    elif game.current == "title":
-        main_menu.display()
-        if game.mouse.is_in(535, 269, 744, 345):   # Play button
-            menu_play_flared.display()
-            if game.mouse.left:
-                game.keys.start_text_input(16, default_text="Sunni")
-                game.current = "start new game"
-        elif game.mouse.is_in(406, 375, 877, 451):    # Load button
-            menu_load_flared.display()
-            if game.mouse.left:
-                game.current = "load save file"
-        elif game.mouse.is_in(461, 481, 817, 557):    # Options button
-            menu_options_flared.display()
-            if game.mouse.left:
-                game.options.show()
-        elif game.mouse.is_in(547, 585, 734, 661):    # Exit button
-            menu_exit_flared.display()
-            if game.mouse.left:
-                ongoing = False
-        if game.keys.escape:
-            game.options.show()
+    elif game.current == game.main_menu:
+        game.current.run()
 
     elif game.current == "start new game":
         load_game_screen.display()
