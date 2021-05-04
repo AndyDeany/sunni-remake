@@ -19,6 +19,7 @@ class NewGamePage(SavePage):
     def __init__(self, game):
         super().__init__(game)
         self.player_name_text = None
+        self.display_sure = False
 
     def visit(self):
         super().visit()
@@ -51,18 +52,18 @@ class NewGamePage(SavePage):
     def _get_save_selection_from_user(self):
         self.player_name_text.display()
         save_confirmed = False
-        if self.game.display_sure:
+        if self.display_sure:
             self.ARE_YOU_SURE.display()
             if self.game.mouse.is_in(555, 398, 630, 437):
                 self.SURE_YES_FLARED.display()
                 if self.game.mouse.left:
                     save_confirmed = True
-                    self.game.display_sure = False
+                    self.display_sure = False
             elif self.game.mouse.is_in(648, 398, 723, 437):
                 self.SURE_NO_FLARED.display()
                 if self.game.mouse.left:
                     self.game.select_save(None)
-                    self.game.display_sure = False
+                    self.display_sure = False
         else:
             self.show_saves_for_selection()
 
@@ -72,4 +73,4 @@ class NewGamePage(SavePage):
                 self.game.current = Player.CHOOSE_CHARACTER
                 self.game.load_battle("Meme Dog")
             else:
-                self.game.display_sure = True
+                self.display_sure = True

@@ -10,6 +10,7 @@ from lib.image import Image, Surface
 from lib.options import Options
 from lib.save import Save
 
+from lib.page import Page
 from lib.opening_sequence import OpeningSequence
 from lib.main_menu import MainMenu
 from lib.new_game_page import NewGamePage
@@ -34,9 +35,11 @@ class Game:
         cls.RETURN_TO_TITLE_BUTTON = Image("sunni_return_to_title_button.png", (80, 600))
 
     def __init__(self):
+        pygame.init()
         self.options = Options(self)
         self.screen = pygame.display.set_mode(self.options.window_size)
         self.icon = Image("sunni_game_icon.png")
+        self.caption = "Sunni (Alpha 3.0)"
         self.keys = Keys(self)
         self.current = None
         self.file_directory = os.getcwd()[:-3]
@@ -48,16 +51,18 @@ class Game:
         self.music = Music(self)
         self.saves = [Save(n) for n in range(4)]
         self.selected_save = None
-        self.display_sure = False
         self.is_running = True
         self.battle = None
+
         self.main_menu = MainMenu(self)
         self.opening_sequence = OpeningSequence(self)
         self.opening_sequence.visit()
         self.new_game_page = NewGamePage(self)
         self.load_game_page = LoadGamePage(self)
+
         self.player = None
         self.opponent = Character(self, None, 100, 100)
+
         self.initialise()
         OpeningSequence.initialise()
         NewGamePage.initialise()
@@ -79,6 +84,15 @@ class Game:
     def icon(self, icon: Image):
         self._icon = icon
         pygame.display.set_icon(icon.image)
+
+    @property
+    def caption(self):
+        return self._caption
+
+    @caption.setter
+    def caption(self, caption: str):
+        self._caption = caption
+        pygame.display.set_caption(caption)
 
     def save(self):
         self.selected_save.save(self.player.name, self.player.level, self.opponent.name, self.player.character)
@@ -127,8 +141,54 @@ class Game:
         elif self.mouse.is_in(1082, 665, 1270, 715) and self.mouse.left:
             self.main_menu.visit()
 
+    def event_handling(self):
+        """Run the code for the main event loop to deal with user inputs/actions."""
+        for event in pygame.event.get():    # "For each thing the user does"
+            if event.type == pygame.QUIT:
+                self.is_running = False
+            elif event.type == pygame.TEXTINPUT:
+                self.keys.process_text_input(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                self.mouse.process_button_down()
+            elif event.type == pygame.MOUSEBUTTONUP:
+                self.mouse.process_button_up()
+            elif event.type == pygame.KEYDOWN:
+                self.keys.process_key_down(event)
+                self.keys.process_text_input_special_keys()
+            elif event.type == pygame.KEYUP:
+                self.keys.process_key_up(event)
+
     def run(self):
+        """Code that is executed once per frame - the body of the main program loop."""
         self.current_time = time.time() - self.start_time
         self.mouse.reset_buttons()
         self.mouse.update_coordinates()
         self.keys.reset()
+        self.event_handling()
+
+        if self.current == self.opening_sequence:
+            self.current.run()
+        elif self.options.is_showing:  # Options takes priority from all screens aside from the opening sequence
+            self.options.display()
+        elif isinstance(self.current, Page):
+            self.current.run()
+        elif self.battle is not None:
+            self.battle.run_all()
+        else:
+            print(f"Probably not meant to be here! {self.current=}")
+
+        pygame.display.flip()       # Updating the screen at the end of drawing
+        self.clock.tick(self.fps)   # Setting fps limit
+
+    def loop(self):
+        """Run the main program loop."""
+        while self.is_running:
+            self.run()
+
+        # Closing the program
+        try:
+            self.save()
+        except (NameError, AttributeError, ValueError):  # in case saving is not yet possible
+            pass
+
+        pygame.quit()
