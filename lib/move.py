@@ -168,6 +168,11 @@ class Heal(PlayerMove):
         self.start_y = start_y
         self.end_y = end_y
         self.heart_y = self.start_y
+        self.delay_duration = 0
+
+    @property
+    def total_delay_duration(self):
+        return self.user.display_stat_change_duration
 
     def run(self):
         self.user.idle_display()
@@ -177,8 +182,12 @@ class Heal(PlayerMove):
                 self.play_sound()
             self.heart.display(self.heart_x, self.heart_y)
             self.heart_y += 5
+        elif self.delay_duration < self.total_delay_duration:   # Allow time for stat change to show
+            if self.delay_duration == 0:
+                self.user.heal(random.randint(5, 15))
+            self.delay_duration += 1
         else:
-            self.user.heal(random.randint(5, 15))
+            self.delay_duration = 0
             self.heart_y = self.start_y
             self.opponent.next_move()
 

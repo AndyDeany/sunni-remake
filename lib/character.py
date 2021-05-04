@@ -149,6 +149,9 @@ class Character:
     def idle_display(self):
         raise NotImplementedError(f"{type(self)}.idle_display() is not implemented.")
 
+    def dead_display(self):
+        raise NotImplementedError(f"{type(self)}.dead_display() is not implemented.")
+
 
 class NotEnoughManaError(Exception):
     """Exception to be raised when the player attempts to use a move they don't have enough mana for."""

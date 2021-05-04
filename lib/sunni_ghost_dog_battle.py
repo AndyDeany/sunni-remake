@@ -10,13 +10,13 @@ if current == "choose ability":
         screen.blit(headbutt_move_icon_faded, (1010,390))
         screen.blit(frostbeam_move_icon_faded, (1060,390))
 
-        if left and not display_options:
+        if left and not self.game.options.is_showing:
             current = "aggressive moves"
             
     elif mousein(135,380,235,520):
         screen.blit(heal_move_icon_faded, (165,330))
 
-        if left and not display_options:
+        if left and not self.game.options.is_showing:
             current = "defensive moves"
 
 # Screen showing the player their aggressive move options
@@ -35,7 +35,7 @@ elif current == "aggressive moves":
     elif mousein(1060,390,1100,430):
         screen.blit(frostbeam_move_info, (930,130))
     
-    if left and not display_options:
+    if left and not self.game.options.is_showing:
         if mousein(960,390,1000,430):
             character_current_mana += 10
             if character_current_mana > character_max_mana:
@@ -69,7 +69,7 @@ elif current == "defensive moves":
     if mousein(165,330,205,370):
         screen.blit(heal_move_info, (220,130))
 
-    if left and not display_options:
+    if left and not self.game.options.is_showing:
         if mousein(165,330,205,370):
             if character_current_mana >= 10:
                 character_current_mana -= 10
@@ -100,7 +100,7 @@ elif current == "ghost dog dead":
     screen.blit(continue_button, (1000,600))
     screen.blit(return_to_title_button, (80,600))   # Stopping the return to title button being faded out by the overlay
 
-    if left and not display_options:
+    if left and not self.game.options.is_showing:
         if mousein(1000,600,1120,650):
             current = "title"           # NEEDS CHANGING
             character_level += 1
@@ -130,7 +130,7 @@ elif current == "character dead":
     screen.blit(try_again_button, (1000,600))
     screen.blit(return_to_title_button, (80,600))   # Stopping the return to title button being faded out by the overlay
 
-    if left and not display_options:
+    if left and not self.game.options.is_showing:
         if mousein(1000,600,1200,700):
             current = "choose ability"       # Change this if you make something to happen after the first (and only) fight
             character_level += 0.25
