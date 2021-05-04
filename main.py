@@ -19,7 +19,6 @@ from lib.font import Font
 
 pygame.init()
 
-
 # Setting essential game variables
 game = Game()
 
@@ -55,16 +54,12 @@ menu_options_flared = Image("sunni_menu_options_flared.png", (82, 212))
 menu_play_flared = Image("sunni_menu_play_flared.png", (79, 0))
 
 # Load screens
-load_game_screen = Image("sunni_load_game_screen.png")
+load_game_screen = Image("sunni_load_game_screen.png", (0, 0))
 enter_character_name = Image("sunni_enter_character_name.png")
 continue_button_flared = Image("sunni_continue_button_flared.png")
 are_you_sure = Image("sunni_are_you_sure.png")
-sure_yes_flared = Image("sunni_sure_yes_flared.png")
-sure_no_flared = Image("sunni_sure_no_flared.png")
-load1_flared = Image("sunni_load1_flared.png")
-load2_flared = Image("sunni_load2_flared.png")
-load3_flared = Image("sunni_load3_flared.png")
-load4_flared = Image("sunni_load4_flared.png")
+sure_yes_flared = Image("sunni_sure_yes_flared.png", (0, 0))
+sure_no_flared = Image("sunni_sure_no_flared.png", (0, 0))
 
 # Character
 character_choice1 = Image("sunni_character1_normal1.png")
@@ -226,7 +221,7 @@ while ongoing:
             game.options.show()
 
     elif game.current == "start new game":
-        load_game_screen.display(0, 0)
+        load_game_screen.display()
         game.display_save_names()
 
         if game.keys.receiving_text_input:
@@ -247,12 +242,12 @@ while ongoing:
             if game.display_sure:
                 are_you_sure.display(0, 0)
                 if game.mouse.is_in(555, 398, 630, 437):
-                    sure_yes_flared.display(0, 0)
+                    sure_yes_flared.display()
                     if game.mouse.left:
                         save_confirmed = True
                         game.display_sure = False
                 elif game.mouse.is_in(648, 398, 723, 437):
-                    sure_no_flared.display(0, 0)
+                    sure_no_flared.display()
                     if game.mouse.left:
                         game.select_save(None)
                         game.display_sure = False
@@ -275,7 +270,7 @@ while ongoing:
         game.run_options_and_return_to_title_logic()
 
     elif game.current == "load save file":
-        load_game_screen.display(0, 0)
+        load_game_screen.display()
         game.display_save_names()
 
         for save in game.saves:
