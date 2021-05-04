@@ -1,6 +1,7 @@
 from lib.image import Image, Text
 from lib.font import Font
 from lib.color import Color
+from lib.player import Player
 from lib.move import Move
 
 
@@ -9,6 +10,9 @@ class Battle:
     @classmethod
     def initialise(cls):
         cls.BATTLE_BACKGROUND_HALLWAY = Image("sunni_battle_background_hallway.png", (0, 0))
+        cls.CHOOSE_CHARACTER_OVERLAY = Image("sunni_choose_character_overlay.png")
+        cls.CHARACTER_CHOICE1 = Image("sunni_character1_normal1.png")
+        cls.CHARACTER_CHOICE2 = Image("sunni_character2_normal1.png")
 
     def __init__(self, game, opponent):
         self.game = game
@@ -40,11 +44,14 @@ class Battle:
 
     def run_all(self):
         """Runs the early_run(), run(), and late_run() methods."""
+        self.show_background()
+        if self.game.current == Player.CHOOSE_CHARACTER:
+            self.run_choose_character()
+            return
         self.run()
         self.late_run()
 
     def run(self):
-        self.show_background()
         self.player.display_info()
         self.opponent.display_info()
 
@@ -177,3 +184,17 @@ class Battle:
 
     def show_background(self):
         self.BATTLE_BACKGROUND_HALLWAY.display()
+
+    def run_choose_character(self):
+        self.CHOOSE_CHARACTER_OVERLAY.display(0, 0)
+        self.CHARACTER_CHOICE1.display(400, 300)
+        self.CHARACTER_CHOICE2.display(810, 300)
+
+        if self.game.mouse.left:
+            if self.game.mouse.is_in(400, 300, 470, 480):
+                self.player.character = Player.CHARACTER_1
+            elif self.game.mouse.is_in(810, 300, 880, 480):
+                self.player.character = Player.CHARACTER_2
+
+            if self.player.character is not None:
+                self.game.current = Player.CHOOSE_ABILITY

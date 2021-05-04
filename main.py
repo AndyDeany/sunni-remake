@@ -1,8 +1,4 @@
-import time
-
-
 import pygame
-
 
 from lib.game import Game
 from lib.options import Options
@@ -51,10 +47,6 @@ continue_button_flared = Image("sunni_continue_button_flared.png")
 are_you_sure = Image("sunni_are_you_sure.png")
 sure_yes_flared = Image("sunni_sure_yes_flared.png", (0, 0))
 sure_no_flared = Image("sunni_sure_no_flared.png", (0, 0))
-
-# Character
-character_choice1 = Image("sunni_character1_normal1.png")
-character_choice2 = Image("sunni_character2_normal1.png")
 
 # Snake
 snake_normal = Image("sunni_snake_normal.png")
@@ -111,8 +103,6 @@ ghost_dog_side_claw_fade60 = Image("sunni_ghost_dog_side_claw_fade60.png")
 ghost_dog_side_claw_fade80 = Image("sunni_ghost_dog_side_claw_fade80.png")
 
 
-# Miscellaneous
-choose_character_overlay = Image("sunni_choose_character_overlay.png")
 
 
 # Text -----------------------------------------------------------------------------------------------------------------
@@ -166,9 +156,9 @@ while game.is_running:
                         game.keys.stop_text_input()
             Text(game.keys.text_input, Font.SUNNI, Color.BLACK, (370, 338)).display()
             if not game.keys.receiving_text_input:
-                character_name = game.keys.text_input
+                game.player = Player(game, game.keys.text_input)
         else:
-            Text(f"Character name: {character_name}", Font.DEFAULT, Color.MILD_BLUE, (10, 10)).display()
+            Text(f"Character name: {game.player.name}", Font.DEFAULT, Color.MILD_BLUE, (10, 10)).display()
             save_confirmed = False
             if game.display_sure:
                 are_you_sure.display(0, 0)
@@ -213,23 +203,6 @@ while game.is_running:
                     game.load()
 
         game.run_options_and_return_to_title_logic()
-
-    elif game.current == "choose character":
-        game.battle.show_background()
-        choose_character_overlay.display(0, 0)
-        character_choice1.display(400, 300)
-        character_choice2.display(810, 300)
-
-        if game.mouse.left:
-            character = None
-            if game.mouse.is_in(400, 300, 470, 480):
-                character = Player.CHARACTER_1
-            elif game.mouse.is_in(810, 300, 880, 480):
-                character = Player.CHARACTER_2
-
-            if character is not None:
-                game.player = Player(game, character_name, character)
-                game.current = game.player.CHOOSE_ABILITY
 
     elif game.battle is not None:
         game.battle.run_all()
