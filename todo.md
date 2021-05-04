@@ -1,17 +1,8 @@
 ### Refactors/Minor Improvements
 * add base Opponent class
 
-* Perhaps `Battle` could inherit from `Page`? Perhaps Options as well.
-If you make `Battle` inherit from `Page`, and MainMenu does too
-(and `Options`?! - would need to remember previous current value though - not an issue),
-you could just have a single `game.page.run()` command
-and that literally be  everything in the `game.run()` logic
-Could make `self.next_battle` a thing for storing the next loaded battle,
-to then be used to do `self.current = self.next_battle` when next is clicked
-(and set `self.next_battle` back to `None`. this could be a method that does these two things).
-This solves the saving/levelling issue on the victory/defeat screens.
-May need a `battle.current` if `game.page` is only used for current page,
-for storing things like current move and choose ability etc.
+* Perhaps `Options` should also inherit from `Page`.
+It would need to remember previous value of `game.page` though - not an issue.
 
 * Button class for representing buttons on the main menu at least,
 potentially could be used with saves as well. Need an `on_click()`/`click()` method for sure
@@ -36,3 +27,7 @@ used in one class (that isn't game). If so, move it there!
 
 * `choose_character_overlay.png` is either 1pixel too thin
 or is transparent for 1 column of pixels on the left (probably the latter)
+
+* Potential/Foreseen: Next battle's dead body shows after winning a fight due to `game.opponent`
+being changed to the next opponent pre-emptively in `game.load_next_battle`...
+Try think of a fix if this is an issue as predicted.
