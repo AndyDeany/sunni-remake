@@ -1,8 +1,9 @@
+from lib.page import Page
 from lib.image import Image
 from lib.music import Audio
 
 
-class MainMenu:
+class MainMenu(Page):
 
     @classmethod
     def initialise(cls):
@@ -13,9 +14,6 @@ class MainMenu:
         cls.EXIT_BUTTON_FLARED = Image("sunni_menu_exit_flared.png", (166, 476))
 
         cls.MUSIC = Audio("sunni_title_screen_music.ogg", 0.1)
-
-    def __init__(self, game):
-        self.game = game
 
     def run(self):
         self.MAIN_MENU.display()
