@@ -31,6 +31,10 @@ this makes complete sense. Perhaps it can be a subclass of a new
 Using `initialise()` methods means that the assets are always loaded,
 instead of just when needed = memhog.
 
+* Pass `Move`s `user` and `opponent`? So that they don't have to just get it from
+`Game` and hope it's right. Also gets rid of any ambiguity and means that
+any `Character` can use a move without worrying about it targeting the wrong character.
+
 * Could (distant-ish future) have like a `Playthrough` class which takes most of `Game`'s logic.
 This would be so that when you load into a save or start a new one,
 a new `Playthrough()` instance could be created with all attributes
