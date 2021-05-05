@@ -4,7 +4,7 @@ from lib.opponent import Opponent
 from lib.image import Image
 from lib.music import Audio
 from lib.move import OpponentHeal
-from .moves import ConfuseMove
+from .moves import ConfuseMove, VenomMove
 
 
 class KanyeSnake(Opponent):
@@ -18,15 +18,16 @@ class KanyeSnake(Opponent):
         self.SNAKE_DEAD = Image("sunni_snake_dead.png", (self.x, self.y))
         self.SNAKE_BACKWARDS = Image("sunni_snake_backwards.png")
         self.SNAKE_MOVING = Image("sunni_snake_moving.png")
+        self.SNAKE_VENOM_STANCE = Image("sunni_snake_venom_stance.png", (self.x, self.y))
         self.SNAKE_LASER_STANCE = Image("sunni_snake_laser_stance.png")
-        self.SNAKE_VENOM_STANCE = Image("sunni_snake_venom_stance.png")
 
         self.MOVE_HEAL = OpponentHeal(1005, 230, 410)
         self.MOVE_CONFUSE = ConfuseMove()
+        self.MOVE_VENOM = VenomMove()
 
     def choose_move(self):
         """Return the move that the snake decides to use."""
-        return self.MOVE_CONFUSE
+        return self.MOVE_VENOM
 
     def idle_display(self):
         self.SNAKE_NORMAL.display()

@@ -10,7 +10,6 @@ load_file = False
 
 # Snake
 snake_laser_beam = Image("sunni_snake_laser_beam.png")
-snake_venom_beam = Image("sunni_snake_venom_beam.png")
 
 # Ghost Dog
 ghost_dog_dead = Image("sunni_ghost_dog_dead.png")

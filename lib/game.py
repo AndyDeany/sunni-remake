@@ -116,10 +116,6 @@ class Game:
         if name == "Meme Dog":
             self.opponent = MemeDog(self)
         elif name == "Kanye Snake":
-            opponent = Character(self, name, 120, 120)
-            opponent.snake_confuse_x = 930
-            opponent.snake_position = "normal"
-            opponent.snake_confuse_direction = "backwards"
             self.opponent = KanyeSnake(self)
         elif name == "Spook Dog":
             opponent = Character(self, name, 200, 150)
