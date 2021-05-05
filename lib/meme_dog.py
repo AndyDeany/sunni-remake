@@ -29,12 +29,10 @@ class MemeDog(Opponent):
 
     def choose_move(self):
         """Return the name of the next move that the dog decides to use."""
-        def attack_options():   # This could become a method of a base Opponent class if self.moves is made.
+        def attack_options():
             """Return the options the dog can/would choose from for attacking based on his mana."""
-            moves = []
-            for move in (self.MOVE_BARK, self.MOVE_BITE, self.MOVE_SPIN):
-                if 0 <= self.current_mana - move.mana_cost <= self.max_mana:
-                    moves.append(move)
+            moves = [self.MOVE_BARK, self.MOVE_BITE, self.MOVE_SPIN]
+            moves = [move for move in moves if 0 <= self.current_mana - move.mana_cost <= self.max_mana]
             return moves
 
         if self.current_mana < 10:  # Only usable move
@@ -48,10 +46,10 @@ class MemeDog(Opponent):
                 return random.choice(attack_options())
             return self.MOVE_HEAL
 
-        if self.current_hp > 3 * (self.max_hp / 4):  # Don't heal at high HP.
-            return random.choice(attack_options())
-
-        return random.choice([*attack_options(), self.MOVE_HEAL])
+        options = attack_options()
+        if self.current_hp <= 3 * (self.max_hp / 4):
+            options.append(self.MOVE_HEAL)
+        return random.choice(options)
 
     def idle_display(self):
         self.dog_normal.display()

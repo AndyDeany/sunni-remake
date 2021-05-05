@@ -20,20 +20,6 @@ def deletesave(savefile):
     save.close()
 
 
-# Defining a function to accept text input from the user
-def accept_text():
-    input_text = ""
-    while True:
-        key_pressed = get_key()
-        if key_pressed == K_BACKSPACE and len(input_text) != 0:
-            input_text = input_text[0:-1]
-        elif key_pressed <= 127:
-            if shift_held:
-                input_text += chr(key_pressed - 32)
-            else:
-                input_text += chr(key_pressed)
-
-
 # Definining a function to make the screen fade out or in
 def fade(direction,opacity):
     fade_overlay = pygame.image.load(file_directory + "images/sunni_fade_overlay" + str(opacity) + ".png").convert_alpha()
