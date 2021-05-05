@@ -9,12 +9,6 @@ fade_direction = "out"
 load_file = False
 
 # Ghost Dog
-ghost_dog_glow1 = Image("sunni_ghost_dog_glow1.png")
-ghost_dog_glow2 = Image("sunni_ghost_dog_glow2.png")
-ghost_dog_glow3 = Image("sunni_ghost_dog_glow3.png")
-ghost_dog_glow4 = Image("sunni_ghost_dog_glow4.png")
-ghost_dog_glow5 = Image("sunni_ghost_dog_glow5.png")
-
 ghost_dog_top_claw_swipe1 = Image("sunni_ghost_dog_top_claw_swipe1.png")
 ghost_dog_top_claw_swipe2 = Image("sunni_ghost_dog_top_claw_swipe2.png")
 ghost_dog_top_claw_swipe3 = Image("sunni_ghost_dog_top_claw_swipe3.png")

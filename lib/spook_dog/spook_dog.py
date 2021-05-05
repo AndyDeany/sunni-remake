@@ -3,7 +3,7 @@ import random
 from lib.opponent import Opponent
 from lib.image import Image
 from lib.move import OpponentHeal
-from .moves import Glide
+from .moves import Teleport, Glide
 
 
 class SpookDog(Opponent):
@@ -19,12 +19,12 @@ class SpookDog(Opponent):
         self.GHOST_DOG_DEAD = Image("sunni_ghost_dog_dead.png", (self.x, self.y))
 
         self.MOVE_HEAL = OpponentHeal(1005, 230, 410)
-
+        self.MOVE_TELEPORT = Teleport()
         self.MOVE_GLIDE = Glide()
 
     def choose_move(self):
         """Return the move that the ghost dog decides to use."""
-        return self.MOVE_GLIDE
+        return self.MOVE_TELEPORT
 
     def _idle_display(self):
         self.idle_animation(self.x, self.y)
