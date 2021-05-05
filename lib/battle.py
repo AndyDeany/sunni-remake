@@ -6,6 +6,7 @@ from lib.player import Player
 
 
 class Battle(Page):
+    """Class for representing a battle between the player and a given opponent."""
 
     @classmethod
     def initialise(cls):
@@ -40,7 +41,7 @@ class Battle(Page):
         self.game.opponent = value
 
     def run(self):
-        """Runs the early_run(), run(), and late_run() methods."""
+        """Runs the early_run(), run_main(), and late_run() methods."""
         self.show_background()
         if self.current == Player.CHOOSE_CHARACTER:
             self.run_choose_character()
