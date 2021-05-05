@@ -56,6 +56,15 @@ or is transparent for 1 column of pixels on the left (probably the latter)
 being changed to the next opponent pre-emptively in `game.load_next_battle`...
 Try think of a fix if this is an issue as predicted.
 
+### Features
+* Replace `random.randint()` for calculating move damage/healing with two parameters:
+`move.damage` (or `move.average_damage`) and `move.damage_variance`
+(should be between `0.0` and `1.0`). Then the damage/healing calculation for each move can
+just be `int(damage*(1+random.random(-variance, variance)))`.
+This homogenises how damage is calculated.
+Can allow for things like crit chance etc in the future too,
+instead of each move having it's own special way of calculating damage.
+
 ### Other
 * Remove docstring ignores from `.pylintrc` at some point.
 
