@@ -185,12 +185,6 @@ def ghost_dog_change_mana(enemy_current_mana,ghost_dog_next_move):
     if ghost_dog_next_move == "ghost dog claw move":
         return enemy_current_mana - 50
 
-# Defining a function to play a sound when the ghost dog uses it's glide move
-def glide_move_sound():
-    pygame.mixer.music.load(file_directory + "Sound Files\sunni_ghost_dog_glide.ogg")
-    pygame.mixer.music.set_volume(volume_multiplier)
-    pygame.mixer.music.play(0)
-
 # Defining a function to play a sound when the ghost dog uses it's teleport move
 def teleport_move_sound():
     pygame.mixer.music.load(file_directory + "Sound Files\sunni_ghost_dog_teleport.ogg")
