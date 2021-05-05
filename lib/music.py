@@ -7,7 +7,7 @@ class Audio:
         self.sound = pygame.mixer.Sound(self.path)
         self.volume_multiplier = volume_multiplier  # Used for adjusting tracks that are naturally too loud/quiet
 
-    def __play__(self, channel, *, loop):
+    def play(self, channel, *, loop):
         channel.play(self.sound, -1 if loop else 0)
 
 
@@ -24,22 +24,24 @@ class Music:
 
     def play_music(self, audio: Audio):
         self.stop_music()
-        audio.__play__(self.music_channel, loop=True)
+        audio.play(self.music_channel, loop=True)
         self.current_music = audio
         if not self.is_muted:
             self.set_unmuted_pygame_volume()
 
     def play_sound(self, audio: Audio):
-        audio.__play__(self.sound_channel, loop=False)
+        audio.play(self.sound_channel, loop=False)
         self.current_sound = audio
         if not self.is_muted:
             self.set_unmuted_pygame_volume()
 
     def stop_music(self):
         self.music_channel.stop()
+        self.current_music = None
 
     def stop_sounds(self):
         self.sound_channel.stop()
+        self.current_sound = None
 
     def pause_music(self):
         self.music_channel.pause()

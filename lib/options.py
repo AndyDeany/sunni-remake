@@ -58,12 +58,11 @@ class Options:
         if self.game.keys.escape or (self.game.mouse.left and self.game.mouse.is_in(10, 665, 204, 715)):
             self.hide()
 
-        if self.game.current not in ("choose character", "title"):
+        if self.game.page != self.game.main_menu:
             self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
             if self.game.mouse.left and self.game.mouse.is_in(1082, 665, 1270, 715):
                 self.game.save()  # TODO: Ask the player which save file they want to use?
-                self.game.current = "title"
-                self.game.music.play_music(self.game.TITLE_SCREEN_MUSIC)
+                self.game.main_menu.visit()
                 self.hide()
 
         # Showing the buttons as solid only if they can be clicked

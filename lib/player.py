@@ -9,6 +9,7 @@ class Player(Character):
     CHARACTER_2 = "character2"
 
     DEAD = "player dead"
+    CHOOSE_CHARACTER = "choose character"
     CHOOSE_ABILITY = "choose ability"
 
     INFO_X = 10
@@ -20,21 +21,29 @@ class Player(Character):
         cls.MOVE_FROSTBEAM = Frostbeam()
         cls.MOVE_HEAL = Heal(160, 170, 350)
 
-    def __init__(self, game, name, character, *, level=1):
+    def __init__(self, game, name="Sunni", character=None, *, level=1):
         super().__init__(game, name, level=level, display_stat_x=170, display_stat_y_start=360)
         self.calculate_stats()
+        self.x = 150
+        self.y = 380
+        self.stage = 0
+        self.num_idle_frames = 6
+
         self.character = character
         self.offensive_moves = [self.MOVE_KICK, self.MOVE_HEADBUTT, self.MOVE_FROSTBEAM]
         self.defensive_moves = [self.MOVE_HEAL]
         self.selected_moves = None
 
-        self.x = 150
-        self.y = 380
+    @property
+    def character(self):
+        return self._character
 
-        self.stage = 0
-        self.num_idle_frames = 6
-        self.idle_frames = [Image(f"sunni_{self.character}_normal{n}.png") for n in range(self.num_idle_frames)]
-
+    @character.setter
+    def character(self, character):
+        self._character = character
+        if character is None:
+            return
+        self.idle_frames = [Image(f"sunni_{character}_normal{n}.png") for n in range(self.num_idle_frames)]
         self.character_normal = Image(f"sunni_{character}_normal1.png")
         self.character_backwards = Image(f"sunni_{character}_backwards.png")
         self.character_scared = Image(f"sunni_{character}_scared.png")
@@ -45,12 +54,16 @@ class Player(Character):
         self.character_headbutt_stance = Image(f"sunni_{character}_headbutt_stance.png")
         self.character_frostbeam_stance = Image(f"sunni_{character}_frostbeam_stance.png", (self.x, self.y))
 
-    def level_up(self, levels=1):
+    def level_up(self, levels=1, restore=True):
+        """Level the player up by the given number of levels (default 1).
+        Restores the player to full if they pass an integer level and `restore==True` (default).
+        """
         old_level = self.level
         self.level += levels
         if int(self.level) > int(old_level):    # i.e. if we actually levelled up
             self.calculate_stats()
-            self.fully_restore()
+            if restore:
+                self.fully_restore()
 
     def calculate_stats(self):
         self.max_hp = 90 + 10*int(self.level)
@@ -65,18 +78,20 @@ class Player(Character):
         try:
             self.change_mana(move)
         except NotEnoughManaError:
-            self.game.battle.show_mana_notification()
+            self.game.page.show_mana_notification()
         else:
             self.selected_moves = None
-            self.game.battle.hide_mana_notification()
-            self.game.current = move
+            self.game.page.hide_mana_notification()
+            self.game.page.current = move
 
     def next_move(self):
         """Continues to find out the player's next move."""
         if self.current_hp == 0:
-            self.game.current = self.DEAD
+            self.game.page.current = self.DEAD
+            self.level_up(0.25, restore=False)
+            self.game.save()
             return
-        self.game.current = self.CHOOSE_ABILITY
+        self.game.page.current = self.CHOOSE_ABILITY
 
     def idle_display(self):
         self.idle_movement(self.x, self.y)

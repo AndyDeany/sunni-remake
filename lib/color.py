@@ -1,4 +1,4 @@
-class Color:
+class Color:    # pylint: disable=too-few-public-methods
     BLACK = (0,0,0)
     WHITE = (255,255,255)
     MILD_BLUE = (122,222,250)

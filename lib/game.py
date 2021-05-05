@@ -1,17 +1,25 @@
 import os
+import time
 
 import pygame
 
-from lib.character import Character
-from lib.color import Color
-from lib.font import Font
 from lib.mouse import Mouse
-from lib.music import Music, Audio
-from lib.image import Image, Text
+from lib.keys import Keys
+from lib.music import Music
+from lib.image import Image, Surface
 from lib.options import Options
-from lib.player import Player
+from lib.save import Save
+
+from lib.opening_sequence import OpeningSequence
+from lib.main_menu import MainMenu
+from lib.new_game_page import NewGamePage
+from lib.load_game_page import LoadGamePage
+
+from lib.character import Character
 from lib.battle import Battle
+from lib.player import Player
 from lib.meme_dog import MemeDog
+from lib.move import Move
 
 
 class Game:
@@ -25,57 +33,85 @@ class Game:
         cls.TRY_AGAIN_BUTTON = Image("sunni_try_again_button.png", (1000, 600))
         cls.RETURN_TO_TITLE_BUTTON = Image("sunni_return_to_title_button.png", (80, 600))
 
-        cls.TITLE_SCREEN_MUSIC = Audio("sunni_title_screen_music.ogg", 0.1)
-
     def __init__(self):
-        self.current = "opening sequence"
+        pygame.init()
+        self.options = Options(self)
+        self.screen = pygame.display.set_mode(self.options.window_size)
+        self.icon = Image("sunni_game_icon.png")
+        self.caption = "Sunni (Alpha 3.0)"
+        self.keys = Keys(self)
+        self.page = None
         self.file_directory = os.getcwd()[:-3]
-        self.screen = None
         self.mouse = Mouse()
         self.clock = pygame.time.Clock()
         self.fps = 30
+        self.start_time = time.time()
+        self.current_time = 0   # The amount of time the program as been running
         self.music = Music(self)
-        self.options = Options(self)
-        self.save_number = None
-        self.display_sure = False
-        self.battle = None
-        self.player = None
-        self.opponent = Character(self, None, 100, 100)
+        self.saves = [Save(n) for n in range(4)]
+        self.selected_save = None
+        self.is_running = True
+        self.next_battle = None
 
-    def get_save_path(self, save_number=None):
-        """Return the path to the save file of the given save number."""
-        save_number = save_number or self.save_number
-        if save_number is None:
-            raise ValueError("'get_save_path()' requires a 'save_number' that is not 'None'")
-        return f"{self.file_directory}saves/save{save_number}.txt"
+        self.main_menu = MainMenu(self)
+        self.opening_sequence = OpeningSequence(self)
+        self.opening_sequence.visit()
+        self.new_game_page = NewGamePage(self)
+        self.load_game_page = LoadGamePage(self)
+
+        self.player = None
+        self.opponent = None
+
+        self.initialise()
+        OpeningSequence.initialise()
+        NewGamePage.initialise()
+        LoadGamePage.initialise()
+        Surface.initialise(self)
+        Options.initialise()
+        Move.initialise(self)
+        Character.initialise()
+        Player.initialise()
+        MainMenu.initialise()
+        MemeDog.initialise()
+        Battle.initialise()
+
+    @property
+    def icon(self):
+        return self._icon
+
+    @icon.setter
+    def icon(self, icon: Image):
+        self._icon = icon
+        pygame.display.set_icon(icon.image)
+
+    @property
+    def caption(self):
+        return self._caption
+
+    @caption.setter
+    def caption(self, caption: str):
+        self._caption = caption
+        pygame.display.set_caption(caption)
 
     def save(self):
-        with open(self.get_save_path(), "w") as save_file:
-            save_file.write(self.player.name + "\n")
-            save_file.write(str(self.player.level) + "\n")
-            save_file.write(self.opponent.name + "\n")
-            save_file.write(self.player.character + "\n")
+        self.selected_save.save(self.player.name, self.player.level, self.opponent.name, self.player.character)
 
-    def display_save_name(self, save_number, coords):
-        with open(self.get_save_path(save_number), "r") as save_file:
-            save_name = save_file.readline().strip()
-            save_name_text = Text(save_name, Font.DEFAULT, Color.BLACK)
-            save_name_text.display(*coords)
-            return save_name
+    def select_save(self, save):
+        """Sets the save with the given number as the selected save."""
+        self.selected_save = save
 
-    def load_save(self):
-        with open(self.get_save_path(), "r") as save_file:
-            save_lines = save_file.read().splitlines()
-        character_name = save_lines[0]
-        character_level = int(save_lines[1])
-        self.load_battle(save_lines[2])
-        character = save_lines[3]
+    def display_save_names(self):
+        """Displays all save names (for showing on the saves page)."""
+        for save in self.saves:
+            save.display_name()
 
-        self.music.stop_music()
-        self.player = Player(self, character_name, character, level=character_level)
-        self.current = "choose ability"
+    def load(self):
+        """Load the game state represented by self.selected_save."""
+        self.player = self.selected_save.create_player(self)
+        self.load_next_battle(self.selected_save.opponent_name)
+        self.commence_next_battle()
 
-    def load_battle(self, name):
+    def load_next_battle(self, name):
         if name == "Meme Dog":
             self.opponent = MemeDog(self)
         elif name == "Kanye Snake":
@@ -93,4 +129,64 @@ class Game:
         else:
             raise ValueError(f"Unknown opponent: '{name}'")
 
-        self.battle = Battle(self, self.opponent)
+        self.next_battle = Battle(self, self.opponent)
+
+    def commence_next_battle(self):
+        """Commence the previously loaded next_battle."""
+        self.music.stop_music()
+        self.page = self.next_battle
+        self.next_battle = None
+
+    def run_options_and_return_to_title_logic(self):
+        self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
+        self.OPTIONS_BUTTON.display(10, 665)
+        if self.keys.escape or (self.mouse.is_in(10, 665, 100, 715) and self.mouse.left):
+            self.options.show()
+        elif self.mouse.is_in(1082, 665, 1270, 715) and self.mouse.left:
+            self.main_menu.visit()
+
+    def event_handling(self):
+        """Run the code for the main event loop to deal with user inputs/actions."""
+        for event in pygame.event.get():    # "For each thing the user does"
+            if event.type == pygame.QUIT:
+                self.is_running = False
+            elif event.type == pygame.TEXTINPUT:
+                self.keys.process_text_input(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                self.mouse.process_button_down()
+            elif event.type == pygame.MOUSEBUTTONUP:
+                self.mouse.process_button_up()
+            elif event.type == pygame.KEYDOWN:
+                self.keys.process_key_down(event)
+                self.keys.process_text_input_special_keys()
+            elif event.type == pygame.KEYUP:
+                self.keys.process_key_up(event)
+
+    def loop(self):
+        """Run the main program loop."""
+        while self.is_running:
+            self.run()
+
+        # Closing the program
+        try:
+            self.save()
+        except (NameError, AttributeError, ValueError):  # in case saving is not yet possible
+            pass
+
+        pygame.quit()
+
+    def run(self):
+        """Code that is executed once per frame - the body of the main program loop."""
+        self.current_time = time.time() - self.start_time
+        self.mouse.reset_buttons()
+        self.mouse.update_coordinates()
+        self.keys.reset()
+        self.event_handling()
+
+        if self.options.is_showing and self.page != self.opening_sequence:
+            self.options.display()
+        else:
+            self.page.run()
+
+        pygame.display.flip()       # Updating the screen at the end of drawing
+        self.clock.tick(self.fps)   # Setting fps limit

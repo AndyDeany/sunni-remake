@@ -34,23 +34,21 @@ class MemeDog(Character):
     def next_move(self):
         """Chooses and uses the dog's next move."""
         if self.current_hp == 0:
-            self.game.current = self.DEAD
+            self.game.page.current = self.DEAD
             return
         next_move = self.choose_move()
         self.change_mana(next_move)
-        self.game.current = next_move
+        self.game.page.current = next_move
 
     def choose_move(self):
         """Return the name of the next move that the dog decides to use."""
-        def attack_options():
+        def attack_options():   # This could become a method of a base Opponent class if self.moves is made.
             """Return the options the dog can/would choose from for attacking based on his mana."""
-            if self.current_mana < 15:
-                return [self.MOVE_BARK]
-            if self.current_mana < 25:
-                return [self.MOVE_BARK, self.MOVE_BITE]
-            if self.current_mana > 90:
-                return [self.MOVE_BITE, self.MOVE_SPIN]
-            return [self.MOVE_BITE, self.MOVE_BARK, self.MOVE_SPIN]
+            moves = []
+            for move in (self.MOVE_BARK, self.MOVE_BITE, self.MOVE_SPIN):
+                if 0 <= self.current_mana - move.mana_cost <= self.max_mana:
+                    moves.append(move)
+            return moves
 
         if self.current_mana < 10:  # Only usable move
             return self.MOVE_BARK
