@@ -7,7 +7,7 @@ from .moves import ConfuseMove, VenomMove, LaserMove
 
 
 class KanyeSnake(Opponent):
-
+    """Class representing the Kanye Snake opponent."""
     def __init__(self, game, max_hp=120, max_mana=120):
         super().__init__(game, "Kanye Snake", max_hp, max_mana, level=1, display_stat_x=1015, display_stat_y_start=420)
         self.x = 930
