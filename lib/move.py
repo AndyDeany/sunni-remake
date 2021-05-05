@@ -238,9 +238,9 @@ class Bark(MemeDogMove):
 
     def run(self):
         self.opponent.idle_display()
+        self.user.dog_bark_stance.display()
 
         if self.duration < self.total_duration:
-            self.user.dog_bark_stance.display(930, 440)
             if self.duration == 0:
                 self.play_sound()
             elif self.duration == self.total_duration//3:
