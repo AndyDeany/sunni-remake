@@ -60,13 +60,16 @@ class BeamMove(KanyeSnakeMove):
     def __init__(self, mana_cost, min_damage, max_damage):
         super().__init__(mana_cost)
         self.beam = None
-        self.beam_stance = None
         self.min_damage = min_damage
         self.max_damage = max_damage
 
         self.duration = None
         self._set_initial_values()
         self.total_duration = 2 * self.game.fps
+
+    @property
+    def beam_stance(self):
+        raise NotImplementedError
 
     def _set_initial_values(self):
         self.duration = 0
