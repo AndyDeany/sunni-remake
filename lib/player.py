@@ -8,9 +8,9 @@ class Player(Character):
     CHARACTER_1 = "character1"
     CHARACTER_2 = "character2"
 
-    DEAD = "player dead"
     CHOOSE_CHARACTER = "choose character"
     CHOOSE_ABILITY = "choose ability"
+    DEAD = "player dead"
 
     INFO_X = 10
 
@@ -54,7 +54,7 @@ class Player(Character):
         self.character_headbutt_stance = Image(f"sunni_{character}_headbutt_stance.png")
         self.character_frostbeam_stance = Image(f"sunni_{character}_frostbeam_stance.png", (self.x, self.y))
 
-    def level_up(self, levels=1, restore=True):
+    def level_up(self, levels=1.0, restore=True):
         """Level the player up by the given number of levels (default 1).
         Restores the player to full if they pass an integer level and `restore==True` (default).
         """
@@ -86,15 +86,15 @@ class Player(Character):
 
     def next_move(self):
         """Continues to find out the player's next move."""
-        if self.current_hp == 0:
+        if self.is_dead:
             self.game.page.current = self.DEAD
             self.level_up(0.25, restore=False)
             self.game.save()
             return
         self.game.page.current = self.CHOOSE_ABILITY
 
-    def idle_display(self):
+    def _idle_display(self):
         self.idle_movement(self.x, self.y)
 
-    def dead_display(self):
+    def _dead_display(self):
         self.character_dead.display(150, 480)

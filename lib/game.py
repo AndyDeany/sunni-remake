@@ -1,5 +1,6 @@
 import os
 import time
+from collections import OrderedDict
 
 import pygame
 
@@ -19,6 +20,7 @@ from lib.character import Character
 from lib.battle import Battle
 from lib.player import Player
 from lib.meme_dog import MemeDog
+from lib.kanye_snake import KanyeSnake
 from lib.move import Move
 
 
@@ -111,30 +113,30 @@ class Game:
         self.load_next_battle(self.selected_save.opponent_name)
         self.commence_next_battle()
 
-    def load_next_battle(self, name):
-        if name == "Meme Dog":
-            self.opponent = MemeDog(self)
-        elif name == "Kanye Snake":
-            opponent = Character(self, name, 120, 120)
-            opponent.snake_confuse_x = 930
-            opponent.snake_position = "normal"
-            opponent.snake_confuse_direction = "backwards"
-        elif name == "Spook Dog":
+    def load_next_battle(self, name=None):
+        opponents = OrderedDict()
+        opponents["Meme Dog"] = MemeDog
+        opponents["Kanye Snake"] = KanyeSnake
+        # opponents["Spook Dog"] = SpookDog
+
+        if name is None:
+            opponent_names = list(opponents.keys())
+            name = opponent_names[opponent_names.index(self.opponent.name) + 1]
+
+        self.next_battle = Battle(self, opponents[name](self))
+        if name == "Spook Dog":
             opponent = Character(self, name, 200, 150)
             opponent.ghost_dog_stage = 1     # Variable showing which frame of idle movement the ghost dog is in
             opponent.ghost_dog_glide_x = 930
             opponent.started_glowing = False
             opponent.ghost_dog_attack_time = self.fps/2
             opponent.already_clawed = False
-        else:
-            raise ValueError(f"Unknown opponent: '{name}'")
-
-        self.next_battle = Battle(self, self.opponent)
 
     def commence_next_battle(self):
         """Commence the previously loaded next_battle."""
         self.music.stop_music()
         self.page = self.next_battle
+        self.opponent = self.next_battle.opponent
         self.next_battle = None
 
     def run_options_and_return_to_title_logic(self):
