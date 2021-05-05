@@ -8,8 +8,6 @@ opacity = 10    # Variable showing opacity of fading overlay for fading in/out
 fade_direction = "out"
 load_file = False
 
-# Snake
-
 # Ghost Dog
 ghost_dog_dead = Image("sunni_ghost_dog_dead.png")
 ghost_dog_glow1 = Image("sunni_ghost_dog_glow1.png")

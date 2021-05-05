@@ -23,6 +23,11 @@ class Character:
         self.name = name
         self.name_display = Text(self.name, Font.DEFAULT, Color.BLACK)
 
+        self.num_idle_frames = None
+        self.idle_frames = None
+        self.idle_fps = None
+        self.stage = 0
+
         self.current_hp_display = None
         self.current_mana_display = None
         self._max_hp = max_hp
@@ -163,6 +168,14 @@ class Character:
         self.current_mana += amount
         self.stat_change_text = Text(f"+{amount}", Font.DEFAULT, Color.MANA_BLUE)
         self.trigger_stat_change_text()
+
+    def idle_animation(self, x, y):
+        index = int(self.stage)
+        if index >= self.num_idle_frames:
+            index = self.num_idle_frames - (index+2)
+        character_image = self.idle_frames[index]
+        character_image.display(x, y)
+        self.stage = round((self.stage + self.idle_fps/self.game.fps) % (2*self.num_idle_frames - 2), 2)
 
     def display(self):
         """Display the character in it's default state (stationary)."""
