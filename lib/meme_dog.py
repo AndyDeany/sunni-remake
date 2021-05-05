@@ -1,14 +1,12 @@
 import random
 
-from lib.character import Character
+from lib.opponent import Opponent
 from lib.image import Image
 from lib.music import Audio
 from lib.move import Bark, Bite, Spin, OpponentHeal
 
 
-class MemeDog(Character):
-
-    DEAD = "dog dead"
+class MemeDog(Opponent):
 
     INFO_X = 1070
 
@@ -30,15 +28,6 @@ class MemeDog(Character):
         self.dog_bark_stance = Image("sunni_dog_bark_stance.png")
 
         self.basic_attack_sounds = [Audio(f"sunni_dog_attack{n}.ogg") for n in range(1, 4)]
-
-    def next_move(self):
-        """Chooses and uses the dog's next move."""
-        if self.current_hp == 0:
-            self.game.page.current = self.DEAD
-            return
-        next_move = self.choose_move()
-        self.change_mana(next_move)
-        self.game.page.current = next_move
 
     def choose_move(self):
         """Return the name of the next move that the dog decides to use."""

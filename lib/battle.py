@@ -57,12 +57,12 @@ class Battle(Page):
         if self.game.keys.escape or (self.game.mouse.left and self.game.mouse.is_in(10, 665, 100, 715)):
             self.game.options.show()
 
-        if self.current == self.player.CHOOSE_ABILITY:  # Default battle screen - player chooses which move to use
-            self.run_choose_ability()
-        elif self.current == self.opponent.DEAD:    # Opponent dead/Victory screen
+        if self.opponent.is_dead:
             self.run_victory()
-        elif self.current == self.player.DEAD:      # Player dead/Defeat screen
+        elif self.player.is_dead:
             self.run_defeat()
+        elif self.current == self.player.CHOOSE_ABILITY:  # Default battle screen - player chooses which move to use
+            self.run_choose_ability()
         else:   # Moves
             self.current.run()
 

@@ -79,6 +79,10 @@ class Character:
         self._max_mana = value
         self.render_mana()
 
+    @property
+    def is_dead(self):
+        return self.current_hp == 0
+
     def display_info(self):
         def draw_resource_bar(coords, resource_percentage, empty_color, full_color):
             pygame.draw.rect(self.game.screen, empty_color, [*coords, 200, 30])
