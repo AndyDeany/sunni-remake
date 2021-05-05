@@ -19,6 +19,7 @@ from lib.character import Character
 from lib.battle import Battle
 from lib.player import Player
 from lib.meme_dog import MemeDog
+from lib.kanye_snake import KanyeSnake
 from lib.move import Move
 
 
@@ -119,6 +120,7 @@ class Game:
             opponent.snake_confuse_x = 930
             opponent.snake_position = "normal"
             opponent.snake_confuse_direction = "backwards"
+            self.opponent = KanyeSnake(self)
         elif name == "Spook Dog":
             opponent = Character(self, name, 200, 150)
             opponent.ghost_dog_stage = 1     # Variable showing which frame of idle movement the ghost dog is in

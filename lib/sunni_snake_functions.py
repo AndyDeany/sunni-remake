@@ -118,12 +118,6 @@ def snake_change_mana(enemy_current_mana,snake_next_move):
     elif snake_next_move == "snake laser move":
         return enemy_current_mana - 40
 
-# Defining a function to play a sound when the snake uses it's confuse move
-def confuse_move_sound():
-    pygame.mixer.music.load(file_directory + "Sound Files\sunni_snake_confuse.ogg")
-    pygame.mixer.music.set_volume(volume_multiplier)
-    pygame.mixer.music.play(0)
-
 # Defining a function to play a sound when the snake uses it's venom move
 def venom_move_sound():
     pygame.mixer.music.load(file_directory + "Sound Files\sunni_snake_venom.ogg")

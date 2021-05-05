@@ -184,7 +184,7 @@ class Heal(PlayerMove):
             self.heart_y += 5
         elif self.delay_duration < self.total_delay_duration:   # Allow time for stat change to show
             if self.delay_duration == 0:
-                self.user.heal(random.randint(5, 15))
+                self.user.restore_hp(random.randint(5, 15))
             self.delay_duration += 1
         else:
             self.delay_duration = 0
@@ -209,15 +209,8 @@ def opponent_move(player_move_subclass):
 OpponentHeal = opponent_move(Heal)
 
 
-class MemeDogMove(Move):    # noqa pylint: disable=abstract-method
-    def __init__(self, mana_cost):
-        super().__init__(mana_cost)
-        self.sounds = [Audio(f"sunni_dog_attack{n}.ogg") for n in range(1, 4)]
-
-    @property
-    def sound(self):
-        return random.choice(self.sounds)
-
+class OpponentMove(Move):   # noqa pylint: disable=abstract-method
+    """Class for representing opponent moves."""
     @property
     def user(self):
         return self.game.opponent
@@ -225,6 +218,16 @@ class MemeDogMove(Move):    # noqa pylint: disable=abstract-method
     @property
     def opponent(self):
         return self.game.player
+
+
+class MemeDogMove(OpponentMove):    # noqa pylint: disable=abstract-method
+    def __init__(self, mana_cost):
+        super().__init__(mana_cost)
+        self.sounds = [Audio(f"sunni_dog_attack{n}.ogg") for n in range(1, 4)]
+
+    @property
+    def sound(self):
+        return random.choice(self.sounds)
 
 
 class Bark(MemeDogMove):

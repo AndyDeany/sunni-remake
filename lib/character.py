@@ -137,17 +137,31 @@ class Character:
         self.current_mana = min(self.max_mana, self.current_mana)   # Don't let current mana go over max mana
 
     def damage(self, amount):
-        """Damages the character by the given amount."""
+        """Damage the character by the given amount."""
         amount = min(self.current_hp, amount)   # Don't overkill
         self.current_hp -= amount
         self.stat_change_text = Text(f"-{amount}", Font.DEFAULT, Color.DAMAGE_RED)
         self.trigger_stat_change_text()
 
-    def heal(self, amount):
-        """Heals the character for the given amount."""
-        amount = min(self.max_hp - self.current_hp, amount)
+    def restore_hp(self, amount):
+        """Heal the character for the given amount."""
+        amount = min(self.max_hp - self.current_hp, amount)     # Don't overheal
         self.current_hp += amount
         self.stat_change_text = Text(f"+{amount}", Font.DEFAULT, Color.HEAL_GREEN)
+        self.trigger_stat_change_text()
+
+    def damage_mana(self, amount):
+        """Remove the given amount of mana from the character (usually because of a mana-drain ability)."""
+        amount = min(self.current_mana, amount)     # Don't take mana the character doesn't have
+        self.current_mana -= amount
+        self.stat_change_text = Text(f"-{amount}", Font.DEFAULT, Color.MANA_BLUE)
+        self.trigger_stat_change_text()
+
+    def restore_mana(self, amount):
+        """Restore the given amount of mana to the character."""
+        amount = min(self.max_mana - self.current_mana, amount)     # Don't restore over max mana
+        self.current_mana += amount
+        self.stat_change_text = Text(f"+{amount}", Font.DEFAULT, Color.MANA_BLUE)
         self.trigger_stat_change_text()
 
     def idle_display(self):

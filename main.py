@@ -9,12 +9,6 @@ fade_direction = "out"
 load_file = False
 
 # Snake
-snake_normal = Image("sunni_snake_normal.png")
-snake_backwards = Image("sunni_snake_backwards.png")
-snake_moving = Image("sunni_snake_moving.png")
-snake_dead = Image("sunni_snake_dead.png")
-snake_laser_stance = Image("sunni_snake_laser_stance.png")
-snake_venom_stance = Image("sunni_snake_venom_stance.png")
 snake_laser_beam = Image("sunni_snake_laser_beam.png")
 snake_venom_beam = Image("sunni_snake_venom_beam.png")
 

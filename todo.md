@@ -65,6 +65,12 @@ This homogenises how damage is calculated.
 Can allow for things like crit chance etc in the future too,
 instead of each move having it's own special way of calculating damage.
 
+* Change kick/confuse/other mana restoring moves to have a mana cost of `0` and
+then have a `restore_mana()` call at a later point? Could also have a 
+`mana_restoration` parameter showing how much mana will be restored,
+which also means you can use it for `attack_options()` as well,
+so that doesn't get ruined by the new `mana_cost` being `0`.
+
 ### Other
 * Remove docstring ignores from `.pylintrc` at some point.
 

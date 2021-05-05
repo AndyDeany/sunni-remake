@@ -3,6 +3,8 @@ from lib.character import Character
 
 class Opponent(Character):
 
+    INFO_X = 1070
+
     def next_move(self):
         """Chooses and uses the dog's next move."""
         if self.is_dead:

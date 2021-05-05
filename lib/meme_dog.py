@@ -8,8 +8,6 @@ from lib.move import Bark, Bite, Spin, OpponentHeal
 
 class MemeDog(Opponent):
 
-    INFO_X = 1070
-
     @classmethod
     def initialise(cls):
         cls.MOVE_BARK = Bark()
@@ -17,8 +15,8 @@ class MemeDog(Opponent):
         cls.MOVE_SPIN = Spin()
         cls.MOVE_HEAL = OpponentHeal(1005, 230, 410)
 
-    def __init__(self, game, max_hp=100, max_mana=100, *, level=1):
-        super().__init__(game, "Meme Dog", max_hp, max_mana, level=level, display_stat_x=1015, display_stat_y_start=420)
+    def __init__(self, game, max_hp=100, max_mana=100):
+        super().__init__(game, "Meme Dog", max_hp, max_mana, level=1, display_stat_x=1015, display_stat_y_start=420)
         self.x = 930
         self.y = 440
 
