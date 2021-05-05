@@ -28,7 +28,7 @@ class KanyeSnake(Opponent):
 
     def choose_move(self):
         """Return the move that the snake decides to use."""
-        return self.MOVE_LASER
+        return self.MOVE_VENOM
 
     def idle_display(self):
         self.SNAKE_NORMAL.display()

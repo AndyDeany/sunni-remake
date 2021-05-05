@@ -55,59 +55,55 @@ class ConfuseMove(KanyeSnakeMove):
             self.opponent.next_move()
 
 
-class VenomMove(KanyeSnakeMove):
+class BeamMove(KanyeSnakeMove):
+    """Base class for Kanye's beam move (since he has two)."""
+    def __init__(self, mana_cost, min_damage, max_damage):
+        super().__init__(mana_cost)
+        self.beam = None
+        self.beam_stance = None
+        self.min_damage = min_damage
+        self.max_damage = max_damage
+
+        self.duration = None
+        self._set_initial_values()
+        self.total_duration = 2 * self.game.fps
+
+    def _set_initial_values(self):
+        self.duration = 0
+
+    def run(self):
+        self.beam_stance.display()
+        if self.duration < self.total_duration:
+            if self.duration == 0:
+                self.play_sound()
+            elif self.duration == self.total_duration // 2:
+                self.opponent.damage(random.randint(self.min_damage, self.max_damage))
+            for n in range(4):
+                self.beam.display(730 - 180 * n, self.user.y)
+            self.duration += 1
+        else:
+            self._set_initial_values()
+            self.opponent.next_move()
+        self.opponent.idle_display()  # Ensure it shows on top of the beam
+
+
+class VenomMove(BeamMove):
     def __init__(self):
-        super().__init__(20)
+        super().__init__(20, 15, 25)
         self.sound = Audio("sunni_snake_venom.ogg", 0.5)
         self.beam = Image("sunni_snake_venom_beam.png")
 
-        self.duration = None
-        self._set_initial_values()
-        self.total_duration = 2 * self.game.fps
-
-    def _set_initial_values(self):
-        self.duration = 0
-
-    def run(self):
-        self.user.SNAKE_VENOM_STANCE.display()
-        if self.duration < self.total_duration:
-            if self.duration == 0:
-                self.play_sound()
-            elif self.duration == self.total_duration // 2:
-                self.opponent.damage(random.randint(15, 25))
-            for n in range(4):
-                self.beam.display(730 - 180*n, self.user.y)
-            self.duration += 1
-        else:
-            self._set_initial_values()
-            self.opponent.next_move()
-        self.opponent.idle_display()    # Ensure it shows on top of the beam
+    @property
+    def beam_stance(self):
+        return self.user.SNAKE_VENOM_STANCE
 
 
-class LaserMove(KanyeSnakeMove):
+class LaserMove(BeamMove):
     def __init__(self):
-        super().__init__(40)
+        super().__init__(40, 10, 40)
         self.sound = Audio("sunni_snake_laser.ogg", 0.5)
         self.beam = Image("sunni_snake_laser_beam.png")
 
-        self.duration = None
-        self._set_initial_values()
-        self.total_duration = 2 * self.game.fps
-
-    def _set_initial_values(self):
-        self.duration = 0
-
-    def run(self):
-        self.user.SNAKE_LASER_STANCE.display()
-        if self.duration < self.total_duration:
-            if self.duration == 0:
-                self.play_sound()
-            elif self.duration == self.total_duration // 2:
-                self.opponent.damage(random.randint(15, 25))
-            for n in range(4):
-                self.beam.display(730 - 180*n, self.user.y)
-            self.duration += 1
-        else:
-            self._set_initial_values()
-            self.opponent.next_move()
-        self.opponent.idle_display()    # Ensure it shows on top of the beam
+    @property
+    def beam_stance(self):
+        return self.user.SNAKE_LASER_STANCE
