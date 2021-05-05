@@ -9,7 +9,6 @@ fade_direction = "out"
 load_file = False
 
 # Ghost Dog
-ghost_dog_dead = Image("sunni_ghost_dog_dead.png")
 ghost_dog_glow1 = Image("sunni_ghost_dog_glow1.png")
 ghost_dog_glow2 = Image("sunni_ghost_dog_glow2.png")
 ghost_dog_glow3 = Image("sunni_ghost_dog_glow3.png")

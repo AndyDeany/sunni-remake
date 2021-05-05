@@ -21,6 +21,7 @@ from lib.battle import Battle
 from lib.player import Player
 from lib.meme_dog import MemeDog
 from lib.kanye_snake import KanyeSnake
+from lib.spook_dog import SpookDog
 from lib.move import Move
 
 
@@ -117,7 +118,7 @@ class Game:
         opponents = OrderedDict()
         opponents["Meme Dog"] = MemeDog
         opponents["Kanye Snake"] = KanyeSnake
-        # opponents["Spook Dog"] = SpookDog
+        opponents["Spook Dog"] = SpookDog
 
         if name is None:
             opponent_names = list(opponents.keys())
