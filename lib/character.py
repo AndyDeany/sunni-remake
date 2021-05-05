@@ -164,11 +164,18 @@ class Character:
         self.stat_change_text = Text(f"+{amount}", Font.DEFAULT, Color.MANA_BLUE)
         self.trigger_stat_change_text()
 
-    def idle_display(self):
-        raise NotImplementedError(f"{type(self)}.idle_display() is not implemented.")
+    def display(self):
+        """Display the character in it's default state (stationary)."""
+        if self.is_dead:
+            self._dead_display()
+        else:
+            self._idle_display()
 
-    def dead_display(self):
-        raise NotImplementedError(f"{type(self)}.dead_display() is not implemented.")
+    def _idle_display(self):
+        raise NotImplementedError(f"{type(self)}._idle_display() is not implemented.")
+
+    def _dead_display(self):
+        raise NotImplementedError(f"{type(self)}._dead_display() is not implemented.")
 
 
 class NotEnoughManaError(Exception):

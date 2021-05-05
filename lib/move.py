@@ -64,7 +64,7 @@ class Kick(PlayerMove):
         self.tilted_left = True
 
     def run(self):
-        self.opponent.idle_display()
+        self.opponent.display()
         if self.advancing:
             if self.user.x <= self.end_x:
                 image = self.user.character_tilt_left if self.tilted_left else self.user.character_tilt_right
@@ -102,7 +102,7 @@ class Headbutt(PlayerMove):
         self.backward_step = 36
 
     def run(self):
-        self.opponent.idle_display()
+        self.opponent.display()
         if self.advancing:
             if self.user.x < self.end_x:
                 self.user.character_headbutt_stance.display(self.user.x, self.user.y)
@@ -138,7 +138,7 @@ class Frostbeam(PlayerMove):
         self.total_duration = 2*self.game.fps
 
     def run(self):
-        self.opponent.idle_display()
+        self.opponent.display()
         self.user.character_frostbeam_stance.display()
         if self.duration < self.total_duration:
             if self.duration == 0:
@@ -175,8 +175,8 @@ class Heal(PlayerMove):
         return self.user.display_stat_change_duration
 
     def run(self):
-        self.user.idle_display()
-        self.opponent.idle_display()
+        self.user.display()
+        self.opponent.display()
         if self.heart_y < self.end_y:
             if self.heart_y == self.start_y:
                 self.play_sound()
@@ -237,7 +237,7 @@ class Bark(MemeDogMove):
         self.total_duration = 2*self.game.fps
 
     def run(self):
-        self.opponent.idle_display()
+        self.opponent.display()
         self.user.dog_bark_stance.display()
 
         if self.duration < self.total_duration:
@@ -265,7 +265,7 @@ class Bite(MemeDogMove):
         self.backward_step = 42
 
     def run(self):
-        self.opponent.idle_display()
+        self.opponent.display()
         if self.advancing:
             if self.user.x > self.end_x:
                 self.user.dog_normal.display(self.user.x, self.user.y)
@@ -301,7 +301,7 @@ class Spin(MemeDogMove):
         self.facing_forwards = False
 
     def run(self):
-        self.opponent.idle_display()
+        self.opponent.display()
         if self.advancing:
             if self.user.x >= self.end_x:
                 self.user.dog_normal.display(self.user.x, self.user.y)

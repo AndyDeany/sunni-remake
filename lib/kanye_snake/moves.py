@@ -31,7 +31,7 @@ class ConfuseMove(KanyeSnakeMove):
 
     def run(self):
         if self.user.x > self.END_X:
-            self.opponent.idle_display()
+            self.opponent.display()
             image = self.user.SNAKE_MOVING if self.is_moving else self.user.SNAKE_NORMAL
             image.display(self.user.x, self.user.y)
             self.is_moving = not self.is_moving
@@ -49,7 +49,7 @@ class ConfuseMove(KanyeSnakeMove):
             self.confuse_duration += 1
         else:
             self.user.x = self.START_X
-            self.user.idle_display()
+            self.user.display()
             self.opponent.damage_mana(20)
             self.set_initial_values()
             self.opponent.next_move()
@@ -87,7 +87,7 @@ class BeamMove(KanyeSnakeMove):
         else:
             self._set_initial_values()
             self.opponent.next_move()
-        self.opponent.idle_display()  # Ensure it shows on top of the beam
+        self.opponent.display()  # Ensure it shows on top of the beam
 
 
 class VenomMove(BeamMove):

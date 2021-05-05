@@ -10,6 +10,7 @@ class Player(Character):
 
     CHOOSE_CHARACTER = "choose character"
     CHOOSE_ABILITY = "choose ability"
+    DEAD = "player dead"
 
     INFO_X = 10
 
@@ -86,13 +87,14 @@ class Player(Character):
     def next_move(self):
         """Continues to find out the player's next move."""
         if self.is_dead:
+            self.game.page.current = self.DEAD
             self.level_up(0.25, restore=False)
             self.game.save()
             return
         self.game.page.current = self.CHOOSE_ABILITY
 
-    def idle_display(self):
+    def _idle_display(self):
         self.idle_movement(self.x, self.y)
 
-    def dead_display(self):
+    def _dead_display(self):
         self.character_dead.display(150, 480)

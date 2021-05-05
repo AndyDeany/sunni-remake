@@ -18,6 +18,7 @@ class Battle(Page):
     def __init__(self, game, opponent):
         super().__init__(game)
         self.opponent = opponent
+        self.player = self.game.player
 
         self.not_enough_mana = Text("You don't have enough mana to use that", Font.OPENING, Color.MANA_BLUE, (300, 200))
         self.mana_notification_duration = 0
@@ -27,18 +28,6 @@ class Battle(Page):
             self.current = Player.CHOOSE_CHARACTER
         else:
             self.current = Player.CHOOSE_ABILITY
-
-    @property
-    def player(self):
-        return self.game.player
-
-    @property
-    def opponent(self):
-        return self.game.opponent
-
-    @opponent.setter
-    def opponent(self, value):
-        self.game.opponent = value
 
     def run(self):
         """Runs the early_run(), run_main(), and late_run() methods."""
@@ -57,9 +46,9 @@ class Battle(Page):
         if self.game.keys.escape or (self.game.mouse.left and self.game.mouse.is_in(10, 665, 100, 715)):
             self.game.options.show()
 
-        if self.opponent.is_dead:
+        if self.current == self.opponent.DEAD:
             self.run_victory()
-        elif self.player.is_dead:
+        elif self.current == self.player.DEAD:
             self.run_defeat()
         elif self.current == self.player.CHOOSE_ABILITY:  # Default battle screen - player chooses which move to use
             self.run_choose_ability()
@@ -67,11 +56,11 @@ class Battle(Page):
             self.current.run()
 
         self.player.display_stat_change()
-        self.game.opponent.display_stat_change()
+        self.opponent.display_stat_change()
 
     def run_choose_ability(self):
-        self.player.idle_display()
-        self.opponent.idle_display()
+        self.player.display()
+        self.opponent.display()
 
         offensive_first_icon_x = 960
         offensive_icon_y = 390
@@ -123,8 +112,8 @@ class Battle(Page):
                 self.player.selected_moves = None
 
     def run_victory(self):
-        self.player.idle_display()
-        self.opponent.dead_display()
+        self.player.display()
+        self.opponent.display()
         self.game.VICTORY_OVERLAY.display()
         self.game.CONTINUE_BUTTON.display()
         self.game.RETURN_TO_TITLE_BUTTON.display()
@@ -141,8 +130,8 @@ class Battle(Page):
                 self.game.main_menu.visit()
 
     def run_defeat(self):
-        self.player.dead_display()
-        self.opponent.idle_display()
+        self.player.display()
+        self.opponent.display()
         self.game.DEFEAT_OVERLAY.display()
         self.game.TRY_AGAIN_BUTTON.display()
         self.game.RETURN_TO_TITLE_BUTTON.display()
@@ -151,7 +140,7 @@ class Battle(Page):
             if self.game.mouse.is_in(1000, 600, 1200, 700):
                 self.current = Player.CHOOSE_ABILITY
                 self.player.fully_restore()
-                self.game.opponent.fully_restore()
+                self.opponent.fully_restore()
             elif self.game.mouse.is_in(80, 600, 268, 650):
                 self.game.main_menu.visit()
 

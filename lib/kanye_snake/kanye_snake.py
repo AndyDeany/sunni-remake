@@ -51,8 +51,8 @@ class KanyeSnake(Opponent):
             options.append(self.MOVE_HEAL)
         return random.choice(options)
 
-    def idle_display(self):
+    def _idle_display(self):
         self.SNAKE_NORMAL.display()
 
-    def dead_display(self):
+    def _dead_display(self):
         self.SNAKE_DEAD.display()
