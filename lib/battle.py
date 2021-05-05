@@ -131,7 +131,7 @@ class Battle(Page):
 
         if self.game.next_battle is None:
             self.player.level_up()
-            self.game.load_next_battle("Kanye Snake")
+            self.game.load_next_battle()
             self.game.save()
 
         if self.game.mouse.left:

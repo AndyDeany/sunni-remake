@@ -107,16 +107,7 @@ def choose_snake_move():
                 elif r == 4:
                     return "snake laser move"
 
-# Defining a function to change the snake's mana
-def snake_change_mana(enemy_current_mana,snake_next_move):
-    if snake_next_move == "snake confuse move":
-        return enemy_current_mana + 10
-    elif snake_next_move == "snake heal move":
-        return enemy_current_mana - 10
-    elif snake_next_move == "snake venom move":
-        return enemy_current_mana - 20
-    elif snake_next_move == "snake laser move":
-        return enemy_current_mana - 40
+
 
 # Defining a function to play a sound when the snake uses it's laser move
 def laser_move_sound():

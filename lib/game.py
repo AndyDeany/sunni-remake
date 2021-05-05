@@ -112,7 +112,10 @@ class Game:
         self.load_next_battle(self.selected_save.opponent_name)
         self.commence_next_battle()
 
-    def load_next_battle(self, name):
+    def load_next_battle(self, name=None):
+        if name is None:
+            opponents = ("Meme Dog", "Kanye Snake", "Spook Dog")
+            name = opponents[opponents.index(self.opponent.name) + 1]
         if name == "Meme Dog":
             self.opponent = MemeDog(self)
         elif name == "Kanye Snake":
