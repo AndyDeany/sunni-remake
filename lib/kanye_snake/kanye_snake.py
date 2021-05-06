@@ -26,29 +26,28 @@ class KanyeSnake(Opponent):
 
     def choose_move(self):
         """Return the move that the snake decides to use."""
-        def attack_options(*, favour_damage=False):
-            """Return the options the snake can/would choose from for attacking based on his mana."""
-            moves = [self.moves.confuse, self.moves.venom, self.moves.laser]
-            moves = [move for move in moves if 0 <= self.current_mana - move.mana_cost <= self.max_mana]
-            if len(moves) > 1 and favour_damage:
-                moves.remove(self.moves.confuse)
-            return moves
-
         if self.current_mana < 10:  # Only usable move
             return self.moves.confuse
 
         if self.game.player.current_hp < 20:
-            return random.choice(attack_options(favour_damage=True))
+            return random.choice(self.attack_options(favour_damage=True))
 
         if self.current_hp < self.max_hp / 5:
             if random.randint(1, 10) == 1:
-                return random.choice(attack_options())
+                return random.choice(self.attack_options())
             return self.moves.heal
 
-        options = attack_options()
+        options = self.attack_options()
         if self.current_hp <= 3 * (self.max_hp / 4):
             options.append(self.moves.heal)
         return random.choice(options)
+
+    def attack_options(self, *, favour_damage=False):
+        """Return the options the snake can/would choose from for attacking based on his mana."""
+        moves = super().attack_options()
+        if len(moves) > 1 and favour_damage:
+            moves.remove(self.moves.confuse)
+        return moves
 
     def _idle_display(self):
         self.snake_normal.display()

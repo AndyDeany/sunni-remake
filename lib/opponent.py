@@ -25,6 +25,12 @@ class Opponent(Character):
     def choose_move(self):
         raise NotImplementedError
 
+    def attack_options(self):
+        """Return the options the opponent can/would choose from for attacking based on their mana."""
+        moves = [move for move in self.moves if move != self.moves.heal]
+        moves = [move for move in moves if 0 <= self.current_mana - move.mana_cost <= self.max_mana]
+        return moves
+
     @staticmethod
     def random_weighted(moves_with_weights):
         r = random.random()

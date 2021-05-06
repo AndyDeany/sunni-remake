@@ -194,7 +194,7 @@ class Heal(PlayerMove):
 
 def opponent_move(player_move_subclass):
     """Convert the given player's move (a PlayerMove subclass) into a version that can be used by opponents."""
-    class OpponentVersion(player_move_subclass):
+    class OpponentMove(player_move_subclass):
         @property
         def user(self):
             return self.game.opponent
@@ -203,7 +203,7 @@ def opponent_move(player_move_subclass):
         def opponent(self):
             return self.game.player
 
-    return OpponentVersion
+    return OpponentMove
 
 
 OpponentHeal = opponent_move(Heal)

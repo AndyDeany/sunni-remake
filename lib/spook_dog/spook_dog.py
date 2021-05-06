@@ -24,12 +24,6 @@ class SpookDog(Opponent):
 
     def choose_move(self):
         """Return the move that the ghost dog decides to use."""
-        def attack_options():
-            """Return the options the dog can/would choose from for attacking based on his mana."""
-            moves = [self.moves.teleport, self.moves.glide, self.moves.claw]
-            moves = [move for move in moves if 0 <= self.current_mana - move.mana_cost <= self.max_mana]
-            return moves
-
         if self.current_mana < 10:  # Only usable move
             return self.moves.teleport
 
@@ -55,10 +49,10 @@ class SpookDog(Opponent):
                 return random.choice([self.moves.claw, self.moves.heal])
 
             if random.random() < 0.1:
-                return random.choice(attack_options())
+                return random.choice(self.attack_options())
             return self.moves.heal
 
-        options = attack_options()
+        options = self.attack_options()
         if self.current_hp <= 0.9*self.max_hp:
             options.append(self.moves.heal)
         return random.choice(options)

@@ -27,24 +27,18 @@ class MemeDog(Opponent):
 
     def choose_move(self):
         """Return the name of the next move that the dog decides to use."""
-        def attack_options():
-            """Return the options the dog can/would choose from for attacking based on his mana."""
-            moves = [self.moves.bark, self.moves.bite, self.moves.spin]
-            moves = [move for move in moves if 0 <= self.current_mana - move.mana_cost <= self.max_mana]
-            return moves
-
         if self.current_mana < 10:  # Only usable move
             return self.moves.bark
 
         if self.game.player.current_hp < 15:    # Try to finish the player off
-            return random.choice(attack_options())
+            return random.choice(self.attack_options())
 
         if self.current_hp < self.max_hp / 4:   # Low - prefer to heal but chance of attacking
             if random.randint(1, 10) == 1:
-                return random.choice(attack_options())
+                return random.choice(self.attack_options())
             return self.moves.heal
 
-        options = attack_options()
+        options = self.attack_options()
         if self.current_hp <= 3 * (self.max_hp / 4):
             options.append(self.moves.heal)
         return random.choice(options)
