@@ -25,7 +25,99 @@ class SpookDog(Opponent):
 
     def choose_move(self):
         """Return the move that the ghost dog decides to use."""
-        return self.MOVE_CLAW
+        if self.current_mana < 10:  # Only usable move
+            return self.MOVE_TELEPORT
+
+        if self.current_mana < 50:
+            if self.current_hp <= 180:
+                if self.game.player.current_hp <= 20:
+                    return self.MOVE_GLIDE
+                if self.game.player.current_hp <= 30:
+                    r = random.randint(1, 10)
+                    if r == 1:
+                        return self.MOVE_HEAL
+                    if r < 5:
+                        return self.MOVE_TELEPORT
+                    return self.MOVE_GLIDE
+
+                if self.current_hp < 25:
+                    if random.randint(1, 5) == 1:
+                        return random.choice([self.MOVE_TELEPORT, self.MOVE_GLIDE])
+                    return self.MOVE_HEAL
+                return random.choice([self.MOVE_HEAL, self.MOVE_TELEPORT, self.MOVE_GLIDE])
+
+            if self.game.player.current_hp <= 20:
+                return self.MOVE_GLIDE
+            if self.game.player.current_hp <= 30:
+                if random.randint(1, 3) == 1:
+                    return self.MOVE_TELEPORT
+                return self.MOVE_GLIDE
+            return random.choice([self.MOVE_TELEPORT, self.MOVE_GLIDE])
+
+        if self.current_mana <= 140:
+            if self.current_hp <= 180:
+                if self.game.player.current_hp <= 10:
+                    return self.MOVE_CLAW
+                if self.game.player.current_hp <= 20:
+                    return self.MOVE_GLIDE
+                if self.game.player.current_hp <= 30:
+                    r = random.randint(1, 20)
+                    if r == 1:
+                        return self.MOVE_HEAL
+                    if r < 4:
+                        return self.MOVE_TELEPORT
+                    if r < 8:
+                        return self.MOVE_GLIDE
+                    return self.MOVE_CLAW
+
+                if self.current_hp < 25:
+                    if self.game.player.current_hp <= 40:
+                        return random.choice([self.MOVE_HEAL, self.MOVE_CLAW])
+                    if random.randint(1, 20) <= 3:
+                        return random.choice([self.MOVE_TELEPORT, self.MOVE_GLIDE, self.MOVE_CLAW])
+                    return self.MOVE_HEAL
+                return random.choice([self.MOVE_HEAL, self.MOVE_TELEPORT, self.MOVE_GLIDE, self.MOVE_CLAW])
+
+            if self.game.player.current_hp <= 10:
+                return self.MOVE_CLAW
+            if self.game.player.current_hp <= 20:
+                return self.MOVE_GLIDE
+            if self.game.player.current_hp <= 30:
+                if random.randint(1, 5) <= 2:
+                    return random.choice([self.MOVE_TELEPORT, self.MOVE_GLIDE])
+                return self.MOVE_CLAW
+            return random.choice([self.MOVE_TELEPORT, self.MOVE_GLIDE, self.MOVE_CLAW])
+
+        if self.current_hp <= 180:
+            if self.game.player.current_hp <= 10:
+                return self.MOVE_CLAW
+            if self.game.player.current_hp <= 20:
+                return self.MOVE_GLIDE
+            if self.game.player.current_hp <= 30:
+                r = random.randint(1, 15)
+                if r == 1:
+                    return self.MOVE_HEAL
+                if r < 6:
+                    return self.MOVE_GLIDE
+                return self.MOVE_CLAW
+
+            if self.current_hp < 25:
+                if self.game.player.current_hp <= 40:
+                    return random.choice([self.MOVE_CLAW, self.MOVE_HEAL])
+                if random.randint(1, 10) == 1:
+                    return random.choice([self.MOVE_GLIDE, self.MOVE_CLAW])
+                return self.MOVE_HEAL
+            return random.choice([self.MOVE_HEAL, self.MOVE_GLIDE, self.MOVE_CLAW])
+
+        if self.game.player.current_hp <= 10:
+            return self.MOVE_CLAW
+        if self.game.player.current_hp <= 20:
+            return self.MOVE_GLIDE
+        if self.game.player.current_hp <= 30:
+            if random.randint(1, 4) == 1:
+                return self.MOVE_GLIDE
+            return self.MOVE_CLAW
+        return random.choice([self.MOVE_GLIDE, self.MOVE_CLAW])
 
     def _idle_display(self):
         self.idle_animation(self.x, self.y)
