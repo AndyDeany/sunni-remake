@@ -88,13 +88,15 @@ class Claw(SpookDogMove):
         self.fade_overlays = [Image(f"sunni_fade_overlay{10*(n+1)}.png", (0, 0)) for n in range(10)]
         self.opacity = 0
 
-        self.top_claw_swipes = [Image(f"sunni_ghost_dog_top_claw_swipe{n}.png", (145, 365)) for n in range(5)]
-        self.top_claw_sizes = [Image(f"sunni_ghost_dog_top_claw_size{n}.png", (145, 365)) for n in range(8)]
-        self.top_claw_fades = [Image(f"sunni_ghost_dog_top_claw_fade{20*(n+1)}.png", (145, 365)) for n in range(4)]
+        top_claw_swipes = [Image(f"sunni_ghost_dog_top_claw_swipe{n}.png", (145, 365)) for n in range(5)]
+        top_claw_sizes = [Image(f"sunni_ghost_dog_top_claw_size{n}.png", (145, 365)) for n in range(8)]
+        top_claw_fades = [Image(f"sunni_ghost_dog_top_claw_fade{20*(n+1)}.png", (145, 365)) for n in range(4)]
+        self.top_claw_frames = top_claw_swipes + top_claw_sizes + list(reversed(top_claw_fades))
 
-        self.side_claw_swipes = [Image(f"sunni_ghost_dog_side_claw_swipe{n}.png", (130, 420)) for n in range(5)]
-        self.side_claw_sizes = [Image(f"sunni_ghost_dog_side_claw_size{n}.png", (130, 420)) for n in range(8)]
-        self.side_claw_fades = [Image(f"sunni_ghost_dog_side_claw_fade{20*(n+1)}.png", (130, 420)) for n in range(4)]
+        side_claw_swipes = [Image(f"sunni_ghost_dog_side_claw_swipe{n}.png", (130, 420)) for n in range(5)]
+        side_claw_sizes = [Image(f"sunni_ghost_dog_side_claw_size{n}.png", (130, 420)) for n in range(8)]
+        side_claw_fades = [Image(f"sunni_ghost_dog_side_claw_fade{20*(n+1)}.png", (130, 420)) for n in range(4)]
+        self.side_claw_frames = side_claw_swipes + side_claw_sizes + list(reversed(side_claw_fades))
 
         self.duration = 0
         self.total_duration = 2 * self.game.fps
@@ -117,19 +119,10 @@ class Claw(SpookDogMove):
                     self.opponent.character_scared_redflash.display()
                 else:
                     self.opponent.character_scared.display()
-                if stage < 5:
-                    self.top_claw_swipes[stage].display()
-                elif stage < 13:
-                    self.top_claw_sizes[stage - 5].display()
-                elif stage < 17:
-                    self.top_claw_fades[14 - stage].display()
-                if stage >= 10:
-                    if stage < 15:
-                        self.side_claw_swipes[stage - 10].display()
-                    elif stage < 23:
-                        self.side_claw_sizes[stage - 15].display()
-                    elif stage < 27:
-                        self.side_claw_fades[24 - stage].display()
+                if stage < 17:
+                    self.top_claw_frames[stage].display()
+                if 10 <= stage < 27:
+                    self.side_claw_frames[stage - 10].display()
             else:
                 self.opponent.character_scared.display()
             self.duration += 1
