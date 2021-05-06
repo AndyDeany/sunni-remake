@@ -35,6 +35,8 @@ instead of just when needed = memhog.
 `Game` and hope it's right. Also gets rid of any ambiguity and means that
 any `Character` can use a move without worrying about it targeting the wrong character.
 
+* `MouseButton` class.
+
 * Could (distant-ish future) have like a `Playthrough` class which takes most of `Game`'s logic.
 This would be so that when you load into a save or start a new one,
 a new `Playthrough()` instance could be created with all attributes
@@ -56,9 +58,19 @@ accidentally and causing bugs.
 * `choose_character_overlay.png` is either 1pixel too thin
 or is transparent for 1 column of pixels on the left (probably the latter)
 
-* Potential/Foreseen: Next battle's dead body shows after winning a fight due to `game.opponent`
-being changed to the next opponent pre-emptively in `game.load_next_battle`...
-Try think of a fix if this is an issue as predicted.
+* When hp damage and mana damage done at the same time (like Spook Dog's Teleport move)
+only one stat change is shown since `stat_change_text` can only hold one value.
+This might need fixing by having a list of `stat_change_texts` and `display_stat_change_text()`
+display them 1by1 with a slight delay so they don't overlap, and then removing
+the text from the list when it's complete. May need to be a tuple to store the y
+value of the stat change text too so it's known when each one is done.
+Alternatively to the delay, subsequent values could just show below the first one,
+at the same time. I *much* prefer this solution from both a user standpoint
+(the damages happened at the same time... so show them at the same time)
+**and** a coding standpoint, as this means only one `y` value needs storing,
+and subsequent items in the `stat_change_texts` lists can just be
+blitted 20px (or whatever the height of the font is plus a couple px buffer)
+below until the normal blit duration has passed.
 
 ### Features
 * Replace `random.randint()` for calculating move damage/healing with two parameters:

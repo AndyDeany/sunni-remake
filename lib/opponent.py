@@ -1,3 +1,5 @@
+import random
+
 from lib.character import Character
 
 
@@ -6,6 +8,10 @@ class Opponent(Character):
     INFO_X = 1070
 
     DEAD = "opponent dead"
+
+    def __init__(self, game, name, max_hp, max_mana, *, level=1, display_stat_x=1015, display_stat_y_start=420):
+        super().__init__(game, name, max_hp, max_mana, level=level,
+                         display_stat_x=display_stat_x, display_stat_y_start=display_stat_y_start)
 
     def next_move(self):
         """Chooses and uses the dog's next move."""
@@ -18,3 +24,15 @@ class Opponent(Character):
 
     def choose_move(self):
         raise NotImplementedError
+
+    @staticmethod
+    def random_weighted(moves_with_weights):
+        r = random.random()
+        upper_limit = 0
+        weight_sum = sum(moves_with_weights.values())
+        move = None
+        for move, weight in moves_with_weights.items():
+            upper_limit += weight / weight_sum
+            if r < upper_limit:
+                return move
+        return move  # Off chance that weights don't sum perfectly to 1 due to computer rounding errors.

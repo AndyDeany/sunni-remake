@@ -26,8 +26,8 @@ class Player(Character):
         self.calculate_stats()
         self.x = 150
         self.y = 380
-        self.stage = 0
-        self.num_idle_frames = 6
+        self.num_idle_frames = 4
+        self.idle_fps = 6
 
         self.character = character
         self.offensive_moves = [self.MOVE_KICK, self.MOVE_HEADBUTT, self.MOVE_FROSTBEAM]
@@ -46,8 +46,8 @@ class Player(Character):
         self.idle_frames = [Image(f"sunni_{character}_normal{n}.png") for n in range(self.num_idle_frames)]
         self.character_normal = Image(f"sunni_{character}_normal1.png")
         self.character_backwards = Image(f"sunni_{character}_backwards.png")
-        self.character_scared = Image(f"sunni_{character}_scared.png")
-        self.character_scared_redflash = Image(f"sunni_{character}_scared_redflash.png")
+        self.character_scared = Image(f"sunni_{character}_scared.png", (self.x, self.y))
+        self.character_scared_redflash = Image(f"sunni_{character}_scared_redflash.png", (self.x, self.y))
         self.character_tilt_left = Image(f"sunni_{character}_tilt_left.png")
         self.character_tilt_right = Image(f"sunni_{character}_tilt_right.png")
         self.character_dead = Image(f"sunni_{character}_dead.png")
@@ -69,11 +69,6 @@ class Player(Character):
         self.max_hp = 90 + 10*int(self.level)
         self.max_mana = 95 + 5*int(self.level)
 
-    def idle_movement(self, x, y):
-        character_image = self.idle_frames[int(self.stage)]
-        character_image.display(x, y)
-        self.stage = round((self.stage + 0.2) % self.num_idle_frames, 2)
-
     def use_move(self, move):
         try:
             self.change_mana(move)
@@ -94,7 +89,7 @@ class Player(Character):
         self.game.page.current = self.CHOOSE_ABILITY
 
     def _idle_display(self):
-        self.idle_movement(self.x, self.y)
+        self.idle_animation(self.x, self.y)
 
     def _dead_display(self):
         self.character_dead.display(150, 480)

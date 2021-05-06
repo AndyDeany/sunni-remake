@@ -3,7 +3,8 @@ import random
 from lib.opponent import Opponent
 from lib.image import Image
 from lib.music import Audio
-from lib.move import Bark, Bite, Spin, OpponentHeal
+from lib.move import OpponentHeal
+from .moves import Bark, Bite, Spin
 
 
 class MemeDog(Opponent):
@@ -16,7 +17,7 @@ class MemeDog(Opponent):
         cls.MOVE_HEAL = OpponentHeal(1005, 230, 410)
 
     def __init__(self, game, max_hp=100, max_mana=100):
-        super().__init__(game, "Meme Dog", max_hp, max_mana, level=1, display_stat_x=1015, display_stat_y_start=420)
+        super().__init__(game, "Meme Dog", max_hp, max_mana)
         self.x = 930
         self.y = 440
 
