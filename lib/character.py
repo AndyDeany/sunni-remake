@@ -37,6 +37,7 @@ class Character:
         self.render_mana()
         self.render_hp()
         self.level = level
+        self.moves = None
 
         self.stat_change_text = None
         self.display_stat_x = display_stat_x
@@ -44,9 +45,6 @@ class Character:
         self.display_stat_y = self.display_stat_y_start
         self.display_stat_change_time = -1
         self.display_stat_change_duration = int(self.game.fps/2)
-
-        self.is_advancing = True
-        self.is_retreating = False
 
     @property
     def current_hp(self):
