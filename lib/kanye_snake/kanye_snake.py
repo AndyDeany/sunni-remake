@@ -9,16 +9,16 @@ from .moves import ConfuseMove, VenomMove, LaserMove
 class KanyeSnake(Opponent):
     """Class representing the Kanye Snake opponent."""
     def __init__(self, game, max_hp=120, max_mana=120):
-        super().__init__(game, "Kanye Snake", max_hp, max_mana, level=1, display_stat_x=1015, display_stat_y_start=420)
+        super().__init__(game, "Kanye Snake", max_hp, max_mana)
         self.x = 930
         self.y = 440
 
-        self.SNAKE_NORMAL = Image("sunni_snake_normal.png", (self.x, self.y))
-        self.SNAKE_DEAD = Image("sunni_snake_dead.png", (self.x, self.y))
-        self.SNAKE_BACKWARDS = Image("sunni_snake_backwards.png")
-        self.SNAKE_MOVING = Image("sunni_snake_moving.png")
-        self.SNAKE_VENOM_STANCE = Image("sunni_snake_venom_stance.png", (self.x, self.y))
-        self.SNAKE_LASER_STANCE = Image("sunni_snake_laser_stance.png", (self.x, self.y))
+        self.snake_normal = Image("sunni_snake_normal.png", (self.x, self.y))
+        self.snake_dead = Image("sunni_snake_dead.png", (self.x, self.y))
+        self.snake_backwards = Image("sunni_snake_backwards.png")
+        self.snake_moving = Image("sunni_snake_moving.png")
+        self.snake_venom_stance = Image("sunni_snake_venom_stance.png", (self.x, self.y))
+        self.snake_laser_stance = Image("sunni_snake_laser_stance.png", (self.x, self.y))
 
         self.MOVE_HEAL = OpponentHeal(1005, 230, 410)
         self.MOVE_CONFUSE = ConfuseMove()
@@ -52,7 +52,7 @@ class KanyeSnake(Opponent):
         return random.choice(options)
 
     def _idle_display(self):
-        self.SNAKE_NORMAL.display()
+        self.snake_normal.display()
 
     def _dead_display(self):
-        self.SNAKE_DEAD.display()
+        self.snake_dead.display()

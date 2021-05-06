@@ -1,3 +1,5 @@
+"""Module containing Spook Dog's (unique) moves."""
+
 import random
 import math
 
@@ -8,7 +10,7 @@ from lib.color import Color
 
 
 class SpookDogMove(OpponentMove):     # noqa pylint: disable=abstract-method
-    """Class for representing Spook Dog's moves."""
+    """Class for representing one of Spook Dog's moves."""
 
 
 class Teleport(SpookDogMove):
@@ -46,31 +48,34 @@ class Teleport(SpookDogMove):
 
 
 class Glide(SpookDogMove):
+    """Class for representing the Glide move."""
+
+    START_X = 930
+    SOUND_X = 570
+    END_X = -366
+    DAMAGE_X = 210
+    FORWARD_STEP = 24
+
+    AMPLITUDE = 200
+    OSCILLATIONS = 1.5
+
     def __init__(self):
         super().__init__(10)
         self.sound = Audio("sunni_ghost_dog_glide.ogg")
 
-        self.START_X = 930
-        self.SOUND_X = 570
-        self.END_X = -366
-        self.DAMAGE_X = 210
-        self.FORWARD_STEP = 24
-
-        self.AMPLITUDE = 200
-        self.OSCILLATIONS = 1.5
-        self.RANGE = self.FORWARD_STEP * math.ceil(self.game.screen.get_width()/self.FORWARD_STEP)
-        self.WAVELENGTH = self.RANGE/self.OSCILLATIONS
+        self.range = self.FORWARD_STEP * math.ceil(self.game.screen.get_width() / self.FORWARD_STEP)
+        self.wavelength = self.range / self.OSCILLATIONS
 
     def run(self):
         self.opponent.display()
-        y = self.user.y + int(self.AMPLITUDE*math.sin((2*math.pi/self.WAVELENGTH)*(self.user.x - self.START_X)))
+        y = self.user.y + int(self.AMPLITUDE * math.sin((2 * math.pi / self.wavelength) * (self.user.x - self.START_X)))
         self.user.idle_animation(self.user.x, y)
         if self.user.x == self.SOUND_X:
             self.play_sound()
         elif self.user.x == self.DAMAGE_X:
             self.opponent.damage(random.randint(20, 30))
         elif self.user.x <= 0:
-            self.user.idle_animation(self.user.x + self.RANGE, y)
+            self.user.idle_animation(self.user.x + self.range, y)
 
         if self.user.x == self.END_X:
             self.opponent.next_move()
@@ -137,5 +142,3 @@ class Claw(SpookDogMove):
             self.opponent.character_scared.display()
             self.duration = 0
             self.opponent.next_move()
-
-
