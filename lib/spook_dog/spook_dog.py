@@ -32,12 +32,13 @@ class SpookDog(Opponent):
             return moves
 
         def random_weighted(moves_with_weights):
-            rand = random.random()
+            r = random.random()
             upper_limit = 0
+            weight_sum = sum(moves_with_weights.values())
             move = None
             for move, weight in moves_with_weights.items():
-                upper_limit += weight
-                if rand < upper_limit:
+                upper_limit += weight/weight_sum
+                if r < upper_limit:
                     return move
             return move     # Off chance that weights don't sum perfectly to 1 due to computer rounding errors.
 
@@ -50,16 +51,19 @@ class SpookDog(Opponent):
             return self.MOVE_GLIDE
         if self.game.player.current_hp <= 30:
             if self.current_mana < 50:
-                if self.current_hp <= 180 and random.random() < 0.1:
-                    return self.MOVE_HEAL
-                return random_weighted({self.MOVE_TELEPORT: 1/3, self.MOVE_GLIDE: 2/3})
-            if self.current_hp <= 180:
-                if self.current_mana <= 140:
+                options = {self.MOVE_TELEPORT: 3, self.MOVE_GLIDE: 6}
+                if self.current_hp <= 180:
+                    options[self.MOVE_HEAL] = 1
+                return random_weighted(options)
+
+            if self.current_mana <= 140:
+                if self.current_hp <= 180:
                     return random_weighted({self.MOVE_HEAL: 0.05, self.MOVE_TELEPORT: 0.1,
                                             self.MOVE_GLIDE: 0.2, self.MOVE_CLAW: 0.65})
-                return random_weighted({self.MOVE_HEAL: 1/15, self.MOVE_GLIDE: 4/15, self.MOVE_CLAW: 10/15})
-            if self.current_mana <= 140:
                 return random_weighted({self.MOVE_TELEPORT: 0.2, self.MOVE_GLIDE: 0.2, self.MOVE_CLAW: 0.6})
+
+            if self.current_hp <= 180:
+                return random_weighted({self.MOVE_HEAL: 1/15, self.MOVE_GLIDE: 4/15, self.MOVE_CLAW: 10/15})
             return random_weighted({self.MOVE_GLIDE: 0.25, self.MOVE_CLAW: 0.75})
 
         if self.current_hp < 25:
