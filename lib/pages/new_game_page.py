@@ -1,4 +1,4 @@
-from lib.save_page import SavePage
+from lib.pages.save_page import SavePage
 from lib.image import Image, Text
 from lib.color import Color
 from lib.font import Font

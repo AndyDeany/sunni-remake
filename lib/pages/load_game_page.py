@@ -1,4 +1,4 @@
-from lib.save_page import SavePage
+from lib.pages.save_page import SavePage
 
 
 class LoadGamePage(SavePage):

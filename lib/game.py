@@ -11,10 +11,10 @@ from lib.image import Image, Surface
 from lib.options import Options
 from lib.save import Save
 
-from lib.opening_sequence import OpeningSequence
-from lib.main_menu import MainMenu
-from lib.new_game_page import NewGamePage
-from lib.load_game_page import LoadGamePage
+from lib.pages.opening_sequence import OpeningSequence
+from lib.pages.main_menu import MainMenu
+from lib.pages.new_game_page import NewGamePage
+from lib.pages.load_game_page import LoadGamePage
 
 from lib.character import Character
 from lib.battle import Battle
