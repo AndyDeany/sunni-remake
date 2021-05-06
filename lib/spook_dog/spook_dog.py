@@ -41,13 +41,19 @@ class SpookDog(Opponent):
             return self.MOVE_CLAW
         if self.game.player.current_hp <= 20:
             return self.MOVE_GLIDE
-
-        if self.current_mana < 50:
-            if self.game.player.current_hp <= 30:
+        if self.game.player.current_hp <= 30:
+            if self.current_mana < 50:
                 if self.current_hp <= 180 and random.random() < 0.1:
                     return self.MOVE_HEAL
                 return random_weighted({self.MOVE_TELEPORT: 1/3, self.MOVE_GLIDE: 2/3})
+            if self.current_hp <= 180:
+                if self.current_mana <= 140:
+                    return random_weighted({self.MOVE_HEAL: 0.05, self.MOVE_TELEPORT: 0.1,
+                                            self.MOVE_GLIDE: 0.2, self.MOVE_CLAW: 0.65})
+                return random_weighted({self.MOVE_HEAL: 1/15, self.MOVE_GLIDE: 4/15, self.MOVE_CLAW: 10/15})
+            return random_weighted({self.MOVE_GLIDE: 0.25, self.MOVE_CLAW: 0.75})
 
+        if self.current_mana < 50:
             if self.current_hp < 25:
                 return random_weighted({self.MOVE_TELEPORT: 0.1, self.MOVE_GLIDE: 0.1, self.MOVE_HEAL: 0.8})
 
@@ -57,35 +63,27 @@ class SpookDog(Opponent):
             return random.choice(options)
 
         if self.current_mana <= 140:
+            if self.current_hp < 25:
+                if self.game.player.current_hp <= 40:
+                    return random.choice([self.MOVE_HEAL, self.MOVE_CLAW])
+                return random_weighted({self.MOVE_HEAL: 0.85, self.MOVE_TELEPORT: 0.05,
+                                        self.MOVE_GLIDE: 0.05, self.MOVE_CLAW: 0.05})
             if self.current_hp <= 180:
-                if self.game.player.current_hp <= 30:
-                    return random_weighted({self.MOVE_HEAL: 0.05, self.MOVE_TELEPORT: 0.1,
-                                            self.MOVE_GLIDE: 0.2, self.MOVE_CLAW: 0.65})
-
-                if self.current_hp < 25:
-                    if self.game.player.current_hp <= 40:
-                        return random.choice([self.MOVE_HEAL, self.MOVE_CLAW])
-                    return random_weighted({self.MOVE_HEAL: 0.85, self.MOVE_TELEPORT: 0.05,
-                                            self.MOVE_GLIDE: 0.05, self.MOVE_CLAW: 0.05})
                 return random.choice([self.MOVE_HEAL, self.MOVE_TELEPORT, self.MOVE_GLIDE, self.MOVE_CLAW])
 
             if self.game.player.current_hp <= 30:
                 return random_weighted({self.MOVE_TELEPORT: 0.2, self.MOVE_GLIDE: 0.2, self.MOVE_CLAW: 0.6})
             return random.choice([self.MOVE_TELEPORT, self.MOVE_GLIDE, self.MOVE_CLAW])
 
+        if self.current_hp < 25:
+            if self.game.player.current_hp <= 40:
+                return random.choice([self.MOVE_CLAW, self.MOVE_HEAL])
+            return random_weighted({self.MOVE_HEAL: 0.9, self.MOVE_GLIDE: 0.05, self.MOVE_CLAW: 0.05})
+
+        options = [self.MOVE_GLIDE, self.MOVE_CLAW]
         if self.current_hp <= 180:
-            if self.game.player.current_hp <= 30:
-                return random_weighted({self.MOVE_HEAL: 1/15, self.MOVE_GLIDE: 4/15, self.MOVE_CLAW: 10/15})
-
-            if self.current_hp < 25:
-                if self.game.player.current_hp <= 40:
-                    return random.choice([self.MOVE_CLAW, self.MOVE_HEAL])
-                return random_weighted({self.MOVE_HEAL: 0.9, self.MOVE_GLIDE: 0.05, self.MOVE_CLAW: 0.05})
-            return random.choice([self.MOVE_HEAL, self.MOVE_GLIDE, self.MOVE_CLAW])
-
-        if self.game.player.current_hp <= 30:
-            return random_weighted({self.MOVE_GLIDE: 0.25, self.MOVE_CLAW: 0.75})
-        return random.choice([self.MOVE_GLIDE, self.MOVE_CLAW])
+            options.append(self.MOVE_HEAL)
+        return random.choice(options)
 
     def _idle_display(self):
         self.idle_animation(self.x, self.y)
