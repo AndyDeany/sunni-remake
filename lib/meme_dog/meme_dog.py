@@ -3,7 +3,8 @@ import random
 from lib.opponent import Opponent
 from lib.image import Image
 from lib.music import Audio
-from lib.move import Bark, Bite, Spin, OpponentHeal
+from lib.move import OpponentHeal
+from .moves import Bark, Bite, Spin
 
 
 class MemeDog(Opponent):

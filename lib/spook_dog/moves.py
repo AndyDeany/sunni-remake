@@ -1,5 +1,4 @@
 """Module containing Spook Dog's (unique) moves."""
-
 import random
 import math
 

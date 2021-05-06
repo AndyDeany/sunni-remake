@@ -1,3 +1,4 @@
+"""Module containing Kanye Snake's (unique) moves."""
 import random
 
 from lib.move import OpponentMove
