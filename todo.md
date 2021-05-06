@@ -35,6 +35,8 @@ instead of just when needed = memhog.
 `Game` and hope it's right. Also gets rid of any ambiguity and means that
 any `Character` can use a move without worrying about it targeting the wrong character.
 
+* `MouseButton` class.
+
 * Could (distant-ish future) have like a `Playthrough` class which takes most of `Game`'s logic.
 This would be so that when you load into a save or start a new one,
 a new `Playthrough()` instance could be created with all attributes
