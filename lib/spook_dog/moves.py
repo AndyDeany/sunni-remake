@@ -4,6 +4,7 @@ import math
 from lib.move import OpponentMove
 from lib.image import Image
 from lib.music import Audio
+from lib.color import Color
 
 
 class SpookDogMove(OpponentMove):     # noqa pylint: disable=abstract-method
@@ -76,3 +77,72 @@ class Glide(SpookDogMove):
             self.user.x = self.START_X
         else:
             self.user.x -= self.FORWARD_STEP
+
+
+class Claw(SpookDogMove):
+    """Class for representing the Claw move."""
+    def __init__(self):
+        super().__init__(50)
+        self.sound = Audio("sunni_ghost_dog_claw.ogg")
+
+        self.fade_overlays = [Image(f"sunni_fade_overlay{10*(n+1)}.png", (0, 0)) for n in range(10)]
+        self.opacity = 0
+
+        self.top_claw_swipes = [Image(f"sunni_ghost_dog_top_claw_swipe{n}.png", (145, 365)) for n in range(5)]
+        self.top_claw_sizes = [Image(f"sunni_ghost_dog_top_claw_size{n}.png", (145, 365)) for n in range(8)]
+        self.top_claw_fades = [Image(f"sunni_ghost_dog_top_claw_fade{20*(n+1)}.png", (145, 365)) for n in range(4)]
+
+        self.side_claw_swipes = [Image(f"sunni_ghost_dog_side_claw_swipe{n}.png", (130, 420)) for n in range(5)]
+        self.side_claw_sizes = [Image(f"sunni_ghost_dog_side_claw_size{n}.png", (130, 420)) for n in range(8)]
+        self.side_claw_fades = [Image(f"sunni_ghost_dog_side_claw_fade{20*(n+1)}.png", (130, 420)) for n in range(4)]
+
+        self.duration = 0
+        self.total_duration = 2 * self.game.fps
+
+    def run(self):
+        self.user.display()
+
+        if self.duration == 0 and self.opacity < 100:
+            self.opacity += 10
+            self.fade_overlays[int(self.opacity/10) - 1].display()
+            self.opponent.display()
+
+        elif self.duration < self.total_duration:
+            self.game.screen.fill(Color.BLACK)
+            if self.duration == self.total_duration//2:
+                self.play_sound()
+            if self.duration > self.total_duration//2:
+                stage = self.duration - self.total_duration//2 - 1
+                if 0 <= stage < 5 or 10 <= stage < 15:
+                    self.opponent.character_scared_redflash.display()
+                else:
+                    self.opponent.character_scared.display()
+                if stage < 5:
+                    self.top_claw_swipes[stage].display()
+                elif stage < 13:
+                    self.top_claw_sizes[stage - 5].display()
+                elif stage < 17:
+                    self.top_claw_fades[14 - stage].display()
+                if stage >= 10:
+                    if stage < 15:
+                        self.side_claw_swipes[stage - 10].display()
+                    elif stage < 23:
+                        self.side_claw_sizes[stage - 15].display()
+                    elif stage < 27:
+                        self.side_claw_fades[24 - stage].display()
+            else:
+                self.opponent.character_scared.display()
+            self.duration += 1
+            if self.duration == self.total_duration:
+                self.opponent.damage(random.randint(10, 60))
+
+        elif self.opacity > 0:
+            self.fade_overlays[int(self.opacity/10) - 1].display()
+            self.opponent.character_scared.display()
+            self.opacity -= 10
+        else:
+            self.opponent.character_scared.display()
+            self.duration = 0
+            self.opponent.next_move()
+
+

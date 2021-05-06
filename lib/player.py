@@ -46,8 +46,8 @@ class Player(Character):
         self.idle_frames = [Image(f"sunni_{character}_normal{n}.png") for n in range(self.num_idle_frames)]
         self.character_normal = Image(f"sunni_{character}_normal1.png")
         self.character_backwards = Image(f"sunni_{character}_backwards.png")
-        self.character_scared = Image(f"sunni_{character}_scared.png")
-        self.character_scared_redflash = Image(f"sunni_{character}_scared_redflash.png")
+        self.character_scared = Image(f"sunni_{character}_scared.png", (self.x, self.y))
+        self.character_scared_redflash = Image(f"sunni_{character}_scared_redflash.png", (self.x, self.y))
         self.character_tilt_left = Image(f"sunni_{character}_tilt_left.png")
         self.character_tilt_right = Image(f"sunni_{character}_tilt_right.png")
         self.character_dead = Image(f"sunni_{character}_dead.png")
