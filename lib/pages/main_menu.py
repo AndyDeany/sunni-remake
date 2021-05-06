@@ -7,11 +7,11 @@ class MainMenu(Page):
 
     @classmethod
     def initialise(cls):
-        cls.MAIN_MENU = Image("sunni_main_menu.png", (0, 0))
-        cls.PLAY_BUTTON_FLARED = Image("sunni_menu_play_flared.png", (79, 0))
-        cls.LOAD_BUTTON_FLARED = Image("sunni_menu_load_flared.png", (82, 106))
-        cls.OPTIONS_BUTTON_FLARED = Image("sunni_menu_options_flared.png", (82, 212))
-        cls.EXIT_BUTTON_FLARED = Image("sunni_menu_exit_flared.png", (166, 476))
+        cls.MAIN_MENU = Image("main_menu.png", (0, 0))
+        cls.PLAY_BUTTON_FLARED = Image("menu_play_flared.png", (79, 0))
+        cls.LOAD_BUTTON_FLARED = Image("menu_load_flared.png", (82, 106))
+        cls.OPTIONS_BUTTON_FLARED = Image("menu_options_flared.png", (82, 212))
+        cls.EXIT_BUTTON_FLARED = Image("menu_exit_flared.png", (166, 476))
 
         cls.MUSIC = Audio("sunni_title_screen_music.ogg", 0.1)
 

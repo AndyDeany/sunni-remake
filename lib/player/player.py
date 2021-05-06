@@ -42,16 +42,16 @@ class Player(Character):
         self._character = character
         if character is None:
             return
-        self.idle_frames = [Image(f"sunni_{character}_normal{n}.png") for n in range(self.num_idle_frames)]
-        self.character_normal = Image(f"sunni_{character}_normal1.png")
-        self.character_backwards = Image(f"sunni_{character}_backwards.png")
-        self.character_scared = Image(f"sunni_{character}_scared.png", (self.x, self.y))
-        self.character_scared_redflash = Image(f"sunni_{character}_scared_redflash.png", (self.x, self.y))
-        self.character_tilt_left = Image(f"sunni_{character}_tilt_left.png")
-        self.character_tilt_right = Image(f"sunni_{character}_tilt_right.png")
-        self.character_dead = Image(f"sunni_{character}_dead.png")
-        self.character_headbutt_stance = Image(f"sunni_{character}_headbutt_stance.png")
-        self.character_frostbeam_stance = Image(f"sunni_{character}_frostbeam_stance.png", (self.x, self.y))
+        self.idle_frames = [Image(f"{character}_normal{n}.png") for n in range(self.num_idle_frames)]
+        self.character_normal = Image(f"{character}_normal1.png")
+        self.character_backwards = Image(f"{character}_backwards.png")
+        self.character_scared = Image(f"{character}_scared.png", (self.x, self.y))
+        self.character_scared_redflash = Image(f"{character}_scared_redflash.png", (self.x, self.y))
+        self.character_tilt_left = Image(f"{character}_tilt_left.png")
+        self.character_tilt_right = Image(f"{character}_tilt_right.png")
+        self.character_dead = Image(f"{character}_dead.png")
+        self.character_headbutt_stance = Image(f"{character}_headbutt_stance.png")
+        self.character_frostbeam_stance = Image(f"{character}_frostbeam_stance.png", (self.x, self.y))
 
     def level_up(self, levels=1.0, restore=True):
         """Level the player up by the given number of levels (default 1).

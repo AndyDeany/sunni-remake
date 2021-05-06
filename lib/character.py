@@ -15,8 +15,8 @@ class Character:
     @classmethod
     def initialise(cls):
         """Initialises class variables. Can only be called after a screen has been created."""
-        cls.HEALTH_ICON = Image("sunni_health_icon.png")
-        cls.MANA_ICON = Image("sunni_mana_icon.png")
+        cls.HEALTH_ICON = Image("health_icon.png")
+        cls.MANA_ICON = Image("mana_icon.png")
 
     def __init__(self, game, name, max_hp=100, max_mana=100, *, level=1, display_stat_x=600, display_stat_y_start=600):
         self.game = game

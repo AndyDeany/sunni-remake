@@ -10,11 +10,11 @@ class NewGamePage(SavePage):
     @classmethod
     def initialise(cls):
         super().initialise()
-        cls.ENTER_CHARACTER_NAME = Image("sunni_enter_character_name.png", (0, 0))
-        cls.CONTINUE_BUTTON_FLARED = Image("sunni_continue_button_flared.png", (0, 0))
-        cls.ARE_YOU_SURE = Image("sunni_are_you_sure.png", (0, 0))
-        cls.SURE_YES_FLARED = Image("sunni_sure_yes_flared.png", (0, 0))
-        cls.SURE_NO_FLARED = Image("sunni_sure_no_flared.png", (0, 0))
+        cls.ENTER_CHARACTER_NAME = Image("enter_character_name.png", (0, 0))
+        cls.CONTINUE_BUTTON_FLARED = Image("continue_button_flared.png", (0, 0))
+        cls.ARE_YOU_SURE = Image("are_you_sure.png", (0, 0))
+        cls.SURE_YES_FLARED = Image("sure_yes_flared.png", (0, 0))
+        cls.SURE_NO_FLARED = Image("sure_no_flared.png", (0, 0))
 
     def __init__(self, game):
         super().__init__(game)

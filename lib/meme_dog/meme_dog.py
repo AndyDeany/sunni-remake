@@ -15,10 +15,10 @@ class MemeDog(Opponent):
         self.x = 930
         self.y = 440
 
-        self.dog_normal = Image("sunni_dog_normal.png", (self.x, self.y))
-        self.dog_dead = Image("sunni_dog_dead.png", (self.x, self.y))
-        self.dog_backwards = Image("sunni_dog_backwards.png")
-        self.dog_bark_stance = Image("sunni_dog_bark_stance.png", (self.x, self.y))
+        self.dog_normal = Image("dog_normal.png", (self.x, self.y))
+        self.dog_dead = Image("dog_dead.png", (self.x, self.y))
+        self.dog_backwards = Image("dog_backwards.png")
+        self.dog_bark_stance = Image("dog_bark_stance.png", (self.x, self.y))
 
         self.basic_attack_sounds = [Audio(f"sunni_dog_attack{n}.ogg") for n in range(1, 4)]
 

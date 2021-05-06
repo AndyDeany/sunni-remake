@@ -27,9 +27,9 @@ class Kick(PlayerMove):
     """Class for representing the player's kick move."""
     def __init__(self):
         super().__init__(-10)
-        self.icon = Image("sunni_kick_move_icon_solid.png")
-        self.icon_faded = Image("sunni_kick_move_icon_faded.png")
-        self.info = Image("sunni_kick_move_info.png")
+        self.icon = Image("kick_move_icon_solid.png")
+        self.icon_faded = Image("kick_move_icon_faded.png")
+        self.info = Image("kick_move_info.png")
         self.sound = Audio("sunni_character_attack1.ogg")
 
         self.advancing = True
@@ -67,9 +67,9 @@ class Headbutt(PlayerMove):
     """Class for representing the player's headbutt move."""
     def __init__(self):
         super().__init__(20)
-        self.icon = Image("sunni_headbutt_move_icon_solid.png")
-        self.icon_faded = Image("sunni_headbutt_move_icon_faded.png")
-        self.info = Image("sunni_headbutt_move_info.png")
+        self.icon = Image("headbutt_move_icon_solid.png")
+        self.icon_faded = Image("headbutt_move_icon_faded.png")
+        self.info = Image("headbutt_move_info.png")
         self.sound = Audio("sunni_character_attack1.ogg")
 
         self.advancing = True
@@ -104,14 +104,14 @@ class Frostbeam(PlayerMove):
     """Class for representing the player's frostbeam move."""
     def __init__(self):
         super().__init__(30)
-        self.icon = Image("sunni_frostbeam_move_icon_solid.png")
-        self.icon_faded = Image("sunni_frostbeam_move_icon_faded.png")
-        self.info = Image("sunni_frostbeam_move_info.png")
+        self.icon = Image("frostbeam_move_icon_solid.png")
+        self.icon_faded = Image("frostbeam_move_icon_faded.png")
+        self.info = Image("frostbeam_move_info.png")
         self.sound = Audio("sunni_frostbeam_move.ogg", 0.2)
 
-        self.frostbeam_start = Image("sunni_frostbeam_start.png", (215, 381))
-        self.frostbeam_middle = Image("sunni_frostbeam_middle.png")
-        self.frostbeam_end = Image("sunni_frostbeam_end.png")
+        self.frostbeam_start = Image("frostbeam_start.png", (215, 381))
+        self.frostbeam_middle = Image("frostbeam_middle.png")
+        self.frostbeam_end = Image("frostbeam_end.png")
 
         self.duration = 0
         self.total_duration = 2*self.game.fps
@@ -137,12 +137,12 @@ class Heal(PlayerMove):
     """Class for representing the player's heal move."""
     def __init__(self, heart_x, start_y, end_y):
         super().__init__(10)
-        self.icon = Image("sunni_heal_move_icon_solid.png")
-        self.icon_faded = Image("sunni_heal_move_icon_faded.png")
-        self.info = Image("sunni_heal_move_info.png")
+        self.icon = Image("heal_move_icon_solid.png")
+        self.icon_faded = Image("heal_move_icon_faded.png")
+        self.info = Image("heal_move_info.png")
         self.sound = Audio("sunni_heal_move.ogg", 0.1)
 
-        self.heart = Image("sunni_heal_heart.png")
+        self.heart = Image("heal_heart.png")
 
         self.heart_x = heart_x
         self.start_y = start_y

@@ -29,18 +29,18 @@ class Game:
 
     @classmethod
     def initialise(cls):
-        cls.OPTIONS_BUTTON = Image("sunni_options_button.png", (10, 665))
-        cls.VICTORY_OVERLAY = Image("sunni_victory_overlay.png", (0, 0))
-        cls.DEFEAT_OVERLAY = Image("sunni_defeat_overlay.png", (0, 0))
-        cls.CONTINUE_BUTTON = Image("sunni_continue_button.png", (1000, 600))
-        cls.TRY_AGAIN_BUTTON = Image("sunni_try_again_button.png", (1000, 600))
-        cls.RETURN_TO_TITLE_BUTTON = Image("sunni_return_to_title_button.png", (80, 600))
+        cls.OPTIONS_BUTTON = Image("options_button.png", (10, 665))
+        cls.VICTORY_OVERLAY = Image("victory_overlay.png", (0, 0))
+        cls.DEFEAT_OVERLAY = Image("defeat_overlay.png", (0, 0))
+        cls.CONTINUE_BUTTON = Image("continue_button.png", (1000, 600))
+        cls.TRY_AGAIN_BUTTON = Image("try_again_button.png", (1000, 600))
+        cls.RETURN_TO_TITLE_BUTTON = Image("return_to_title_button.png", (80, 600))
 
     def __init__(self):
         pygame.init()
         self.options = Options(self)
         self.screen = pygame.display.set_mode(self.options.window_size)
-        self.icon = Image("sunni_game_icon.png")
+        self.icon = Image("game_icon.png")
         self.caption = "Sunni (Alpha 3.0)"
         self.keys = Keys(self)
         self.page = None

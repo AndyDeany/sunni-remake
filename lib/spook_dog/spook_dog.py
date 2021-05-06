@@ -15,9 +15,9 @@ class SpookDog(Opponent):
         self.y = 440
         self.num_idle_frames = 20
         self.idle_fps = 20
-        self.idle_frames = [Image(f"sunni_ghost_dog_normal{n}.png") for n in range(self.num_idle_frames)]
+        self.idle_frames = [Image(f"ghost_dog_normal{n}.png") for n in range(self.num_idle_frames)]
 
-        self.ghost_dog_dead = Image("sunni_ghost_dog_dead.png", (self.x, self.y))
+        self.ghost_dog_dead = Image("ghost_dog_dead.png", (self.x, self.y))
 
         Moves = namedtuple("Moves", "heal teleport glide claw")
         self.moves = Moves(OpponentHeal(1005, 230, 410), Teleport(), Glide(), Claw())

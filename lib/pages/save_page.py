@@ -6,7 +6,7 @@ class SavePage(Page):   # noqa pylint: disable=abstract-method
 
     @classmethod
     def initialise(cls):
-        cls.LOAD_GAME_SCREEN = Image("sunni_load_game_screen.png", (0, 0))
+        cls.LOAD_GAME_SCREEN = Image("load_game_screen.png", (0, 0))
 
     def run(self):
         self.LOAD_GAME_SCREEN.display()

@@ -17,7 +17,7 @@ class OpeningSequence(Page):
         cls.WELCOME_L3 = Text("created by Andrew and co.", Font.OPENING, Color.BLACK)
         cls.WELCOME_L4 = Text("Enjoy!", Font.OPENING, Color.BLACK)
 
-        cls.TITLE_SCREEN = Image("sunni_title_screen.png", (0, 0))
+        cls.TITLE_SCREEN = Image("title_screen.png", (0, 0))
         cls.GAME_TITLE = Text("SUNNI", Font.TITLE, Color.MURKY_YELLOW)
 
     def run(self):
