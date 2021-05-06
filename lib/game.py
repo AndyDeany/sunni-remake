@@ -17,7 +17,7 @@ from lib.pages.new_game_page import NewGamePage
 from lib.pages.load_game_page import LoadGamePage
 
 from lib.character import Character
-from lib.battle import Battle
+from lib.pages.battle import Battle
 from lib.player import Player
 from lib.meme_dog import MemeDog
 from lib.kanye_snake import KanyeSnake
