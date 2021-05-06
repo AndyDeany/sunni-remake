@@ -13,7 +13,7 @@ class MainMenu(Page):
         cls.OPTIONS_BUTTON_FLARED = Image("menu_options_flared.png", (82, 212))
         cls.EXIT_BUTTON_FLARED = Image("menu_exit_flared.png", (166, 476))
 
-        cls.MUSIC = Audio("sunni_title_screen_music.ogg", 0.1)
+        cls.MUSIC = Audio("title_screen_music.ogg", 0.1)
 
     def run(self):
         self.MAIN_MENU.display()

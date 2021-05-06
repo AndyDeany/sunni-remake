@@ -17,7 +17,7 @@ class Confuse(KanyeSnakeMove):
 
     def __init__(self):
         super().__init__(-10)
-        self.sound = Audio("sunni_snake_confuse.ogg", 0.3)
+        self.sound = Audio("snake_confuse.ogg", 0.3)
 
         self.is_moving = None
         self.facing_forwards = None
@@ -95,7 +95,7 @@ class BeamMove(KanyeSnakeMove):
 class Venom(BeamMove):
     def __init__(self):
         super().__init__(20, 15, 25)
-        self.sound = Audio("sunni_snake_venom.ogg", 0.5)
+        self.sound = Audio("snake_venom.ogg", 0.5)
         self.beam = Image("kanye_snake/snake_venom_beam.png")
 
     @property
@@ -106,7 +106,7 @@ class Venom(BeamMove):
 class Laser(BeamMove):
     def __init__(self):
         super().__init__(40, 10, 40)
-        self.sound = Audio("sunni_snake_laser.ogg", 0.5)
+        self.sound = Audio("snake_laser.ogg", 0.5)
         self.beam = Image("kanye_snake/snake_laser_beam.png")
 
     @property

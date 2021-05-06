@@ -20,8 +20,6 @@ class MemeDog(Opponent):
         self.dog_backwards = Image("meme_dog/dog_backwards.png")
         self.dog_bark_stance = Image("meme_dog/dog_bark_stance.png", (self.x, self.y))
 
-        self.basic_attack_sounds = [Audio(f"sunni_dog_attack{n}.ogg") for n in range(1, 4)]
-
         Moves = namedtuple("Moves", "heal bark bite spin")
         self.moves = Moves(OpponentHeal(1005, 230, 410), Bark(), Bite(), Spin())
 

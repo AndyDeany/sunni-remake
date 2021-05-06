@@ -8,7 +8,7 @@ from lib.music import Audio
 class MemeDogMove(OpponentMove):    # noqa pylint: disable=abstract-method
     def __init__(self, mana_cost):
         super().__init__(mana_cost)
-        self.sounds = [Audio(f"sunni_dog_attack{n}.ogg") for n in range(1, 4)]
+        self.sounds = [Audio(f"dog_attack{n}.ogg") for n in range(1, 4)]
 
     @property
     def sound(self):
