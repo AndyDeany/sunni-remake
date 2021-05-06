@@ -3,7 +3,8 @@ import random
 from lib.character import Character
 
 
-class Opponent(Character):
+class Opponent(Character):  # noqa pylint: disable=abstract-methods
+    """Class for representing an opponent."""
 
     INFO_X = 1070
 

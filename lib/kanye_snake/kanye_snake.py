@@ -3,7 +3,7 @@ from collections import namedtuple
 
 from lib.opponent import Opponent
 from lib.image import Image
-from lib.moves import OpponentHeal
+from lib.opponent.moves import OpponentHeal
 from .moves import Confuse, Venom, Laser
 
 

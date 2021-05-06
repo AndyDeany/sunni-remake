@@ -1,7 +1,7 @@
 """Module containing Kanye Snake's (unique) moves."""
 import random
 
-from lib.moves import OpponentMove
+from lib.opponent.moves import OpponentMove
 from lib.image import Image
 from lib.music import Audio
 

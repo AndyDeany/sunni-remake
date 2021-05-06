@@ -2,7 +2,7 @@
 import random
 import math
 
-from lib.moves import OpponentMove
+from lib.opponent.moves import OpponentMove
 from lib.image import Image
 from lib.music import Audio
 from lib.color import Color

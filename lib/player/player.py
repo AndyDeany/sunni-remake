@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from lib.image import Image
-from lib.moves import Kick, Headbutt, Frostbeam, Heal
+from .moves import Kick, Headbutt, Frostbeam, Heal
 from lib.character import Character, NotEnoughManaError
 
 
@@ -20,6 +20,7 @@ class Player(Character):
     def __init__(self, game, name="Sunni", character=None, *, level=1):
         super().__init__(game, name, level=level, display_stat_x=170, display_stat_y_start=360)
         self.calculate_stats()
+        self.fully_restore()
         self.x = 150
         self.y = 380
         self.num_idle_frames = 4
