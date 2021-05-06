@@ -3,8 +3,8 @@ from collections import namedtuple
 
 from lib.opponent import Opponent
 from lib.image import Image
-from lib.move import OpponentHeal
-from .moves import ConfuseMove, VenomMove, LaserMove
+from lib.moves import OpponentHeal
+from .moves import Confuse, Venom, Laser
 
 
 class KanyeSnake(Opponent):
@@ -22,7 +22,7 @@ class KanyeSnake(Opponent):
         self.snake_laser_stance = Image("sunni_snake_laser_stance.png", (self.x, self.y))
 
         Moves = namedtuple("Moves", "heal confuse venom laser")
-        self.moves = Moves(OpponentHeal(1005, 230, 410), ConfuseMove(), VenomMove(), LaserMove())
+        self.moves = Moves(OpponentHeal(1005, 230, 410), Confuse(), Venom(), Laser())
 
     def choose_move(self):
         """Return the move that the snake decides to use."""
@@ -42,7 +42,7 @@ class KanyeSnake(Opponent):
             options.append(self.moves.heal)
         return random.choice(options)
 
-    def attack_options(self, *, favour_damage=False):
+    def attack_options(self, *, favour_damage=False):   # pylint: disable=arguments-differ
         """Return the options the snake can/would choose from for attacking based on his mana."""
         moves = super().attack_options()
         if len(moves) > 1 and favour_damage:

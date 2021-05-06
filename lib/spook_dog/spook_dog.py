@@ -3,7 +3,7 @@ from collections import namedtuple
 
 from lib.opponent import Opponent
 from lib.image import Image
-from lib.move import OpponentHeal
+from lib.moves import OpponentHeal
 from .moves import Teleport, Glide, Claw
 
 
@@ -22,7 +22,7 @@ class SpookDog(Opponent):
         Moves = namedtuple("Moves", "heal teleport glide claw")
         self.moves = Moves(OpponentHeal(1005, 230, 410), Teleport(), Glide(), Claw())
 
-    def choose_move(self):
+    def choose_move(self):  # pylint: disable=too-many-branches,too-many-return-statements
         """Return the move that the ghost dog decides to use."""
         if self.current_mana < 10:  # Only usable move
             return self.moves.teleport

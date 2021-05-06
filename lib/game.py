@@ -22,7 +22,7 @@ from lib.player import Player
 from lib.meme_dog import MemeDog
 from lib.kanye_snake import KanyeSnake
 from lib.spook_dog import SpookDog
-from lib.move import Move
+from lib.moves import Move
 
 
 class Game:

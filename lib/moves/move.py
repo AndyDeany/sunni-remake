@@ -5,8 +5,7 @@ from lib.music import Audio
 
 
 class Move:
-
-    game = None
+    """Class representing a character Move."""
 
     @classmethod
     def initialise(cls, game):

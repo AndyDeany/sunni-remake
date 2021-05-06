@@ -1,7 +1,7 @@
 """Module containing Kanye Snake's (unique) moves."""
 import random
 
-from lib.move import OpponentMove
+from lib.moves import OpponentMove
 from lib.image import Image
 from lib.music import Audio
 
@@ -10,7 +10,7 @@ class KanyeSnakeMove(OpponentMove):     # noqa pylint: disable=abstract-method
     """Class for representing Kayne Snake's moves."""
 
 
-class ConfuseMove(KanyeSnakeMove):
+class Confuse(KanyeSnakeMove):
 
     START_X = 930
     END_X = 450
@@ -92,7 +92,7 @@ class BeamMove(KanyeSnakeMove):
         self.opponent.display()  # Ensure it shows on top of the beam
 
 
-class VenomMove(BeamMove):
+class Venom(BeamMove):
     def __init__(self):
         super().__init__(20, 15, 25)
         self.sound = Audio("sunni_snake_venom.ogg", 0.5)
@@ -103,7 +103,7 @@ class VenomMove(BeamMove):
         return self.user.snake_venom_stance
 
 
-class LaserMove(BeamMove):
+class Laser(BeamMove):
     def __init__(self):
         super().__init__(40, 10, 40)
         self.sound = Audio("sunni_snake_laser.ogg", 0.5)

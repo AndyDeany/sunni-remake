@@ -1,7 +1,7 @@
 """Module containing Meme Dog's (unique) moves."""
 import random
 
-from lib.move import OpponentMove
+from lib.moves import OpponentMove
 from lib.music import Audio
 
 

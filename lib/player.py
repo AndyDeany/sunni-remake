@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from lib.image import Image
-from lib.move import Kick, Headbutt, Frostbeam, Heal
+from lib.moves import Kick, Headbutt, Frostbeam, Heal
 from lib.character import Character, NotEnoughManaError
 
 
