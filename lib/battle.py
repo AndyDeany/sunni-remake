@@ -1,4 +1,4 @@
-from lib.page import Page
+from lib.pages import Page
 from lib.image import Image, Text
 from lib.font import Font
 from lib.color import Color

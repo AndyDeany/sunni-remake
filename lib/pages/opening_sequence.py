@@ -1,7 +1,7 @@
 import time
 
 
-from lib.page import Page
+from lib.pages import Page
 from lib.color import Color
 from lib.font import Font
 from lib.image import Image, Text

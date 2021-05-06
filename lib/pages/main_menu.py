@@ -1,4 +1,4 @@
-from lib.page import Page
+from lib.pages import Page
 from lib.image import Image
 from lib.music import Audio
 
