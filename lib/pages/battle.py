@@ -12,8 +12,8 @@ class Battle(Page):
     def initialise(cls):
         cls.BATTLE_BACKGROUND_HALLWAY = Image("battle_background_hallway.png", (0, 0))
         cls.CHOOSE_CHARACTER_OVERLAY = Image("choose_character_overlay.png")
-        cls.CHARACTER_CHOICE1 = Image("character1_normal1.png")
-        cls.CHARACTER_CHOICE2 = Image("character2_normal1.png")
+        cls.CHARACTER_CHOICE1 = Image("player/character1_normal1.png")
+        cls.CHARACTER_CHOICE2 = Image("player/character2_normal1.png")
 
     def __init__(self, game, opponent):
         super().__init__(game)

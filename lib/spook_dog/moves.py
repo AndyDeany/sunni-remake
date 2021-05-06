@@ -22,7 +22,7 @@ class Teleport(SpookDogMove):
         self.damage_time = 2 * self.game.fps
         self.total_duration = 2.5 * self.game.fps
 
-        self.glows = [Image(f"ghost_dog_glow{n}.png", (830, 290)) for n in range(5)]
+        self.glows = [Image(f"spook_dog/ghost_dog_glow{n}.png", (830, 290)) for n in range(5)]
 
     def run(self):
         self.opponent.display()
@@ -92,14 +92,14 @@ class Claw(SpookDogMove):
         self.fade_overlays = [Image(f"fade_overlay{10*(n+1)}.png", (0, 0)) for n in range(10)]
         self.opacity = 0
 
-        top_claw_swipes = [Image(f"ghost_dog_top_claw_swipe{n}.png", (145, 365)) for n in range(5)]
-        top_claw_sizes = [Image(f"ghost_dog_top_claw_size{n}.png", (145, 365)) for n in range(8)]
-        top_claw_fades = [Image(f"ghost_dog_top_claw_fade{20*(n+1)}.png", (145, 365)) for n in range(4)]
+        top_claw_swipes = [Image(f"spook_dog/ghost_dog_top_claw_swipe{n}.png", (145, 365)) for n in range(5)]
+        top_claw_sizes = [Image(f"spook_dog/ghost_dog_top_claw_size{n}.png", (145, 365)) for n in range(8)]
+        top_claw_fades = [Image(f"spook_dog/ghost_dog_top_claw_fade{20*(n+1)}.png", (145, 365)) for n in range(4)]
         self.top_claw_frames = top_claw_swipes + top_claw_sizes + list(reversed(top_claw_fades))
 
-        side_claw_swipes = [Image(f"ghost_dog_side_claw_swipe{n}.png", (130, 420)) for n in range(5)]
-        side_claw_sizes = [Image(f"ghost_dog_side_claw_size{n}.png", (130, 420)) for n in range(8)]
-        side_claw_fades = [Image(f"ghost_dog_side_claw_fade{20*(n+1)}.png", (130, 420)) for n in range(4)]
+        side_claw_swipes = [Image(f"spook_dog/ghost_dog_side_claw_swipe{n}.png", (130, 420)) for n in range(5)]
+        side_claw_sizes = [Image(f"spook_dog/ghost_dog_side_claw_size{n}.png", (130, 420)) for n in range(8)]
+        side_claw_fades = [Image(f"spook_dog/ghost_dog_side_claw_fade{20*(n+1)}.png", (130, 420)) for n in range(4)]
         self.side_claw_frames = side_claw_swipes + side_claw_sizes + list(reversed(side_claw_fades))
 
         self.duration = 0

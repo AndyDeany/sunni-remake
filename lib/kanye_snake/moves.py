@@ -96,7 +96,7 @@ class Venom(BeamMove):
     def __init__(self):
         super().__init__(20, 15, 25)
         self.sound = Audio("sunni_snake_venom.ogg", 0.5)
-        self.beam = Image("snake_venom_beam.png")
+        self.beam = Image("kanye_snake/snake_venom_beam.png")
 
     @property
     def beam_stance(self):
@@ -107,7 +107,7 @@ class Laser(BeamMove):
     def __init__(self):
         super().__init__(40, 10, 40)
         self.sound = Audio("sunni_snake_laser.ogg", 0.5)
-        self.beam = Image("snake_laser_beam.png")
+        self.beam = Image("kanye_snake/snake_laser_beam.png")
 
     @property
     def beam_stance(self):
