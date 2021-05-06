@@ -1,4 +1,5 @@
 import random
+from collections import namedtuple
 
 from lib.opponent import Opponent
 from lib.image import Image
@@ -8,14 +9,7 @@ from .moves import Bark, Bite, Spin
 
 
 class MemeDog(Opponent):
-
-    @classmethod
-    def initialise(cls):
-        cls.MOVE_BARK = Bark()
-        cls.MOVE_BITE = Bite()
-        cls.MOVE_SPIN = Spin()
-        cls.MOVE_HEAL = OpponentHeal(1005, 230, 410)
-
+    """Class representing the Meme Dog opponent."""
     def __init__(self, game, max_hp=100, max_mana=100):
         super().__init__(game, "Meme Dog", max_hp, max_mana)
         self.x = 930
@@ -28,16 +22,19 @@ class MemeDog(Opponent):
 
         self.basic_attack_sounds = [Audio(f"sunni_dog_attack{n}.ogg") for n in range(1, 4)]
 
+        Moves = namedtuple("Moves", "heal bark bite spin")
+        self.moves = Moves(OpponentHeal(1005, 230, 410), Bark(), Bite(), Spin())
+
     def choose_move(self):
         """Return the name of the next move that the dog decides to use."""
         def attack_options():
             """Return the options the dog can/would choose from for attacking based on his mana."""
-            moves = [self.MOVE_BARK, self.MOVE_BITE, self.MOVE_SPIN]
+            moves = [self.moves.bark, self.moves.bite, self.moves.spin]
             moves = [move for move in moves if 0 <= self.current_mana - move.mana_cost <= self.max_mana]
             return moves
 
         if self.current_mana < 10:  # Only usable move
-            return self.MOVE_BARK
+            return self.moves.bark
 
         if self.game.player.current_hp < 15:    # Try to finish the player off
             return random.choice(attack_options())
@@ -45,11 +42,11 @@ class MemeDog(Opponent):
         if self.current_hp < self.max_hp / 4:   # Low - prefer to heal but chance of attacking
             if random.randint(1, 10) == 1:
                 return random.choice(attack_options())
-            return self.MOVE_HEAL
+            return self.moves.heal
 
         options = attack_options()
         if self.current_hp <= 3 * (self.max_hp / 4):
-            options.append(self.MOVE_HEAL)
+            options.append(self.moves.heal)
         return random.choice(options)
 
     def _idle_display(self):

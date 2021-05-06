@@ -1,9 +1,12 @@
+from collections import namedtuple
+
 from lib.image import Image
 from lib.move import Kick, Headbutt, Frostbeam, Heal
 from lib.character import Character, NotEnoughManaError
 
 
 class Player(Character):
+    """Class representing the Player (the character controlled by the user)."""
 
     CHARACTER_1 = "character1"
     CHARACTER_2 = "character2"
@@ -14,13 +17,6 @@ class Player(Character):
 
     INFO_X = 10
 
-    @classmethod
-    def initialise(cls):
-        cls.MOVE_KICK = Kick()
-        cls.MOVE_HEADBUTT = Headbutt()
-        cls.MOVE_FROSTBEAM = Frostbeam()
-        cls.MOVE_HEAL = Heal(160, 170, 350)
-
     def __init__(self, game, name="Sunni", character=None, *, level=1):
         super().__init__(game, name, level=level, display_stat_x=170, display_stat_y_start=360)
         self.calculate_stats()
@@ -28,10 +24,12 @@ class Player(Character):
         self.y = 380
         self.num_idle_frames = 4
         self.idle_fps = 6
-
         self.character = character
-        self.offensive_moves = [self.MOVE_KICK, self.MOVE_HEADBUTT, self.MOVE_FROSTBEAM]
-        self.defensive_moves = [self.MOVE_HEAL]
+
+        Moves = namedtuple("Moves", "heal kick headbutt frostbeam")
+        self.moves = Moves(Heal(160, 170, 350), Kick(), Headbutt(), Frostbeam())
+        self.offensive_moves = [self.moves.kick, self.moves.headbutt, self.moves.frostbeam]
+        self.defensive_moves = [self.moves.heal]
         self.selected_moves = None
 
     @property
