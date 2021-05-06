@@ -1,3 +1,5 @@
+import random
+
 from lib.character import Character
 
 
@@ -22,3 +24,15 @@ class Opponent(Character):
 
     def choose_move(self):
         raise NotImplementedError
+
+    @staticmethod
+    def random_weighted(moves_with_weights):
+        r = random.random()
+        upper_limit = 0
+        weight_sum = sum(moves_with_weights.values())
+        move = None
+        for move, weight in moves_with_weights.items():
+            upper_limit += weight / weight_sum
+            if r < upper_limit:
+                return move
+        return move  # Off chance that weights don't sum perfectly to 1 due to computer rounding errors.
