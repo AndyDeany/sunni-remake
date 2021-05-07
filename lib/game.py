@@ -1,12 +1,13 @@
 import os
 import time
 from collections import OrderedDict
+import random
 
 import pygame
 
 from lib.mouse import Mouse
 from lib.keys import Keys
-from lib.music import Music
+from lib.music import Music, Audio
 from lib.image import Image, Surface
 from lib.options import Options
 from lib.save import Save
@@ -85,6 +86,8 @@ class Game:
         self.opponents["Spook Dog"] = SpookDog
         self.opponents["Evil Cloud"] = EvilCloud
 
+        self.battle_music = [Audio(f"battle{n}.ogg", 0.3) for n in range(8)]
+
     @property
     def icon(self):
         return self._icon
@@ -126,22 +129,16 @@ class Game:
         self.commence_next_battle()
 
     def load_next_battle(self, name=None):
+        """Load the next battle (it will not actually begin until you call commence_next_battle().)"""
         if name is None:
             opponent_names = list(self.opponents.keys())
             name = opponent_names[opponent_names.index(self.opponent.name) + 1]
-
         self.next_battle = Battle(self, self.opponents[name](self))
-        if name == "Spook Dog":
-            opponent = Character(self, name, 200, 150)
-            opponent.ghost_dog_stage = 1     # Variable showing which frame of idle movement the ghost dog is in
-            opponent.ghost_dog_glide_x = 930
-            opponent.started_glowing = False
-            opponent.ghost_dog_attack_time = self.fps/2
-            opponent.already_clawed = False
 
     def commence_next_battle(self):
         """Commence the previously loaded next_battle."""
         self.music.stop_music()
+        self.music.play_music(random.choice(self.battle_music))
         if isinstance(self.next_battle.opponent, EvilCloud):
             self.main_menu.visit()
             return
