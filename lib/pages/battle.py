@@ -30,15 +30,12 @@ class Battle(Page):
             self.current = Player.CHOOSE_ABILITY
 
     def run(self):
-        """Runs the early_run(), run_main(), and late_run() methods."""
-        self.show_background()
+        """Runs the code for execution of the battle with the opponent."""
+        self._show_background()
         if self.current == Player.CHOOSE_CHARACTER:
             self.run_choose_character()
             return
-        self.run_main()
-        self.late_run()
 
-    def run_main(self):
         self.player.display_info()
         self.opponent.display_info()
 
@@ -58,7 +55,10 @@ class Battle(Page):
         self.player.display_stat_change()
         self.opponent.display_stat_change()
 
+        self.mana_notification_display()
+
     def run_choose_ability(self):
+        """Run the code for allowing the player to choose which move they want to use."""
         self.player.display()
         self.opponent.display()
 
@@ -112,6 +112,7 @@ class Battle(Page):
                 self.player.selected_moves = None
 
     def run_victory(self):
+        """Run the code for showing the victory screen for when the player has defeated their opponent."""
         self.player.display()
         self.opponent.display()
         self.game.VICTORY_OVERLAY.display()
@@ -130,6 +131,7 @@ class Battle(Page):
                 self.game.main_menu.visit()
 
     def run_defeat(self):
+        """Run the code for showing the defeat screen for when the player has been defeated by their opponent."""
         self.player.display()
         self.opponent.display()
         self.game.DEFEAT_OVERLAY.display()
@@ -143,9 +145,6 @@ class Battle(Page):
                 self.opponent.fully_restore()
             elif self.game.mouse.is_in(80, 600, 268, 650):
                 self.game.main_menu.visit()
-
-    def late_run(self):
-        self.mana_notification_display()
 
     def mana_notification_display(self):
         """Run the code for actually showing the mana notification when needed."""
@@ -161,10 +160,11 @@ class Battle(Page):
         """Stop displaying the 'not enough mana' notification to the player, if it's showing."""
         self.mana_notification_duration = 0
 
-    def show_background(self):
+    def _show_background(self):
         self.BATTLE_BACKGROUND_HALLWAY.display()
 
     def run_choose_character(self):
+        """Run the code that asks the player to choose their character sprite."""
         self.CHOOSE_CHARACTER_OVERLAY.display(0, 0)
         self.CHARACTER_CHOICE1.display(400, 300)
         self.CHARACTER_CHOICE2.display(810, 300)
