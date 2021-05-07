@@ -30,7 +30,7 @@ class Kick(PlayerMove):
         self.icon = Image("player/kick_move_icon_solid.png")
         self.icon_faded = Image("player/kick_move_icon_faded.png")
         self.info = Image("player/kick_move_info.png")
-        self.sound = Audio("character_attack1.ogg")
+        self.sound = Audio("player/character_attack1.ogg")
 
         self.advancing = True
         self.start_x = 150
@@ -70,7 +70,7 @@ class Headbutt(PlayerMove):
         self.icon = Image("player/headbutt_move_icon_solid.png")
         self.icon_faded = Image("player/headbutt_move_icon_faded.png")
         self.info = Image("player/headbutt_move_info.png")
-        self.sound = Audio("character_attack1.ogg")
+        self.sound = Audio("player/character_attack1.ogg")
 
         self.advancing = True
         self.start_x = 150
@@ -107,7 +107,7 @@ class Frostbeam(PlayerMove):
         self.icon = Image("player/frostbeam_move_icon_solid.png")
         self.icon_faded = Image("player/frostbeam_move_icon_faded.png")
         self.info = Image("player/frostbeam_move_info.png")
-        self.sound = Audio("frostbeam_move.ogg", 0.2)
+        self.sound = Audio("player/frostbeam_move.ogg", 0.2)
 
         self.frostbeam_start = Image("player/frostbeam_start.png", (215, 381))
         self.frostbeam_middle = Image("player/frostbeam_middle.png")
@@ -140,7 +140,7 @@ class Heal(PlayerMove):
         self.icon = Image("player/heal_move_icon_solid.png")
         self.icon_faded = Image("player/heal_move_icon_faded.png")
         self.info = Image("player/heal_move_info.png")
-        self.sound = Audio("heal_move.ogg", 0.1)
+        self.sound = Audio("player/heal_move.ogg", 0.1)
 
         self.heart = Image("player/heal_heart.png")
 

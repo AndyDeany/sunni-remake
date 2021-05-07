@@ -9,7 +9,7 @@ class MemeDogMove(OpponentMove):    # noqa pylint: disable=abstract-method
     """Class for representing one of Meme Dog's moves."""
     def __init__(self, mana_cost):
         super().__init__(mana_cost)
-        self.sounds = [Audio(f"dog_attack{n}.ogg") for n in range(1, 4)]
+        self.sounds = [Audio(f"meme_dog/dog_attack{n}.ogg") for n in range(1, 4)]
 
     @property
     def sound(self):

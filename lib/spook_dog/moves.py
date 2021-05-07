@@ -16,7 +16,7 @@ class Teleport(SpookDogMove):
     """Class for representing the Teleport move."""
     def __init__(self):
         super().__init__(-10)
-        self.sound = Audio("ghost_dog_teleport.ogg")
+        self.sound = Audio("spook_dog/ghost_dog_teleport.ogg")
 
         self.duration = 0
         self.damage_time = 2 * self.game.fps
@@ -60,7 +60,7 @@ class Glide(SpookDogMove):
 
     def __init__(self):
         super().__init__(10)
-        self.sound = Audio("ghost_dog_glide.ogg")
+        self.sound = Audio("spook_dog/ghost_dog_glide.ogg")
 
         self.range = self.FORWARD_STEP * math.ceil(self.game.screen.get_width() / self.FORWARD_STEP)
         self.wavelength = self.range / self.OSCILLATIONS
@@ -87,7 +87,7 @@ class Claw(SpookDogMove):
     """Class for representing the Claw move."""
     def __init__(self):
         super().__init__(50)
-        self.sound = Audio("ghost_dog_claw.ogg")
+        self.sound = Audio("spook_dog/ghost_dog_claw.ogg")
 
         self.fade_overlays = [Image(f"fade_overlay{10*(n+1)}.png", (0, 0)) for n in range(10)]
         self.opacity = 0
