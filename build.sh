@@ -15,7 +15,10 @@ echo 'No save data' > sunni/saves/save4.txt
 
 cp 'Play Sunni.lnk' sunni
 
-echo Please zip up the sunni/ folder. This sunni.zip is your distributable.
+tar -a -c -f sunni.zip sunni/
 
+rm -rf sunni/
 rm -rf build/
 rm -rf dist/
+rm main.spec
+
