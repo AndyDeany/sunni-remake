@@ -42,7 +42,7 @@ class Game:
         self.options = Options(self)
         self.screen = pygame.display.set_mode(self.options.window_size)
         self.icon = Image("game_icon.png")
-        self.caption = "Sunni (Alpha 3.0)"
+        self.caption = "Sunni (Alpha 3.0.0)"
         self.keys = Keys(self)
         self.page = None
         self.file_directory = os.getcwd()[:-3]
