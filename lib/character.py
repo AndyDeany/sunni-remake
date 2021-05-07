@@ -9,6 +9,7 @@ from lib.image import Text
 
 
 class Character:
+    """Class representing a character in the game - player, opponent, other NPCs, etc."""
 
     INFO_X = None
 
@@ -39,10 +40,11 @@ class Character:
         self.level = level
         self.moves = None
 
-        self.stat_change_text = None
         self.display_stat_x = display_stat_x
         self.display_stat_y_start = display_stat_y_start
-        self.display_stat_y = self.display_stat_y_start
+        self.display_stat_y = None
+        self.stat_change_texts = None
+        self.reset_stat_change_text_variables()
         self.display_stat_change_time = -1
         self.display_stat_change_duration = int(self.game.fps/2)
 
@@ -112,20 +114,24 @@ class Character:
         self.current_mana_display = Text(f"Mana: {self.current_mana}/{self.max_mana}", Font.DEFAULT, Color.BLACK)
 
     def display_stat_change(self):
+        """Run code for display the stat change number when the character's stats have been changed."""
         if self.display_stat_change_time > 0:
-            self.stat_change_text.display(self.display_stat_x, self.display_stat_y)
+            for index, text in enumerate(self.stat_change_texts):
+                text.display(self.display_stat_x, self.display_stat_y+20*index)
             self.display_stat_y -= 3
             self.display_stat_change_time -= 1
         elif self.display_stat_change_time == 0:
-            self.reset_display_stat_y()
+            self.reset_stat_change_text_variables()
             self.display_stat_change_time -= 1
 
-    def reset_display_stat_y(self):
-        """Reset the display_stat_y attribute to its starting value."""
-        self.display_stat_y = self.display_stat_y_start
-
-    def trigger_stat_change_text(self):
+    def trigger_stat_change_texts(self):
+        """Trigger the display of a recent stat change (or changes)."""
         self.display_stat_change_time = self.display_stat_change_duration
+
+    def reset_stat_change_text_variables(self):
+        """Reset the variables used in display stat change texts to their initial values."""
+        self.stat_change_texts = []
+        self.display_stat_y = self.display_stat_y_start
 
     def fully_restore(self):
         """Restores the character to full hp and mana."""
@@ -143,29 +149,29 @@ class Character:
         """Damage the character by the given amount."""
         amount = min(self.current_hp, amount)   # Don't overkill
         self.current_hp -= amount
-        self.stat_change_text = Text(f"-{amount}", Font.DEFAULT, Color.DAMAGE_RED)
-        self.trigger_stat_change_text()
+        self.stat_change_texts.append(Text(f"-{amount}", Font.DEFAULT, Color.DAMAGE_RED))
+        self.trigger_stat_change_texts()
 
     def restore_hp(self, amount):
         """Heal the character for the given amount."""
         amount = min(self.max_hp - self.current_hp, amount)     # Don't overheal
         self.current_hp += amount
-        self.stat_change_text = Text(f"+{amount}", Font.DEFAULT, Color.HEAL_GREEN)
-        self.trigger_stat_change_text()
+        self.stat_change_texts.append(Text(f"+{amount}", Font.DEFAULT, Color.HEAL_GREEN))
+        self.trigger_stat_change_texts()
 
     def damage_mana(self, amount):
         """Remove the given amount of mana from the character (usually because of a mana-drain ability)."""
         amount = min(self.current_mana, amount)     # Don't take mana the character doesn't have
         self.current_mana -= amount
-        self.stat_change_text = Text(f"-{amount}", Font.DEFAULT, Color.MANA_BLUE)
-        self.trigger_stat_change_text()
+        self.stat_change_texts.append(Text(f"-{amount}", Font.DEFAULT, Color.MANA_BLUE))
+        self.trigger_stat_change_texts()
 
     def restore_mana(self, amount):
         """Restore the given amount of mana to the character."""
         amount = min(self.max_mana - self.current_mana, amount)     # Don't restore over max mana
         self.current_mana += amount
-        self.stat_change_text = Text(f"+{amount}", Font.DEFAULT, Color.MANA_BLUE)
-        self.trigger_stat_change_text()
+        self.stat_change_texts.append(Text(f"+{amount}", Font.DEFAULT, Color.MANA_BLUE))
+        self.trigger_stat_change_texts()
 
     def idle_animation(self, x, y):
         index = int(self.stage)
