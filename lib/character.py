@@ -48,6 +48,11 @@ class Character:
         self.display_stat_change_time = -1
         self.display_stat_change_duration = int(self.game.fps/2)
 
+        if self.INFO_X < self.game.screen.get_width()//2:
+            self.icon_x = self.INFO_X + 200
+        else:
+            self.icon_x = self.INFO_X - self.HEALTH_ICON.image.get_width()
+
     @property
     def current_hp(self):
         return self._current_hp
@@ -100,10 +105,8 @@ class Character:
         self.name_display.display(self.INFO_X+5, 2)
         self.current_hp_display.display(self.INFO_X+5, 32)
         self.current_mana_display.display(self.INFO_X+5, 62)
-
-        icon_x = self.INFO_X + math.copysign(200, self.game.screen.get_width() - self.INFO_X)
-        self.HEALTH_ICON.display(icon_x, 20)
-        self.MANA_ICON.display(icon_x, 50)
+        self.HEALTH_ICON.display(self.icon_x, 20)
+        self.MANA_ICON.display(self.icon_x, 50)
 
     def render_hp(self):
         """Re-renders the HP display of the character. Used when an hp value (current or max) has been changed."""
