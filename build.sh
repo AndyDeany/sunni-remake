@@ -21,4 +21,3 @@ rm -rf sunni/
 rm -rf build/
 rm -rf dist/
 rm main.spec
-
