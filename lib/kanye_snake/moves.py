@@ -11,6 +11,7 @@ class KanyeSnakeMove(OpponentMove):     # noqa pylint: disable=abstract-method
 
 
 class Confuse(KanyeSnakeMove):
+    """Class for representing the Confuse move."""
 
     START_X = 930
     END_X = 450
@@ -50,6 +51,7 @@ class Confuse(KanyeSnakeMove):
             self.facing_forwards = not self.facing_forwards
             self.confuse_duration += 1
         else:
+            self.opponent.display()
             self.user.x = self.START_X
             self.user.display()
             self.opponent.damage_mana(20)
@@ -93,6 +95,7 @@ class BeamMove(KanyeSnakeMove):
 
 
 class Venom(BeamMove):
+    """Class for representing the Venom move."""
     def __init__(self):
         super().__init__(20, 15, 25)
         self.sound = Audio("snake_venom.ogg", 0.5)
@@ -104,6 +107,7 @@ class Venom(BeamMove):
 
 
 class Laser(BeamMove):
+    """Class for representing the Laser move."""
     def __init__(self):
         super().__init__(40, 10, 40)
         self.sound = Audio("snake_laser.ogg", 0.5)

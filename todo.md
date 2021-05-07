@@ -53,8 +53,6 @@ the main menu again, and avoids any chance of variables carrying over
 accidentally and causing bugs.
 
 ### Bugs
-* fix bug(s?) with player/memedog 'flickering'/disappearing for a frame at the end of some moves.
-
 * `choose_character_overlay.png` is either 1pixel too thin
 or is transparent for 1 column of pixels on the left (probably the latter)
 

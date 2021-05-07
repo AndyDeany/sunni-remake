@@ -55,8 +55,8 @@ class Kick(PlayerMove):
                     self.user.x -= self.backward_step
                     self.advancing = False
         else:
+            self.user.idle_animation(self.user.x, self.user.y)
             if self.user.x > self.start_x:
-                self.user.idle_animation(self.user.x, self.user.y)
                 self.user.x -= self.backward_step
             else:   # Reset variables for next time
                 self.advancing = True
@@ -92,8 +92,8 @@ class Headbutt(PlayerMove):
                 self.advancing = False
 
         if not self.advancing:
+            self.user.idle_animation(self.user.x, self.user.y)
             if self.user.x > self.start_x:
-                self.user.idle_animation(self.user.x, self.user.y)
                 self.user.x -= self.backward_step
             else:   # Reset variables for next time
                 self.advancing = True

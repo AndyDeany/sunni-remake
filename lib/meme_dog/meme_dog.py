@@ -3,7 +3,6 @@ from collections import namedtuple
 
 from lib.opponent import Opponent
 from lib.image import Image
-from lib.music import Audio
 from lib.opponent.moves import OpponentHeal
 from .moves import Bark, Bite, Spin
 
