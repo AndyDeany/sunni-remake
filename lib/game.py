@@ -86,7 +86,7 @@ class Game:
         self.opponents["Spook Dog"] = SpookDog
         self.opponents["Evil Cloud"] = EvilCloud
 
-        self.battle_music = [Audio(f"battle{n}.ogg", 0.3) for n in range(8)]
+        # self.battle_music = [Audio(f"battle{n}.ogg", 0.2) for n in range(8)]
 
     @property
     def icon(self):
@@ -138,7 +138,7 @@ class Game:
     def commence_next_battle(self):
         """Commence the previously loaded next_battle."""
         self.music.stop_music()
-        self.music.play_music(random.choice(self.battle_music))
+        # self.music.play_music(random.choice(self.battle_music))
         if isinstance(self.next_battle.opponent, EvilCloud):
             self.main_menu.visit()
             return
