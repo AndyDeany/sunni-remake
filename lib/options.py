@@ -9,17 +9,17 @@ class Options:
 
     @classmethod
     def initialise(cls):
-        cls.RETURN_TO_GAME_BUTTON = Image("sunni_return_to_game_button.png")
-        cls.RETURN_TO_TITLE_BUTTON = Image("sunni_return_to_title_button.png")
+        cls.RETURN_TO_GAME_BUTTON = Image("return_to_game_button.png")
+        cls.RETURN_TO_TITLE_BUTTON = Image("return_to_title_button.png")
 
-        cls.VOLUME_MINUS_BUTTON = Image("sunni_volume_minus_button.png")
-        cls.VOLUME_PLUS_BUTTON = Image("sunni_volume_plus_button.png")
-        cls.VOLUME_MUTE_BUTTON = Image("sunni_volume_mute_button.png")
+        cls.VOLUME_MINUS_BUTTON = Image("volume_minus_button.png")
+        cls.VOLUME_PLUS_BUTTON = Image("volume_plus_button.png")
+        cls.VOLUME_MUTE_BUTTON = Image("volume_mute_button.png")
 
-        cls.WINDOWED_BUTTON = Image("sunni_windowed_button.png")
-        cls.FULLSCREEN_BUTTON = Image("sunni_fullscreen_button.png")
+        cls.WINDOWED_BUTTON = Image("windowed_button.png")
+        cls.FULLSCREEN_BUTTON = Image("fullscreen_button.png")
 
-        cls.BLANK_OVERLAY = Image("sunni_blank_overlay.png")
+        cls.BLANK_OVERLAY = Image("blank_overlay.png")
 
     def __init__(self, game):
         self.game = game

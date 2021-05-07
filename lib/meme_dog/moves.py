@@ -1,14 +1,15 @@
 """Module containing Meme Dog's (unique) moves."""
 import random
 
-from lib.move import OpponentMove
+from lib.opponent.moves import OpponentMove
 from lib.music import Audio
 
 
 class MemeDogMove(OpponentMove):    # noqa pylint: disable=abstract-method
+    """Class for representing one of Meme Dog's moves."""
     def __init__(self, mana_cost):
         super().__init__(mana_cost)
-        self.sounds = [Audio(f"sunni_dog_attack{n}.ogg") for n in range(1, 4)]
+        self.sounds = [Audio(f"meme_dog/dog_attack{n}.ogg") for n in range(1, 4)]
 
     @property
     def sound(self):
@@ -16,6 +17,7 @@ class MemeDogMove(OpponentMove):    # noqa pylint: disable=abstract-method
 
 
 class Bark(MemeDogMove):
+    """Class for representing the Bark move."""
     def __init__(self):
         super().__init__(-10)
         self.duration = 0
@@ -39,6 +41,10 @@ class Bark(MemeDogMove):
 
 
 class Bite(MemeDogMove):
+    """Class for representing the Bite move."""
+    FORWARD_STEP = 24
+    BACKWARD_STEP = 42
+
     def __init__(self):
         super().__init__(15)
 
@@ -46,15 +52,13 @@ class Bite(MemeDogMove):
         self.start_x = 930
         self.sound_x = 330
         self.end_x = 90
-        self.forward_step = 24
-        self.backward_step = 42
 
     def run(self):
         self.opponent.display()
         if self.advancing:
             if self.user.x > self.end_x:
                 self.user.dog_normal.display(self.user.x, self.user.y)
-                self.user.x -= self.forward_step
+                self.user.x -= self.FORWARD_STEP
                 if self.user.x == self.sound_x:
                     self.play_sound()
             else:
@@ -62,9 +66,9 @@ class Bite(MemeDogMove):
                 self.advancing = False
 
         if not self.advancing:
+            self.user.dog_backwards.display(self.user.x, self.user.y)
             if self.user.x < self.start_x:
-                self.user.dog_backwards.display(self.user.x, self.user.y)
-                self.user.x += self.backward_step
+                self.user.x += self.BACKWARD_STEP
             else:   # Reset variables for next time
                 self.advancing = True
                 self.user.x = self.start_x
@@ -72,14 +76,15 @@ class Bite(MemeDogMove):
 
 
 class Spin(MemeDogMove):
+    """Class for representing the Spin move."""
+    FORWARD_STEP = 25
+    BACKWARD_STEP = 30
+
     def __init__(self):
         super().__init__(25)
-
         self.advancing = True
         self.start_x = 930
         self.end_x = 180
-        self.forward_step = 25
-        self.backward_step = 30
 
         self.spin_duration = 0
         self.total_spin_duration = self.game.fps
@@ -88,13 +93,12 @@ class Spin(MemeDogMove):
     def run(self):
         self.opponent.display()
         if self.advancing:
-            if self.user.x >= self.end_x:
-                self.user.dog_normal.display(self.user.x, self.user.y)
-                if self.user.x == self.end_x:
-                    self.advancing = False
-                    self.play_sound()
-                else:
-                    self.user.x -= self.forward_step
+            self.user.dog_normal.display(self.user.x, self.user.y)
+            if self.user.x == self.end_x:
+                self.advancing = False
+                self.play_sound()
+            else:
+                self.user.x -= self.FORWARD_STEP
 
         elif self.spin_duration < self.total_spin_duration:
             if self.spin_duration == self.total_spin_duration//2:
@@ -106,10 +110,9 @@ class Spin(MemeDogMove):
 
         elif self.user.x < self.start_x:
             self.user.dog_backwards.display(self.user.x, self.user.y)
-            self.user.x += self.backward_step
+            self.user.x += self.BACKWARD_STEP
 
         else:   # Reset variables for next time
             self.advancing = True
             self.spin_duration = 0
-            self.user.x = self.start_x
             self.opponent.next_move()

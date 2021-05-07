@@ -15,7 +15,7 @@ class Save:
         y_offset = 119*self.number
         self._display_x = 450
         self._display_y = 230 + y_offset
-        self.button_flared = Image(f"sunni_load{self.number+1}_flared.png", (0, 0))
+        self.button_flared = Image(f"load{self.number+1}_flared.png", (0, 0))
 
         self.button_boundaries = (355, 225+y_offset, 925, 338+y_offset)
 

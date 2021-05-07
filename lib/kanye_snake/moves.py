@@ -1,7 +1,7 @@
 """Module containing Kanye Snake's (unique) moves."""
 import random
 
-from lib.move import OpponentMove
+from lib.opponent.moves import OpponentMove
 from lib.image import Image
 from lib.music import Audio
 
@@ -10,14 +10,15 @@ class KanyeSnakeMove(OpponentMove):     # noqa pylint: disable=abstract-method
     """Class for representing Kayne Snake's moves."""
 
 
-class ConfuseMove(KanyeSnakeMove):
+class Confuse(KanyeSnakeMove):
+    """Class for representing the Confuse move."""
 
     START_X = 930
     END_X = 450
 
     def __init__(self):
         super().__init__(-10)
-        self.sound = Audio("sunni_snake_confuse.ogg", 0.3)
+        self.sound = Audio("kanye_snake/snake_confuse.ogg", 0.3)
 
         self.is_moving = None
         self.facing_forwards = None
@@ -50,6 +51,7 @@ class ConfuseMove(KanyeSnakeMove):
             self.facing_forwards = not self.facing_forwards
             self.confuse_duration += 1
         else:
+            self.opponent.display()
             self.user.x = self.START_X
             self.user.display()
             self.opponent.damage_mana(20)
@@ -92,22 +94,24 @@ class BeamMove(KanyeSnakeMove):
         self.opponent.display()  # Ensure it shows on top of the beam
 
 
-class VenomMove(BeamMove):
+class Venom(BeamMove):
+    """Class for representing the Venom move."""
     def __init__(self):
         super().__init__(20, 15, 25)
-        self.sound = Audio("sunni_snake_venom.ogg", 0.5)
-        self.beam = Image("sunni_snake_venom_beam.png")
+        self.sound = Audio("kanye_snake/snake_venom.ogg", 0.5)
+        self.beam = Image("kanye_snake/snake_venom_beam.png")
 
     @property
     def beam_stance(self):
         return self.user.snake_venom_stance
 
 
-class LaserMove(BeamMove):
+class Laser(BeamMove):
+    """Class for representing the Laser move."""
     def __init__(self):
         super().__init__(40, 10, 40)
-        self.sound = Audio("sunni_snake_laser.ogg", 0.5)
-        self.beam = Image("sunni_snake_laser_beam.png")
+        self.sound = Audio("kanye_snake/snake_laser.ogg", 0.5)
+        self.beam = Image("kanye_snake/snake_laser_beam.png")
 
     @property
     def beam_stance(self):

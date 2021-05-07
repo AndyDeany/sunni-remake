@@ -1,8 +1,9 @@
 import random
+from collections import namedtuple
 
 from lib.opponent import Opponent
 from lib.image import Image
-from lib.move import OpponentHeal
+from lib.opponent.moves import OpponentHeal
 from .moves import Teleport, Glide, Claw
 
 
@@ -14,54 +15,46 @@ class SpookDog(Opponent):
         self.y = 440
         self.num_idle_frames = 20
         self.idle_fps = 20
-        self.idle_frames = [Image(f"sunni_ghost_dog_normal{n}.png") for n in range(self.num_idle_frames)]
+        self.idle_frames = [Image(f"spook_dog/ghost_dog_normal{n}.png") for n in range(self.num_idle_frames)]
 
-        self.ghost_dog_dead = Image("sunni_ghost_dog_dead.png", (self.x, self.y))
+        self.ghost_dog_dead = Image("spook_dog/ghost_dog_dead.png", (self.x, self.y))
 
-        self.MOVE_HEAL = OpponentHeal(1005, 230, 410)
-        self.MOVE_TELEPORT = Teleport()
-        self.MOVE_GLIDE = Glide()
-        self.MOVE_CLAW = Claw()
+        Moves = namedtuple("Moves", "heal teleport glide claw")
+        self.moves = Moves(OpponentHeal(1005, 230, 410), Teleport(), Glide(), Claw())
 
-    def choose_move(self):
+    def choose_move(self):  # pylint: disable=too-many-branches,too-many-return-statements
         """Return the move that the ghost dog decides to use."""
-        def attack_options():
-            """Return the options the dog can/would choose from for attacking based on his mana."""
-            moves = [self.MOVE_TELEPORT, self.MOVE_GLIDE, self.MOVE_CLAW]
-            moves = [move for move in moves if 0 <= self.current_mana - move.mana_cost <= self.max_mana]
-            return moves
-
         if self.current_mana < 10:  # Only usable move
-            return self.MOVE_TELEPORT
+            return self.moves.teleport
 
-        if self.game.player.current_hp <= 10 and self.current_mana >= self.MOVE_CLAW.mana_cost:
-            return self.MOVE_CLAW
+        if self.game.player.current_hp <= 10 and self.current_mana >= self.moves.claw.mana_cost:
+            return self.moves.claw
         if self.game.player.current_hp <= 20:
-            return self.MOVE_GLIDE
+            return self.moves.glide
         if self.game.player.current_hp <= 30:
             if self.current_mana < 50:
-                options = {self.MOVE_TELEPORT: 3, self.MOVE_GLIDE: 6}
+                options = {self.moves.teleport: 3, self.moves.glide: 6}
             elif self.current_mana <= 140:
-                options = {self.MOVE_TELEPORT: 1, self.MOVE_GLIDE: 2, self.MOVE_CLAW: 6}
+                options = {self.moves.teleport: 1, self.moves.glide: 2, self.moves.claw: 6}
             else:
-                options = {self.MOVE_GLIDE: 2.3333333333, self.MOVE_CLAW: 6.6666666667}
+                options = {self.moves.glide: 2.3333333333, self.moves.claw: 6.6666666667}
             if self.current_hp <= 180:
-                options[self.MOVE_HEAL] = 1
+                options[self.moves.heal] = 1
             return self.random_weighted(options)
 
         if self.current_hp < 25:
             if self.current_mana < 50:
-                return self.random_weighted({self.MOVE_TELEPORT: 0.1, self.MOVE_GLIDE: 0.1, self.MOVE_HEAL: 0.8})
+                return self.random_weighted({self.moves.teleport: 0.1, self.moves.glide: 0.1, self.moves.heal: 0.8})
             if self.game.player.current_hp <= 40:
-                return random.choice([self.MOVE_CLAW, self.MOVE_HEAL])
+                return random.choice([self.moves.claw, self.moves.heal])
 
             if random.random() < 0.1:
-                return random.choice(attack_options())
-            return self.MOVE_HEAL
+                return random.choice(self.attack_options())
+            return self.moves.heal
 
-        options = attack_options()
+        options = self.attack_options()
         if self.current_hp <= 0.9*self.max_hp:
-            options.append(self.MOVE_HEAL)
+            options.append(self.moves.heal)
         return random.choice(options)
 
     def _idle_display(self):

@@ -1,6 +1,4 @@
 ### Refactors/Minor Improvements
-* add base Opponent class
-
 * Perhaps `Options` should also inherit from `Page`.
 It would need to remember previous value of `game.page` though - not an issue.
 
@@ -53,24 +51,7 @@ the main menu again, and avoids any chance of variables carrying over
 accidentally and causing bugs.
 
 ### Bugs
-* fix bug(s?) with player/memedog 'flickering'/disappearing for a frame at the end of some moves.
-
-* `choose_character_overlay.png` is either 1pixel too thin
-or is transparent for 1 column of pixels on the left (probably the latter)
-
-* When hp damage and mana damage done at the same time (like Spook Dog's Teleport move)
-only one stat change is shown since `stat_change_text` can only hold one value.
-This might need fixing by having a list of `stat_change_texts` and `display_stat_change_text()`
-display them 1by1 with a slight delay so they don't overlap, and then removing
-the text from the list when it's complete. May need to be a tuple to store the y
-value of the stat change text too so it's known when each one is done.
-Alternatively to the delay, subsequent values could just show below the first one,
-at the same time. I *much* prefer this solution from both a user standpoint
-(the damages happened at the same time... so show them at the same time)
-**and** a coding standpoint, as this means only one `y` value needs storing,
-and subsequent items in the `stat_change_texts` lists can just be
-blitted 20px (or whatever the height of the font is plus a couple px buffer)
-below until the normal blit duration has passed.
+Be sure to check the issues on GitHub for any other bugs.
 
 ### Features
 * Replace `random.randint()` for calculating move damage/healing with two parameters:

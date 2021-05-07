@@ -11,36 +11,37 @@ from lib.image import Image, Surface
 from lib.options import Options
 from lib.save import Save
 
-from lib.opening_sequence import OpeningSequence
-from lib.main_menu import MainMenu
-from lib.new_game_page import NewGamePage
-from lib.load_game_page import LoadGamePage
+from lib.pages.opening_sequence import OpeningSequence
+from lib.pages.main_menu import MainMenu
+from lib.pages.new_game_page import NewGamePage
+from lib.pages.load_game_page import LoadGamePage
 
 from lib.character import Character
-from lib.battle import Battle
+from lib.pages.battle import Battle
 from lib.player import Player
 from lib.meme_dog import MemeDog
 from lib.kanye_snake import KanyeSnake
 from lib.spook_dog import SpookDog
-from lib.move import Move
+from lib.evil_cloud import EvilCloud
+from lib.moves import Move
 
 
 class Game:
 
     @classmethod
     def initialise(cls):
-        cls.OPTIONS_BUTTON = Image("sunni_options_button.png", (10, 665))
-        cls.VICTORY_OVERLAY = Image("sunni_victory_overlay.png", (0, 0))
-        cls.DEFEAT_OVERLAY = Image("sunni_defeat_overlay.png", (0, 0))
-        cls.CONTINUE_BUTTON = Image("sunni_continue_button.png", (1000, 600))
-        cls.TRY_AGAIN_BUTTON = Image("sunni_try_again_button.png", (1000, 600))
-        cls.RETURN_TO_TITLE_BUTTON = Image("sunni_return_to_title_button.png", (80, 600))
+        cls.OPTIONS_BUTTON = Image("options_button.png", (10, 665))
+        cls.VICTORY_OVERLAY = Image("victory_overlay.png", (0, 0))
+        cls.DEFEAT_OVERLAY = Image("defeat_overlay.png", (0, 0))
+        cls.CONTINUE_BUTTON = Image("continue_button.png", (1000, 600))
+        cls.TRY_AGAIN_BUTTON = Image("try_again_button.png", (1000, 600))
+        cls.RETURN_TO_TITLE_BUTTON = Image("return_to_title_button.png", (80, 600))
 
     def __init__(self):
         pygame.init()
         self.options = Options(self)
         self.screen = pygame.display.set_mode(self.options.window_size)
-        self.icon = Image("sunni_game_icon.png")
+        self.icon = Image("game_icon.png")
         self.caption = "Sunni (Alpha 3.0)"
         self.keys = Keys(self)
         self.page = None
@@ -78,6 +79,12 @@ class Game:
         MemeDog.initialise()
         Battle.initialise()
 
+        self.opponents = OrderedDict()
+        self.opponents["Meme Dog"] = MemeDog
+        self.opponents["Kanye Snake"] = KanyeSnake
+        self.opponents["Spook Dog"] = SpookDog
+        self.opponents["Evil Cloud"] = EvilCloud
+
     @property
     def icon(self):
         return self._icon
@@ -97,7 +104,11 @@ class Game:
         pygame.display.set_caption(caption)
 
     def save(self):
-        self.selected_save.save(self.player.name, self.player.level, self.opponent.name, self.player.character)
+        """Save the current game state to the currently selected save."""
+        opponent = self.opponent
+        if self.next_battle is not None:
+            opponent = self.next_battle.opponent
+        self.selected_save.save(self.player.name, self.player.level, opponent.name, self.player.character)
 
     def select_save(self, save):
         """Sets the save with the given number as the selected save."""
@@ -115,16 +126,11 @@ class Game:
         self.commence_next_battle()
 
     def load_next_battle(self, name=None):
-        opponents = OrderedDict()
-        opponents["Meme Dog"] = MemeDog
-        opponents["Kanye Snake"] = KanyeSnake
-        opponents["Spook Dog"] = SpookDog
-
         if name is None:
-            opponent_names = list(opponents.keys())
+            opponent_names = list(self.opponents.keys())
             name = opponent_names[opponent_names.index(self.opponent.name) + 1]
 
-        self.next_battle = Battle(self, opponents[name](self))
+        self.next_battle = Battle(self, self.opponents[name](self))
         if name == "Spook Dog":
             opponent = Character(self, name, 200, 150)
             opponent.ghost_dog_stage = 1     # Variable showing which frame of idle movement the ghost dog is in
@@ -136,6 +142,9 @@ class Game:
     def commence_next_battle(self):
         """Commence the previously loaded next_battle."""
         self.music.stop_music()
+        if isinstance(self.next_battle.opponent, EvilCloud):
+            self.main_menu.visit()
+            return
         self.page = self.next_battle
         self.opponent = self.next_battle.opponent
         self.next_battle = None
