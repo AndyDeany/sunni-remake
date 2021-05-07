@@ -82,7 +82,6 @@ class Spin(MemeDogMove):
 
     def __init__(self):
         super().__init__(25)
-        print(self.user)
         self.advancing = True
         self.start_x = 930
         self.end_x = 180
