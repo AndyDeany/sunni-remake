@@ -1,6 +1,4 @@
 ### Refactors/Minor Improvements
-* add base Opponent class
-
 * Perhaps `Options` should also inherit from `Page`.
 It would need to remember previous value of `game.page` though - not an issue.
 
