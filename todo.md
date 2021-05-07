@@ -53,9 +53,6 @@ the main menu again, and avoids any chance of variables carrying over
 accidentally and causing bugs.
 
 ### Bugs
-* `choose_character_overlay.png` is either 1pixel too thin
-or is transparent for 1 column of pixels on the left (probably the latter)
-
 * When hp damage and mana damage done at the same time (like Spook Dog's Teleport move)
 only one stat change is shown since `stat_change_text` can only hold one value.
 This might need fixing by having a list of `stat_change_texts` and `display_stat_change_text()`
