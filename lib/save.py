@@ -22,9 +22,13 @@ class Save:
         with open(self.file_name, "r") as save_file:
             save_lines = save_file.read().splitlines()
         self.player_name = save_lines[0]
-        self.player_level = float(save_lines[1])
-        self.opponent_name = save_lines[2]
-        self.player_character = save_lines[3]
+        self.player_level = None
+        self.opponent_name = None
+        self.player_character = None
+        if self.player_name != self.EMPTY_SAVE_NAME:
+            self.player_level = float(save_lines[1])
+            self.opponent_name = save_lines[2]
+            self.player_character = save_lines[3]
 
     @property
     def player_name(self):
