@@ -22,6 +22,7 @@ from lib.player import Player
 from lib.meme_dog import MemeDog
 from lib.kanye_snake import KanyeSnake
 from lib.spook_dog import SpookDog
+from lib.evil_cloud import EvilCloud
 from lib.moves import Move
 
 
@@ -78,6 +79,12 @@ class Game:
         MemeDog.initialise()
         Battle.initialise()
 
+        self.opponents = OrderedDict()
+        self.opponents["Meme Dog"] = MemeDog
+        self.opponents["Kanye Snake"] = KanyeSnake
+        self.opponents["Spook Dog"] = SpookDog
+        self.opponents["Evil Cloud"] = EvilCloud
+
     @property
     def icon(self):
         return self._icon
@@ -115,16 +122,11 @@ class Game:
         self.commence_next_battle()
 
     def load_next_battle(self, name=None):
-        opponents = OrderedDict()
-        opponents["Meme Dog"] = MemeDog
-        opponents["Kanye Snake"] = KanyeSnake
-        opponents["Spook Dog"] = SpookDog
-
         if name is None:
-            opponent_names = list(opponents.keys())
+            opponent_names = list(self.opponents.keys())
             name = opponent_names[opponent_names.index(self.opponent.name) + 1]
 
-        self.next_battle = Battle(self, opponents[name](self))
+        self.next_battle = Battle(self, self.opponents[name](self))
         if name == "Spook Dog":
             opponent = Character(self, name, 200, 150)
             opponent.ghost_dog_stage = 1     # Variable showing which frame of idle movement the ghost dog is in
@@ -136,6 +138,9 @@ class Game:
     def commence_next_battle(self):
         """Commence the previously loaded next_battle."""
         self.music.stop_music()
+        if isinstance(self.next_battle.opponent, EvilCloud):
+            self.main_menu.visit()
+            return
         self.page = self.next_battle
         self.opponent = self.next_battle.opponent
         self.next_battle = None
