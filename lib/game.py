@@ -104,7 +104,11 @@ class Game:
         pygame.display.set_caption(caption)
 
     def save(self):
-        self.selected_save.save(self.player.name, self.player.level, self.opponent.name, self.player.character)
+        """Save the current game state to the currently selected save."""
+        opponent = self.opponent
+        if self.next_battle is not None:
+            opponent = self.next_battle.opponent
+        self.selected_save.save(self.player.name, self.player.level, opponent.name, self.player.character)
 
     def select_save(self, save):
         """Sets the save with the given number as the selected save."""
