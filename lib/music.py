@@ -1,3 +1,5 @@
+from multiprocessing.dummy import Pool
+
 import pygame
 
 
@@ -11,10 +13,24 @@ def pygame_volume(volume):
 
 class Audio:
     """Class for representing and containing an audio clip."""
-    def __init__(self, file_name, volume_multiplier=1.0):
+    def __init__(self, file_name, volume_multiplier=1.0, *, load_async=True):
         self.path = f"../audio/{file_name}"
-        self.sound = pygame.mixer.Sound(self.path)
+        if load_async:
+            self.sound_pool = Pool(processes=1).apply_async(pygame.mixer.Sound, [self.path])
+            self._sound = None
+        else:
+            self._sound = pygame.mixer.Sound(self.path)
         self.volume_multiplier = volume_multiplier  # Used for adjusting tracks that are naturally too loud/quiet
+
+    @property
+    def sound(self):
+        if self._sound is None:
+            self._sound = self.sound_pool.get(10)
+        return self._sound
+
+    @property
+    def is_loaded(self):
+        return self.sound_pool.ready()
 
     def play(self, channel, *, loop: bool, fade: bool):
         """Play the audio clip. Loops indefinitely if loop is True. Fades in if fade is True."""
