@@ -7,7 +7,6 @@ class Page:
 
     def __init__(self, game):
         self.game = game
-        self.game.page = self
 
     def run(self):
         raise NotImplementedError
