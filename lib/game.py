@@ -37,17 +37,12 @@ class Game:
         self.selected_save = None
         self.next_battle = None
 
-        self.main_menu = MainMenu(self)
-        self.opening_sequence = OpeningSequence(self)
-        self.opening_sequence.visit()
-        self.new_game_page = NewGamePage(self)
-        self.load_game_page = LoadGamePage(self)
+        self.visit(OpeningSequence)
 
         self.player = None
         self.opponent = None
 
         self.initialise()
-        OpeningSequence.initialise()
         NewGamePage.initialise()
         LoadGamePage.initialise()
         Options.initialise()
@@ -90,6 +85,14 @@ class Game:
     def music(self):
         return self.session.music
 
+    def visit(self, page_class):
+        """Go to the page represented by the given class."""
+        self.page = page_class(self)
+
+    def go_to_main_menu(self):
+        """Go to the main menu."""
+        self.visit(MainMenu)
+
     def save(self):
         """Save the current game state to the currently selected save."""
         opponent = self.opponent
@@ -124,7 +127,7 @@ class Game:
         self.music.stop_music()
         # self.music.play_music(random.choice(self.battle_music))
         if isinstance(self.next_battle.opponent, EvilCloud):
-            self.main_menu.visit()
+            self.go_to_main_menu()
             return
         self.page = self.next_battle
         self.opponent = self.next_battle.opponent
@@ -136,7 +139,7 @@ class Game:
         if self.keys.escape or (self.mouse.is_in(10, 665, 100, 715) and self.mouse.left):
             self.options.show()
         elif self.mouse.is_in(1082, 665, 1270, 715) and self.mouse.left:
-            self.main_menu.visit()
+            self.go_to_main_menu()
 
     def run(self):
         """Code that is executed once per frame - the body of the main program loop."""

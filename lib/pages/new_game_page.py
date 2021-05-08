@@ -6,6 +6,7 @@ from lib.player import Player
 
 
 class NewGamePage(SavePage):
+    """Class representing the New Game page for starting a new game."""
 
     @classmethod
     def initialise(cls):
@@ -20,9 +21,6 @@ class NewGamePage(SavePage):
         super().__init__(game)
         self.player_name_text = None
         self.display_sure = False
-
-    def visit(self):
-        super().visit()
         self.game.keys.start_text_input(16, default_text="Sunni")
 
     def run(self):

@@ -3,6 +3,7 @@ import pygame
 from lib.image import Image, Text
 from lib.color import Color
 from lib.font import Font
+from lib.pages.main_menu import MainMenu
 
 
 class Options:
@@ -58,11 +59,11 @@ class Options:
         if self.session.keys.escape or (self.session.mouse.left and self.session.mouse.is_in(10, 665, 204, 715)):
             self.hide()
 
-        if self.session.game.page != self.session.game.main_menu:
+        if not isinstance(self.session.game.page, MainMenu):
             self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
             if self.session.mouse.left and self.session.mouse.is_in(1082, 665, 1270, 715):
                 self.session.game.save()  # TODO: Ask the player which save file they want to use?
-                self.session.game.main_menu.visit()
+                self.session.game.go_to_main_menu()
                 self.hide()
 
         # Showing the buttons as solid only if they can be clicked

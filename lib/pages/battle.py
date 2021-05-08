@@ -1,4 +1,5 @@
 from lib.pages import Page
+from lib.pages.main_menu import MainMenu
 from lib.image import Image, Text
 from lib.font import Font
 from lib.color import Color
@@ -128,7 +129,7 @@ class Battle(Page):
             if self.game.mouse.is_in(1000, 600, 1120, 650):
                 self.game.commence_next_battle()
             elif self.game.mouse.is_in(80, 600, 268, 650):
-                self.game.main_menu.visit()
+                self.game.visit(MainMenu)
 
     def run_defeat(self):
         """Run the code for showing the defeat screen for when the player has been defeated by their opponent."""
@@ -144,7 +145,7 @@ class Battle(Page):
                 self.player.fully_restore()
                 self.opponent.fully_restore()
             elif self.game.mouse.is_in(80, 600, 268, 650):
-                self.game.main_menu.visit()
+                self.game.go_to_main_menu()
 
     def mana_notification_display(self):
         """Run the code for actually showing the mana notification when needed."""
