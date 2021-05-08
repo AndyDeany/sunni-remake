@@ -42,7 +42,7 @@ class Save:
 
     def save(self, player_name, player_level, opponent_name, player_character):
         """Save the given data to this save, overwriting any currently stored save data."""
-        with open(self.file_name, "w") as save_file:
+        with open(self.file_name, "w", newline="") as save_file:
             save_file.write(f"{player_name}\n")
             save_file.write(f"{player_level}\n")
             save_file.write(f"{opponent_name}\n")
