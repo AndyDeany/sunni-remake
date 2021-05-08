@@ -20,32 +20,38 @@ class OpeningSequence(Page):
         self.title_screen = Image("title_screen.png", (0, 0))
         self.game_title = Text("SUNNI", Font.TITLE, Color.MURKY_YELLOW)
 
+        self.start_time = self.game.session.uptime
+
+    @property
+    def time_elapsed(self):
+        return self.game.session.uptime - self.start_time
+
     def run(self):
-        if self.game.session.uptime < 5:
+        if self.time_elapsed < 5:
             self.game.screen.fill(Color.MILD_BLUE)
             self.welcome_l1.display(480, 100)
-            if self.game.mouse.left and self.game.session.uptime <= 2:  # Enables skipping by clicking
-                self.game.session.start_time = time.time() - 0.5
-            if self.game.session.uptime > 0.5:
+            if self.game.mouse.left and self.time_elapsed <= 0.5:  # Enables skipping by clicking
+                self.start_time = self.game.session.uptime - 0.5
+            if self.time_elapsed > 0.5:
                 self.welcome_l2.display(150, 140)
-                if self.game.mouse.left and self.game.session.uptime <= 2:
-                    self.game.session.start_time = time.time() - 2
-            if self.game.session.uptime > 2:
+                if self.game.mouse.left and self.time_elapsed <= 2:
+                    self.start_time = self.game.session.uptime - 2
+            if self.time_elapsed > 2:
                 self.welcome_l3.display(690, 500)
-                if self.game.mouse.left and self.game.session.uptime <= 3:
-                    self.game.session.start_time = time.time() - 3
-            if self.game.session.uptime > 3:
+                if self.game.mouse.left and self.time_elapsed <= 3:
+                    self.start_time = self.game.session.uptime - 3
+            if self.time_elapsed > 3:
                 self.welcome_l4.display(590, 300)
-                if self.game.mouse.left and self.game.session.uptime <= 5:
-                    self.game.session.start_time = time.time() - 5
-        elif self.game.session.uptime < 8:
+                if self.game.mouse.left and self.time_elapsed <= 5:
+                    self.start_time = self.game.session.uptime - 5
+        elif self.time_elapsed < 8:
             self.title_screen.display()
-            if self.game.mouse.left and self.game.session.uptime <= 6:
-                self.game.session.start_time = time.time() - 6
+            if self.game.mouse.left and self.time_elapsed <= 6:
+                self.start_time = self.game.session.uptime - 6
 
-            if self.game.session.uptime > 6:
+            if self.time_elapsed > 6:
                 self.game_title.display(555, 100)
                 if self.game.mouse.left:
-                    self.game.session.start_time = time.time() - 8
+                    self.start_time = self.game.session.uptime - 8
         else:
             self.game.go_to_main_menu()
