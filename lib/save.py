@@ -52,6 +52,15 @@ class Save:
         self.opponent_name = opponent_name
         self.player_character = player_character
 
+    def delete(self):
+        """Delete the contents of this save."""
+        with open(self.file_name, "w", newline="") as save_file:
+            save_file.write(f"{self.EMPTY_SAVE_NAME}\n")
+        self.player_name = self.EMPTY_SAVE_NAME
+        self.player_level = None
+        self.opponent_name = None
+        self.player_character = None
+
     def display_name(self):
         """Display the name of the save in it's correct spot on the saves screen."""
         self.player_name_text.display()
