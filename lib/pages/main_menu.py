@@ -32,7 +32,7 @@ class MainMenu(Page):
         elif self.game.mouse.is_in(547, 585, 734, 661):     # Exit button
             self.EXIT_BUTTON_FLARED.display()
             if self.game.mouse.left:
-                self.game.is_running = False
+                self.game.session.is_running = False
         if self.game.keys.escape:
             self.game.options.show()
 

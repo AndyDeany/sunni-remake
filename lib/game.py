@@ -1,14 +1,6 @@
-import os
-import time
 from collections import OrderedDict
-import random
 
-import pygame
-
-from lib.mouse import Mouse
-from lib.keys import Keys
-from lib.music import Music, Audio
-from lib.image import Image, Surface
+from lib.image import Image
 from lib.options import Options
 from lib.save import Save
 
@@ -38,24 +30,11 @@ class Game:
         cls.TRY_AGAIN_BUTTON = Image("try_again_button.png", (1000, 600))
         cls.RETURN_TO_TITLE_BUTTON = Image("return_to_title_button.png", (80, 600))
 
-    def __init__(self):
-        pygame.init()
-        self.options = Options(self)
-        self.screen = pygame.display.set_mode(self.options.window_size)
-        self.icon = Image("game_icon.png")
-        self.caption = "Sunni (Alpha 3.0.0)"
-        self.keys = Keys(self)
+    def __init__(self, session):
+        self.session = session
         self.page = None
-        self.file_directory = os.getcwd()[:-3]
-        self.mouse = Mouse()
-        self.clock = pygame.time.Clock()
-        self.fps = 30
-        self.start_time = time.time()
-        self.current_time = 0   # The amount of time the program as been running
-        self.music = Music(self)
         self.saves = [Save(n) for n in range(4)]
         self.selected_save = None
-        self.is_running = True
         self.next_battle = None
 
         self.main_menu = MainMenu(self)
@@ -71,7 +50,6 @@ class Game:
         OpeningSequence.initialise()
         NewGamePage.initialise()
         LoadGamePage.initialise()
-        Surface.initialise(self)
         Options.initialise()
         Move.initialise(self)
         Character.initialise()
@@ -89,22 +67,28 @@ class Game:
         # self.battle_music = [Audio(f"battle{n}.ogg", 0.2) for n in range(8)]
 
     @property
-    def icon(self):
-        return self._icon
-
-    @icon.setter
-    def icon(self, icon: Image):
-        self._icon = icon
-        pygame.display.set_icon(icon.image)
+    def screen(self):
+        return self.session.screen
 
     @property
-    def caption(self):
-        return self._caption
+    def keys(self):
+        return self.session.keys
 
-    @caption.setter
-    def caption(self, caption: str):
-        self._caption = caption
-        pygame.display.set_caption(caption)
+    @property
+    def mouse(self):
+        return self.session.mouse
+
+    @property
+    def fps(self):
+        return self.session.fps
+
+    @property
+    def options(self):
+        return self.session.options
+
+    @property
+    def music(self):
+        return self.session.music
 
     def save(self):
         """Save the current game state to the currently selected save."""
@@ -154,48 +138,6 @@ class Game:
         elif self.mouse.is_in(1082, 665, 1270, 715) and self.mouse.left:
             self.main_menu.visit()
 
-    def event_handling(self):
-        """Run the code for the main event loop to deal with user inputs/actions."""
-        for event in pygame.event.get():    # "For each thing the user does"
-            if event.type == pygame.QUIT:
-                self.is_running = False
-            elif event.type == pygame.TEXTINPUT:
-                self.keys.process_text_input(event)
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                self.mouse.process_button_down()
-            elif event.type == pygame.MOUSEBUTTONUP:
-                self.mouse.process_button_up()
-            elif event.type == pygame.KEYDOWN:
-                self.keys.process_key_down(event)
-                self.keys.process_text_input_special_keys()
-            elif event.type == pygame.KEYUP:
-                self.keys.process_key_up(event)
-
-    def loop(self):
-        """Run the main program loop."""
-        while self.is_running:
-            self.run()
-
-        # Closing the program
-        try:
-            self.save()
-        except (NameError, AttributeError, ValueError):  # in case saving is not yet possible
-            pass
-
-        pygame.quit()
-
     def run(self):
         """Code that is executed once per frame - the body of the main program loop."""
-        self.current_time = time.time() - self.start_time
-        self.mouse.reset_buttons()
-        self.mouse.update_coordinates()
-        self.keys.reset()
-        self.event_handling()
-
-        if self.options.is_showing and self.page != self.opening_sequence:
-            self.options.display()
-        else:
-            self.page.run()
-
-        pygame.display.flip()       # Updating the screen at the end of drawing
-        self.clock.tick(self.fps)   # Setting fps limit
+        self.page.run()

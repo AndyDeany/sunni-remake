@@ -44,8 +44,7 @@ class Audio:
 
 class Music:
     """Class for controlling audio playback in the game."""
-    def __init__(self, game):
-        self.game = game
+    def __init__(self):
         self._volume = 100
         self.is_muted = False
         self.current_music = None

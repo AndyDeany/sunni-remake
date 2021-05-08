@@ -6,8 +6,8 @@ class Surface:
     default_screen = None
 
     @classmethod
-    def initialise(cls, game):
-        cls.default_screen = game.screen
+    def initialise(cls, session):
+        cls.default_screen = session.screen
 
     def __init__(self, default_coords: tuple):
         self.default_x, self.default_y = default_coords
