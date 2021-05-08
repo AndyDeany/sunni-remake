@@ -1,4 +1,14 @@
 #!/bin/bash
+VENV=build-venv
+python -m venv $VENV
+if [[ "$OSTYPE" == "msys" ]]; then
+  source $VENV/Scripts/activate
+else
+  source $VENV/bin/activate
+fi
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+
 pyinstaller --onefile main.py --noconsole
 
 mkdir sunni
@@ -21,3 +31,6 @@ rm -rf sunni/
 rm -rf build/
 rm -rf dist/
 rm main.spec
+
+deactivate
+rm -rf $VENV
