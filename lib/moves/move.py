@@ -2,7 +2,7 @@
 from lib.pages.battle.states import BattleState
 
 
-class Move(BattleState):    # noqa
+class Move(BattleState):    # noqa pylint: disable=abstract-method
     """Class representing a character's move."""
 
     def __init__(self, mana_cost):
