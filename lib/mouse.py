@@ -1,47 +1,67 @@
 import pygame
 
 
+class MouseButton:
+    """Class for representing a button on the mouse."""
+
+    all = {}
+
+    def __init__(self, button: int):
+        self.button = button
+        self.just_pressed = False
+        self.is_pressed = False
+        self.just_released = False
+        self.all[self.button] = self
+
+    def __bool__(self):
+        return self.just_released
+
+    def down(self):
+        """Process the pressing down of the mouse button."""
+        self.just_pressed = True
+        self.is_pressed = True
+
+    def up(self):
+        """Process the release of the mouse button."""
+        self.is_pressed = False
+        self.just_released = True
+
+
 class Mouse:
+    """Class for representing the user's mouse."""
     def __init__(self):
         self.x = 0
         self.y = 0
 
-        self.left = 0
-        self.middle = 0
-        self.right = 0
+        self.left = MouseButton(1)
+        self.middle = MouseButton(2)
+        self.right = MouseButton(3)
 
-        self.left_held = 0
-        self.middle_held = 0
-        self.right_held = 0
+    def __getitem__(self, button):
+        try:
+            return MouseButton.all[button]
+        except KeyError:
+            print(f"Generating MouseButton({button}) instance.")
+            return MouseButton(button)
 
     @staticmethod
-    def get_mouse_state():
-        return pygame.mouse.get_pressed(num_buttons=3)
-
-    def reset_buttons(self):
-        self.left = 0
-        self.middle = 0
-        self.right = 0
+    def reset_buttons():
+        for button in MouseButton.all.values():
+            button.just_pressed = False
+            button.just_released = False
 
     def update_coordinates(self):
+        """Update the stored x and y coordinates of the mouse."""
         self.x, self.y = pygame.mouse.get_pos()
 
-    def process_button_down(self):
+    def process_button_down(self, mouse_button_down_event):
         """Process a pygame.MOUSEBUTTONDOWN event."""
-        self.left_held, self.middle_held, self.right_held = self.get_mouse_state()
+        self[mouse_button_down_event.button].down()
 
-    def process_button_up(self):
+    def process_button_up(self, mouse_button_up_event):
         """Process a pygame.MOUSEBUTTONUP event."""
-        mouse_state = self.get_mouse_state()
-        if self.left_held and not mouse_state[0]:
-            self.left = 1
-            self.left_held = 0
-        if self.middle_held and not mouse_state[1]:
-            self.middle = 1
-            self.middle_held = 0
-        if self.right_held and not mouse_state[2]:
-            self.right = 1
-            self.right_held = 0
+        self[mouse_button_up_event.button].up()
 
     def is_in(self, start_x, start_y, end_x, end_y):
+        """Return whether or not the mouse curosr is within the given boundaries."""
         return start_x < self.x < end_x and start_y < self.y < end_y

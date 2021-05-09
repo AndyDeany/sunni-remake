@@ -70,11 +70,11 @@ class Options:
         Text(f"Volume Level: {self.session.music.volume}%", Font.OPENING, Color.MILD_BLUE).display(80, 250)
         if self.session.music.volume > 0:
             self.VOLUME_MINUS_BUTTON.display(430, 250)
-            if self.session.mouse.left_held and self.session.mouse.is_in(430, 250, 480, 300):
+            if self.session.mouse.left.is_pressed and self.session.mouse.is_in(430, 250, 480, 300):
                 self.session.music.volume -= 1
         if self.session.music.volume < 100:
             self.VOLUME_PLUS_BUTTON.display(490, 250)
-            if self.session.mouse.left_held and self.session.mouse.is_in(490, 250, 540, 300):
+            if self.session.mouse.left.is_pressed and self.session.mouse.is_in(490, 250, 540, 300):
                 self.session.music.volume += 1
         if self.session.music.is_muted:
             self.VOLUME_MUTE_BUTTON.display(570, 250)

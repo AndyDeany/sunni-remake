@@ -2,10 +2,10 @@ import pygame
 
 
 class Key:
+    """Class for representing a key on the keyboard."""
 
     all = {}
 
-    """Class for representing a key on the keyboard."""
     def __init__(self, keycode):
         self.keycode = keycode
         self.just_pressed = False
@@ -19,7 +19,7 @@ class Key:
         self.just_pressed = True
         self.is_pressed = True
 
-    def up(self):   # pylint: disable=invalid-name
+    def up(self):
         self.is_pressed = False
 
 
@@ -52,12 +52,17 @@ class Keys:
             key.just_pressed = False
 
     def start_text_input(self, maximum_characters, *, default_text=""):
+        """Start receiving text input. Be sure to call stop_text_input() after you're done."""
         self.receiving_text_input = True
         self.text_input = default_text
         self.maximum_characters = maximum_characters
         pygame.key.start_text_input()
 
     def process_text_input(self, text_input_event):
+        """Process the receiving of text input whilst it's actively being received.
+
+        This will be after calling start_text_input() and before calling stop_text_input().
+        """
         new_text = self.text_input + text_input_event.text
         if len(new_text) <= self.maximum_characters:
             self.text_input = new_text
@@ -76,7 +81,9 @@ class Keys:
         return self.text_input
 
     def process_key_down(self, key_down_event):
+        """Process a pygame.KEYDOWN event."""
         self[key_down_event.key].down()
 
     def process_key_up(self, key_up_event):
+        """Process a pygame.KEYUP event."""
         self[key_up_event.key].up()

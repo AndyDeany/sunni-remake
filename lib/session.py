@@ -66,9 +66,9 @@ class Session:
             elif event.type == pygame.TEXTINPUT:
                 self.keys.process_text_input(event)
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                self.mouse.process_button_down()
+                self.mouse.process_button_down(event)
             elif event.type == pygame.MOUSEBUTTONUP:
-                self.mouse.process_button_up()
+                self.mouse.process_button_up(event)
             elif event.type == pygame.KEYDOWN:
                 self.keys.process_key_down(event)
                 self.keys.process_text_input_special_keys()
