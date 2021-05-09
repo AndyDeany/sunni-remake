@@ -1,5 +1,3 @@
-import math
-
 import pygame
 
 from lib.color import Color

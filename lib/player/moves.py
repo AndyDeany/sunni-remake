@@ -53,10 +53,11 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
         self.icon_faded = None
         self._info = pygame.Surface((self.INFO_WIDTH, self.INFO_HEIGHT)).convert_alpha()
 
+        info_desc_height = self.INFO_HEIGHT - self.INFO_TITLE_HEIGHT
         pygame.draw.rect(self._info, Color.LIGHT_GREY, [0, 0, self.INFO_WIDTH, self.INFO_TITLE_HEIGHT])
-        pygame.draw.rect(self._info, Color.DARK_GREY, [0, self.INFO_TITLE_HEIGHT, self.INFO_WIDTH, self.INFO_HEIGHT - self.INFO_TITLE_HEIGHT])
+        pygame.draw.rect(self._info, Color.DARK_GREY, [0, self.INFO_TITLE_HEIGHT, self.INFO_WIDTH, info_desc_height])
         pygame.draw.rect(self._info, Color.BLACK, [0, 0, self.INFO_WIDTH, self.INFO_TITLE_HEIGHT], 1)
-        pygame.draw.rect(self._info, Color.BLACK, [0, self.INFO_TITLE_HEIGHT, self.INFO_WIDTH, self.INFO_HEIGHT - self.INFO_TITLE_HEIGHT], 1)
+        pygame.draw.rect(self._info, Color.BLACK, [0, self.INFO_TITLE_HEIGHT, self.INFO_WIDTH, info_desc_height], 1)
 
         name_lines = wrap_text(self.MOVE_NAME, Font.MOVE_INFO_BIG, self.INFO_WIDTH - 16)
         name_height = sum((Font.MOVE_INFO_BIG.size(line)[1] for line in name_lines))
@@ -64,7 +65,8 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
         y = (self.INFO_TITLE_HEIGHT - name_height)//2
         for index, line in enumerate(name_lines):
             text = Text(line, Font.MOVE_INFO_BIG, self.MOVE_NAME_COLOR, with_outline=True)
-            text.display((self.INFO_WIDTH - Font.MOVE_INFO_BIG.size(line)[0])//2, y + index*line_height, screen=self._info)
+            x = (self.INFO_WIDTH - Font.MOVE_INFO_BIG.size(line)[0]) // 2
+            text.display(x, y + index*line_height, screen=self._info)
 
         mana_cost_string = f"{self.mana_cost} Mana" if self.mana_cost > 0 else "No Cost"
         text = Text(mana_cost_string, Font.MOVE_INFO_BIG, Color.MANA_COST_BLUE, with_outline=True)
@@ -96,6 +98,12 @@ class Kick(PlayerMove):
     MOVE_NAME = "Courageous Kick"
     MOVE_DESCRIPTION = "Sunni darts forward, kicking his opponent courageously for 8-12 damage.\n\nRestores 10 mana."
 
+    START_X = 150
+    SOUND_X = 750
+    END_X = 870
+    FORWARD_STEP = 24
+    BACKWARD_STEP = 36
+
     def __init__(self):
         super().__init__(-10)
         self.icon = Image("player/kick_move_icon_solid.png")
@@ -104,31 +112,26 @@ class Kick(PlayerMove):
         self.sound = Audio("player/character_attack1.ogg")
 
         self.advancing = True
-        self.start_x = 150
-        self.sound_x = 750
-        self.end_x = 870
-        self.forward_step = 24
-        self.backward_step = 36
         self.tilted_left = True
 
     def run(self):
         self.opponent.display()
         if self.advancing:
-            if self.user.x <= self.end_x:
+            if self.user.x <= self.END_X:
                 image = self.user.character_tilt_left if self.tilted_left else self.user.character_tilt_right
                 self.tilted_left = not self.tilted_left
                 image.display(self.user.x, self.user.y)
-                self.user.x += self.forward_step
-                if self.user.x == self.sound_x:
+                self.user.x += self.FORWARD_STEP
+                if self.user.x == self.SOUND_X:
                     self.play_sound()
-                if self.user.x == self.end_x:
+                if self.user.x == self.END_X:
                     self.opponent.damage(random.randint(8, 12))
-                    self.user.x -= self.backward_step
+                    self.user.x -= self.BACKWARD_STEP
                     self.advancing = False
         else:
             self.user.idle_animation(self.user.x, self.user.y)
-            if self.user.x > self.start_x:
-                self.user.x -= self.backward_step
+            if self.user.x > self.START_X:
+                self.user.x -= self.BACKWARD_STEP
             else:   # Reset variables for next time
                 self.advancing = True
                 self.opponent.next_move()
@@ -140,6 +143,12 @@ class Headbutt(PlayerMove):
     MOVE_NAME = "Heroic Headbutt"
     MOVE_DESCRIPTION = "Sunni charges forward, heroically headbutting his opponent for 10-20 damage."
 
+    START_X = 150
+    SOUND_X = 750
+    END_X = 870
+    FORWARD_STEP = 24
+    BACKWARD_STEP = 36
+
     def __init__(self):
         super().__init__(20)
         self.icon = Image("player/headbutt_move_icon_solid.png")
@@ -148,19 +157,14 @@ class Headbutt(PlayerMove):
         self.sound = Audio("player/character_attack1.ogg")
 
         self.advancing = True
-        self.start_x = 150
-        self.sound_x = 750
-        self.end_x = 870
-        self.forward_step = 24
-        self.backward_step = 36
 
     def run(self):
         self.opponent.display()
         if self.advancing:
-            if self.user.x < self.end_x:
+            if self.user.x < self.END_X:
                 self.user.character_headbutt_stance.display(self.user.x, self.user.y)
-                self.user.x += self.forward_step
-                if self.user.x == self.sound_x:
+                self.user.x += self.FORWARD_STEP
+                if self.user.x == self.SOUND_X:
                     self.play_sound()
             else:
                 self.opponent.damage(random.randint(10, 20))
@@ -168,8 +172,8 @@ class Headbutt(PlayerMove):
 
         if not self.advancing:
             self.user.idle_animation(self.user.x, self.user.y)
-            if self.user.x > self.start_x:
-                self.user.x -= self.backward_step
+            if self.user.x > self.START_X:
+                self.user.x -= self.BACKWARD_STEP
             else:   # Reset variables for next time
                 self.advancing = True
                 self.opponent.next_move()

@@ -1,6 +1,3 @@
-import time
-
-
 from lib.pages import Page
 from lib.color import Color
 from lib.font import Font
