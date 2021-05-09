@@ -34,8 +34,8 @@ class Battle(Page):
     def run(self):
         """Runs the code for execution of the battle with the opponent."""
         self._show_background()
+        self.current.run()
         if self.current == self.CHOOSE_CHARACTER:
-            self.current.run()
             return
 
         self.player.display_info()
@@ -44,8 +44,6 @@ class Battle(Page):
         self.game.OPTIONS_BUTTON.display(10, 665)
         if self.game.keys.escape or (self.game.mouse.left and self.game.mouse.is_in(10, 665, 100, 715)):
             self.game.options.show()
-
-        self.current.run()
 
         self.player.display_stat_change()
         self.opponent.display_stat_change()
