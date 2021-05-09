@@ -36,22 +36,6 @@ def wrap_text(text, font, max_width):
     return lines
 
 
-def display_with_outline(string, font, color, x, y, surface):
-    """Display the given string  with an outline.
-
-    The string will be displayed in the given font and colour,
-    and at the given coordinates on the given Surface.
-    """
-    text = Text(string, font, color)
-    text_outline = Text(string, font, Color.BLACK)  # (0, 0, 0, 127))
-    text_outline.display(x - 1, y - 1, screen=surface)
-    text_outline.display(x - 1, y + 1, screen=surface)
-    text_outline.display(x + 1, y - 1, screen=surface)
-    text_outline.display(x + 1, y + 1, screen=surface)
-    text.display(x, y, screen=surface)
-
-
-
 class PlayerMove(Move):     # noqa pylint: disable=abstract-method
     """Class for representing one of the player's moves."""
 
@@ -79,19 +63,20 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
         line_height = Font.MOVE_INFO_BIG.get_height()
         y = (self.INFO_TITLE_HEIGHT - name_height)//2
         for index, line in enumerate(name_lines):
-            display_with_outline(line, Font.MOVE_INFO_BIG, self.MOVE_NAME_COLOR, (self.INFO_WIDTH - Font.MOVE_INFO_BIG.size(line)[0])//2, y + index*line_height, self._info)
+            text = Text(line, Font.MOVE_INFO_BIG, self.MOVE_NAME_COLOR, with_outline=True)
+            text.display((self.INFO_WIDTH - Font.MOVE_INFO_BIG.size(line)[0])//2, y + index*line_height, screen=self._info)
 
         mana_cost_string = f"{self.mana_cost} Mana" if self.mana_cost > 0 else "No Cost"
-        x = 8
-        y = self.INFO_TITLE_HEIGHT + 8
-        display_with_outline(mana_cost_string, Font.MOVE_INFO_BIG, Color.MANA_COST_BLUE, x, y, self._info)
+        text = Text(mana_cost_string, Font.MOVE_INFO_BIG, Color.MANA_COST_BLUE, with_outline=True)
+        text.display(8, self.INFO_TITLE_HEIGHT + 8, screen=self._info)
 
         description_lines = wrap_text(self.MOVE_DESCRIPTION, Font.MOVE_INFO_SMALL, self.INFO_WIDTH - 16)
         line_height = Font.MOVE_INFO_SMALL.get_height()
         x = 8
         y = self.INFO_TITLE_HEIGHT + 8 + Font.MOVE_INFO_BIG.get_height() + 10
         for index, line in enumerate(description_lines):
-            display_with_outline(line, Font.MOVE_INFO_SMALL, Color.DESCRIPTION_ORANGE, x, y + index*line_height, self._info)
+            text = Text(line, Font.MOVE_INFO_SMALL, Color.DESCRIPTION_ORANGE, with_outline=True)
+            text.display(x, y + index*line_height, screen=self._info)
 
     @property
     def user(self):
