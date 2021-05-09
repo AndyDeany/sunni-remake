@@ -2,7 +2,7 @@ from collections import namedtuple
 
 from lib.image import Image
 from lib.character import Character, NotEnoughManaError
-from .moves import Kick, Headbutt, Frostbeam, Heal
+from lib.player.moves import Kick, Headbutt, Frostbeam, Heal
 
 
 class Player(Character):

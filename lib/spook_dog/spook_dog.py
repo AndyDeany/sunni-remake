@@ -4,7 +4,7 @@ from collections import namedtuple
 from lib.opponent import Opponent
 from lib.image import Image
 from lib.opponent.moves import OpponentHeal
-from .moves import Teleport, Glide, Claw
+from lib.spook_dog.moves import Teleport, Glide, Claw
 
 
 class SpookDog(Opponent):

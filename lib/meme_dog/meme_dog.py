@@ -4,7 +4,7 @@ from collections import namedtuple
 from lib.opponent import Opponent
 from lib.image import Image
 from lib.opponent.moves import OpponentHeal
-from .moves import Bark, Bite, Spin
+from lib.meme_dog.moves import Bark, Bite, Spin
 
 
 class MemeDog(Opponent):

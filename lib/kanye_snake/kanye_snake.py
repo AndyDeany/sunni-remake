@@ -4,7 +4,7 @@ from collections import namedtuple
 from lib.opponent import Opponent
 from lib.image import Image
 from lib.opponent.moves import OpponentHeal
-from .moves import Confuse, Venom, Laser
+from lib.kanye_snake.moves import Confuse, Venom, Laser
 
 
 class KanyeSnake(Opponent):
