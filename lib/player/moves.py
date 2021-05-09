@@ -1,18 +1,97 @@
 """Module containing the player's moves."""
 import random
+import re
+
+import pygame
 
 from lib.moves import Move
-from lib.image import Image
+from lib.image import Image, Text
 from lib.music import Audio
+from lib.color import Color
+from lib.font import Font
+
+
+def wrap_text(text, font, max_width):
+    lines = []
+    if not text:
+        return lines
+    words = re.findall(r"\S+|\n", text)
+    line = ""
+    while words:
+        next_word = words[0]
+        if next_word == "\n":
+            words.pop(0)
+            lines.append(line)
+            line = ""
+            continue
+        width = font.size(" ".join((line, next_word)))[0]
+        if width <= max_width:
+            if line:
+                line += " "
+            line += words.pop(0)
+        else:
+            lines.append(line)
+            line = ""
+    lines.append(line)
+    return lines
+
+
+def display_with_outline(string, font, color, x, y, surface):
+    """Display the given string  with an outline.
+
+    The string will be displayed in the given font and colour,
+    and at the given coordinates on the given Surface.
+    """
+    text = Text(string, font, color)
+    text_outline = Text(string, font, Color.BLACK)  # (0, 0, 0, 127))
+    text_outline.display(x - 1, y - 1, screen=surface)
+    text_outline.display(x - 1, y + 1, screen=surface)
+    text_outline.display(x + 1, y - 1, screen=surface)
+    text_outline.display(x + 1, y + 1, screen=surface)
+    text.display(x, y, screen=surface)
+
 
 
 class PlayerMove(Move):     # noqa pylint: disable=abstract-method
     """Class for representing one of the player's moves."""
+
+    INFO_WIDTH = 200
+    INFO_HEIGHT = 250
+    INFO_TITLE_HEIGHT = 54
+
+    MOVE_NAME = "PlayerMove"
+    MOVE_DESCRIPTION = "PlayerMove description."
+    MOVE_NAME_COLOR = Color.MOVE_NAME_RED
+
     def __init__(self, mana_cost):
         super().__init__(mana_cost)
         self.icon = None
         self.icon_faded = None
-        self.info = None
+        self._info = pygame.Surface((self.INFO_WIDTH, self.INFO_HEIGHT)).convert_alpha()
+
+        pygame.draw.rect(self._info, Color.LIGHT_GREY, [0, 0, self.INFO_WIDTH, self.INFO_TITLE_HEIGHT])
+        pygame.draw.rect(self._info, Color.DARK_GREY, [0, self.INFO_TITLE_HEIGHT, self.INFO_WIDTH, self.INFO_HEIGHT - self.INFO_TITLE_HEIGHT])
+        pygame.draw.rect(self._info, Color.BLACK, [0, 0, self.INFO_WIDTH, self.INFO_TITLE_HEIGHT], 1)
+        pygame.draw.rect(self._info, Color.BLACK, [0, self.INFO_TITLE_HEIGHT, self.INFO_WIDTH, self.INFO_HEIGHT - self.INFO_TITLE_HEIGHT], 1)
+
+        name_lines = wrap_text(self.MOVE_NAME, Font.MOVE_INFO_BIG, self.INFO_WIDTH - 16)
+        name_height = sum((Font.MOVE_INFO_BIG.size(line)[1] for line in name_lines))
+        line_height = Font.MOVE_INFO_BIG.get_height()
+        y = (self.INFO_TITLE_HEIGHT - name_height)//2
+        for index, line in enumerate(name_lines):
+            display_with_outline(line, Font.MOVE_INFO_BIG, self.MOVE_NAME_COLOR, (self.INFO_WIDTH - Font.MOVE_INFO_BIG.size(line)[0])//2, y + index*line_height, self._info)
+
+        mana_cost_string = f"{self.mana_cost} Mana" if self.mana_cost > 0 else "No Cost"
+        x = 8
+        y = self.INFO_TITLE_HEIGHT + 8
+        display_with_outline(mana_cost_string, Font.MOVE_INFO_BIG, Color.MANA_COST_BLUE, x, y, self._info)
+
+        description_lines = wrap_text(self.MOVE_DESCRIPTION, Font.MOVE_INFO_SMALL, self.INFO_WIDTH - 16)
+        line_height = Font.MOVE_INFO_SMALL.get_height()
+        x = 8
+        y = self.INFO_TITLE_HEIGHT + 8 + Font.MOVE_INFO_BIG.get_height() + 10
+        for index, line in enumerate(description_lines):
+            display_with_outline(line, Font.MOVE_INFO_SMALL, Color.DESCRIPTION_ORANGE, x, y + index*line_height, self._info)
 
     @property
     def user(self):
@@ -22,9 +101,16 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
     def opponent(self):
         return self.game.opponent
 
+    def display_info(self, x, y):
+        self.game.screen.blit(self._info, (x, y))
+
 
 class Kick(PlayerMove):
     """Class for representing the player's kick move."""
+
+    MOVE_NAME = "Courageous Kick"
+    MOVE_DESCRIPTION = "Sunni darts forward, kicking his opponent courageously for 8-12 damage.\n\nRestores 10 mana."
+
     def __init__(self):
         super().__init__(-10)
         self.icon = Image("player/kick_move_icon_solid.png")
@@ -65,6 +151,10 @@ class Kick(PlayerMove):
 
 class Headbutt(PlayerMove):
     """Class for representing the player's headbutt move."""
+
+    MOVE_NAME = "Heroic Headbutt"
+    MOVE_DESCRIPTION = "Sunni charges forward, heroically headbutting his opponent for 10-20 damage."
+
     def __init__(self):
         super().__init__(20)
         self.icon = Image("player/headbutt_move_icon_solid.png")
@@ -102,6 +192,11 @@ class Headbutt(PlayerMove):
 
 class Frostbeam(PlayerMove):
     """Class for representing the player's frostbeam move."""
+
+    MOVE_NAME = "Frostbeam"
+    MOVE_DESCRIPTION = ("Sunni calls upon the power of ice, summoning a beam of frozen energy and "
+                        "firing it directly at his opponent, dealing 15-30 damage.")
+
     def __init__(self):
         super().__init__(30)
         self.icon = Image("player/frostbeam_move_icon_solid.png")
@@ -135,6 +230,11 @@ class Frostbeam(PlayerMove):
 
 class Heal(PlayerMove):
     """Class for representing the player's heal move."""
+
+    MOVE_NAME = "Harmonious Healing"
+    MOVE_DESCRIPTION = "Sunni calls forth nature's heart, healing 5-15 hit points."
+    MOVE_NAME_COLOR = Color.MOVE_NAME_GREEN
+
     def __init__(self, heart_x, start_y, end_y):
         super().__init__(10)
         self.icon = Image("player/heal_move_icon_solid.png")

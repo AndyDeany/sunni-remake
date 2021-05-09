@@ -10,3 +10,6 @@ class Font:     # pylint: disable=too-few-public-methods
     OPENING = pygame.font.SysFont("Arial Black", 30, False, False)
     DEFAULT = pygame.font.SysFont("Impact", 20, False, False)
     SUNNI = pygame.font.SysFont("Candara", 40, False, False)
+
+    MOVE_INFO_BIG = pygame.font.SysFont("Franklin Gothic", 30, False, False)
+    MOVE_INFO_SMALL = pygame.font.SysFont("Franklin Gothic", 24, False, False)

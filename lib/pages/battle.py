@@ -105,7 +105,7 @@ class Battle(Page):
                 icon_x = first_icon_x + icon_offset * index
                 move.icon.display(icon_x, icon_y)
                 if self.game.mouse.is_in(icon_x, icon_y, icon_x + icon_width, icon_y + icon_height):
-                    move.info.display(info_x, 130)
+                    move.display_info(info_x, 130)
                     if self.game.mouse.left:
                         self.player.use_move(move)
 
