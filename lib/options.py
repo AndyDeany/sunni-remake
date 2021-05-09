@@ -24,7 +24,6 @@ class Options:
 
     def __init__(self, session, window_size):
         self.session = session
-        self.just_selected = False
         self.is_showing = False
 
         self.fullscreen_enabled = False
@@ -33,19 +32,18 @@ class Options:
         self.frozen_game = None
 
     def show(self):
-        self.just_selected = True
+        """Show the options menu."""
+        self.frozen_game = pygame.display.get_surface().copy()
         self.is_showing = True
         self.session.music.pause_sounds()
 
     def hide(self):
+        """Hide the options menu."""
         self.is_showing = False
         self.session.music.unpause_sounds()
 
     def display(self):
-        if self.just_selected:
-            self.just_selected = False
-            self.frozen_game = pygame.display.get_surface().copy()
-            return
+        """Run the code for displaying the options menu on the screen."""
         self.session.screen.blit(self.frozen_game, (0, 0))
 
         self.VOLUME_MINUS_BUTTON.display(430, 250)
@@ -62,7 +60,7 @@ class Options:
         if not isinstance(self.session.game.page, MainMenu):
             self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
             if self.session.mouse.left and self.session.mouse.is_in(1082, 665, 1270, 715):
-                self.session.game.save()  # TODO: Ask the player which save file they want to use?
+                self.session.game.save()
                 self.session.game.go_to_main_menu()
                 self.hide()
 
