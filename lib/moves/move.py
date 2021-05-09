@@ -1,5 +1,5 @@
 """Module for base universal move related classes and functions."""
-from lib.pages.battle.states import BattleState
+from lib.pages.battle.states.battle_state import BattleState
 
 
 class Move(BattleState):    # noqa pylint: disable=abstract-method

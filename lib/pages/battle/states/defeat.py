@@ -1,4 +1,4 @@
-from lib.pages.battle.states import BattleState
+from lib.pages.battle.states.battle_state import BattleState
 
 
 class Defeat(BattleState):

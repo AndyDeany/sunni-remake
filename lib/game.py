@@ -16,7 +16,7 @@ from lib.meme_dog import MemeDog
 from lib.kanye_snake import KanyeSnake
 from lib.spook_dog import SpookDog
 from lib.evil_cloud import EvilCloud
-from lib.pages.battle.states import BattleState
+from lib.pages.battle.states.battle_state import BattleState
 from lib.pages.battle.states import ChooseCharacter
 
 

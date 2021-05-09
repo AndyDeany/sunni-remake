@@ -2,7 +2,7 @@ from lib.pages import Page
 from lib.image import Image, Text
 from lib.font import Font
 from lib.color import Color
-from .states import ChooseCharacter, ChooseAbility, Victory, Defeat
+from lib.pages.battle.states import ChooseCharacter, ChooseAbility, Victory, Defeat
 
 
 class Battle(Page):
