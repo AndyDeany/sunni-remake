@@ -7,6 +7,7 @@ from lib.pages.main_menu import MainMenu
 
 
 class Options:
+    """Class for representing the options menu in the game (and storing the game's options)."""
 
     @classmethod
     def initialise(cls):
