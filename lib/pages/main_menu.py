@@ -6,6 +6,7 @@ from lib.music import Audio
 
 
 class MainMenu(Page):
+    """Class for representing the main menu of the game."""
 
     @classmethod
     def initialise(cls):

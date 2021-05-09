@@ -3,6 +3,10 @@ from lib.image import Image
 
 
 class SavePage(Page):   # noqa pylint: disable=abstract-method
+    """Class for representing a "Save Page" - a page where saves are interacted with.
+
+    Intended to be subclassed - instances of this class should not be created.
+    """
 
     @classmethod
     def initialise(cls):

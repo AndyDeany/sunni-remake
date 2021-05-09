@@ -103,11 +103,11 @@ class Game:
         self.selected_save.save(self.player.name, self.player.level, opponent.name, self.player.character)
 
     def select_save(self, save):
-        """Sets the save with the given number as the selected save."""
+        """Set the save with the given number as the selected save."""
         self.selected_save = save
 
     def display_save_names(self):
-        """Displays all save names (for showing on the saves page)."""
+        """Display all save names (for showing on the saves page)."""
         for save in self.saves:
             save.display_name()
 
@@ -118,7 +118,7 @@ class Game:
         self.commence_next_battle()
 
     def load_next_battle(self, name=None):
-        """Load the next battle (it will not actually begin until you call commence_next_battle().)"""
+        """Load the next battle (it will not actually begin until you call commence_next_battle())."""
         if name is None:
             opponent_names = list(self.opponents.keys())
             name = opponent_names[opponent_names.index(self.opponent.name) + 1]

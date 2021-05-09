@@ -14,6 +14,7 @@ class SpookDogMove(OpponentMove):     # noqa pylint: disable=abstract-method
 
 class Teleport(SpookDogMove):
     """Class for representing the Teleport move."""
+
     def __init__(self):
         super().__init__(-10)
         self.sound = Audio("spook_dog/ghost_dog_teleport.ogg")
@@ -85,6 +86,7 @@ class Glide(SpookDogMove):
 
 class Claw(SpookDogMove):
     """Class for representing the Claw move."""
+
     def __init__(self):
         super().__init__(50)
         self.sound = Audio("spook_dog/ghost_dog_claw.ogg")

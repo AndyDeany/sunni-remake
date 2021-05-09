@@ -9,6 +9,7 @@ from lib.spook_dog.moves import Teleport, Glide, Claw
 
 class SpookDog(Opponent):
     """Class representing the Spook Dog opponent."""
+
     def __init__(self, game, max_hp=200, max_mana=150):
         super().__init__(game, "Spook Dog", max_hp, max_mana)
         self.x = 930

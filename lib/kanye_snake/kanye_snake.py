@@ -9,6 +9,7 @@ from lib.kanye_snake.moves import Confuse, Venom, Laser
 
 class KanyeSnake(Opponent):
     """Class representing the Kanye Snake opponent."""
+
     def __init__(self, game, max_hp=120, max_mana=120):
         super().__init__(game, "Kanye Snake", max_hp, max_mana)
         self.x = 930

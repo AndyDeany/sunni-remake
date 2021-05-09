@@ -32,7 +32,7 @@ class Battle(Page):
             self.current = self.CHOOSE_ABILITY
 
     def run(self):
-        """Runs the code for execution of the battle with the opponent."""
+        """Run the code for execution of the battle with the opponent."""
         self._show_background()
         self.current.run()
         if self.current == self.CHOOSE_CHARACTER:

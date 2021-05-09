@@ -13,7 +13,7 @@ class Character:
 
     @classmethod
     def initialise(cls):
-        """Initialises class variables. Can only be called after a screen has been created."""
+        """Initialise class variables. Can only be called after a screen has been created."""
         cls.HEALTH_ICON = Image("health_icon.png")
         cls.MANA_ICON = Image("mana_icon.png")
 
@@ -135,7 +135,7 @@ class Character:
         self.display_stat_y = self.display_stat_y_start
 
     def fully_restore(self):
-        """Restores the character to full hp and mana."""
+        """Restore the character to full hp and mana."""
         self.current_hp = self.max_hp
         self.current_mana = self.max_mana
 
@@ -198,5 +198,6 @@ class Character:
 
 class NotEnoughManaError(Exception):
     """Exception to be raised when the player attempts to use a move they don't have enough mana for."""
+
     def __init__(self, move=None):
         super().__init__(f"Not enough mana to use '{move}'.")

@@ -61,6 +61,7 @@ class Confuse(KanyeSnakeMove):
 
 class BeamMove(KanyeSnakeMove):
     """Base class for Kanye's beam move (since he has two)."""
+
     def __init__(self, mana_cost, min_damage, max_damage):
         super().__init__(mana_cost)
         self.beam = None
@@ -96,6 +97,7 @@ class BeamMove(KanyeSnakeMove):
 
 class Venom(BeamMove):
     """Class for representing the Venom move."""
+
     def __init__(self):
         super().__init__(20, 15, 25)
         self.sound = Audio("kanye_snake/snake_venom.ogg", 0.5)
@@ -108,6 +110,7 @@ class Venom(BeamMove):
 
 class Laser(BeamMove):
     """Class for representing the Laser move."""
+
     def __init__(self):
         super().__init__(40, 10, 40)
         self.sound = Audio("kanye_snake/snake_laser.ogg", 0.5)

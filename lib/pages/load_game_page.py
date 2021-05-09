@@ -2,6 +2,7 @@ from lib.pages.save_page import SavePage
 
 
 class LoadGamePage(SavePage):
+    """Class for representing the page for loading a previous save."""
 
     def run(self):
         super().run()

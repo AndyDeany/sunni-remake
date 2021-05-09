@@ -48,6 +48,7 @@ class Player(Character):
 
     def level_up(self, levels=1.0, restore=True):
         """Level the player up by the given number of levels (default 1).
+
         Restores the player to full if they pass an integer level and `restore==True` (default).
         """
         old_level = self.level

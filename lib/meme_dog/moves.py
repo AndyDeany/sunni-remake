@@ -7,6 +7,7 @@ from lib.music import Audio
 
 class MemeDogMove(OpponentMove):    # noqa pylint: disable=abstract-method
     """Class for representing one of Meme Dog's moves."""
+
     def __init__(self, mana_cost):
         super().__init__(mana_cost)
         self.sounds = [Audio(f"meme_dog/dog_attack{n}.ogg") for n in range(1, 4)]
@@ -18,6 +19,7 @@ class MemeDogMove(OpponentMove):    # noqa pylint: disable=abstract-method
 
 class Bark(MemeDogMove):
     """Class for representing the Bark move."""
+
     def __init__(self):
         super().__init__(-10)
         self.duration = 0
@@ -42,6 +44,7 @@ class Bark(MemeDogMove):
 
 class Bite(MemeDogMove):
     """Class for representing the Bite move."""
+
     FORWARD_STEP = 24
     BACKWARD_STEP = 42
 
@@ -77,6 +80,7 @@ class Bite(MemeDogMove):
 
 class Spin(MemeDogMove):
     """Class for representing the Spin move."""
+
     FORWARD_STEP = 25
     BACKWARD_STEP = 30
 

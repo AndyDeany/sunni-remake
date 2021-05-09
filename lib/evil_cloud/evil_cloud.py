@@ -7,6 +7,7 @@ from lib.opponent.moves import OpponentHeal
 
 class EvilCloud(Opponent):
     """Class representing the Evil Cloud opponent."""
+
     def __init__(self, game, max_hp=180, max_mana=300):
         super().__init__(game, "Evil Cloud", max_hp, max_mana)
         self.x = 930

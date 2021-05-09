@@ -4,7 +4,7 @@ import pygame
 
 
 def pygame_volume(volume):
-    """Converts the given volume to one that can be fed to pygame.mixer's set_volume() method."""
+    """Convert the given volume to one that can be fed to pygame.mixer's set_volume() method."""
     volume *= 0.01  # Adjusting from percentage
     if 0.0005 < volume < 0.0078125:
         volume = 0.0078125  # pygame's min volume. This stops it going silent when volume is low but not muted.
@@ -13,6 +13,7 @@ def pygame_volume(volume):
 
 class Audio:
     """Class for representing and containing an audio clip."""
+
     def __init__(self, file_name, volume_multiplier=1.0, *, load_async=True):
         self.path = f"../audio/{file_name}"
         if load_async:
@@ -44,6 +45,7 @@ class Audio:
 
 class Music:
     """Class for controlling audio playback in the game."""
+
     def __init__(self):
         self._volume = 100
         self.is_muted = False
@@ -123,7 +125,7 @@ class Music:
         self.set_unmuted_pygame_volume()
 
     def toggle_mute(self):
-        """Enables mute if it's off, disables it if it's on."""
+        """Enable mute if it's off, disable it if it's on."""
         if self.is_muted:
             self.unmute()
         else:

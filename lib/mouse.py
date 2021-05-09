@@ -29,6 +29,7 @@ class MouseButton:
 
 class Mouse:
     """Class for representing the user's mouse."""
+
     def __init__(self):
         self.x = 0
         self.y = 0

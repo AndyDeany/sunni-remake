@@ -32,6 +32,7 @@ class Image(Surface):
 
 class Text(Surface):
     """Class for representing a generated text image."""
+
     def __init__(self, text, font, color, default_coords: tuple = (None, None), *,
                  antialias=True, with_outline=False, outline_color=Color.BLACK):
         super().__init__(default_coords)
