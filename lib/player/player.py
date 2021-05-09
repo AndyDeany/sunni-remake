@@ -8,13 +8,6 @@ from .moves import Kick, Headbutt, Frostbeam, Heal
 class Player(Character):
     """Class representing the Player (the character controlled by the user)."""
 
-    CHARACTER_1 = "character1"
-    CHARACTER_2 = "character2"
-
-    CHOOSE_CHARACTER = "choose character"
-    CHOOSE_ABILITY = "choose ability"
-    DEAD = "player dead"
-
     INFO_X = 10
 
     def __init__(self, game, name="Sunni", character=None, *, level=1):
@@ -81,11 +74,11 @@ class Player(Character):
     def next_move(self):
         """Continues to find out the player's next move."""
         if self.is_dead:
-            self.game.page.current = self.DEAD
+            self.game.page.current = self.game.page.DEFEAT
             self.level_up(0.25, restore=False)
             self.game.save()
             return
-        self.game.page.current = self.CHOOSE_ABILITY
+        self.game.page.current = self.game.page.CHOOSE_ABILITY
 
     def _idle_display(self):
         self.idle_animation(self.x, self.y)

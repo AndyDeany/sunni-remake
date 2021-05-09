@@ -16,7 +16,8 @@ from lib.meme_dog import MemeDog
 from lib.kanye_snake import KanyeSnake
 from lib.spook_dog import SpookDog
 from lib.evil_cloud import EvilCloud
-from lib.moves import Move
+from lib.pages.battle.states import BattleState
+from lib.pages.battle.states import ChooseCharacter
 
 
 class Game:
@@ -46,7 +47,8 @@ class Game:
         NewGamePage.initialise()
         LoadGamePage.initialise()
         Options.initialise()
-        Move.initialise(self)
+        BattleState.initialise(self)
+        ChooseCharacter.initialise(self)
         Character.initialise()
         Player.initialise()
         MainMenu.initialise()

@@ -1,12 +1,9 @@
 """Module for base universal move related classes and functions."""
+from lib.pages.battle.states import BattleState
 
 
-class Move:
+class Move(BattleState):    # noqa
     """Class representing a character's move."""
-
-    @classmethod
-    def initialise(cls, game):
-        cls.game = game
 
     def __init__(self, mana_cost):
         self._sound = None
@@ -22,9 +19,6 @@ class Move:
     @sound.setter
     def sound(self, value):
         self._sound = value
-
-    def run(self):
-        raise NotImplementedError(f"{type(self)}.run() not implemented.")
 
 
 def opponent_move(player_move_subclass):
