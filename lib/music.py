@@ -56,15 +56,13 @@ class Music:
     def play_music(self, audio: Audio):
         """Play the given song on loop. Mainly for BGM purposes."""
         self.stop_music()
-        if not self.is_muted:
-            audio.set_volume(self.volume)
+        audio.set_volume(0 if self.is_muted else self.volume)
         audio.play(self.music_channel, loop=True, fade=True)
         self.current_music = audio
 
     def play_sound(self, audio: Audio):
         """Play the given sound once. Mainly for short sounds effects."""
-        if not self.is_muted:
-            audio.set_volume(self.volume)
+        audio.set_volume(0 if self.is_muted else self.volume)
         audio.play(self.sound_channel, loop=False, fade=False)
         self.current_sound = audio
 
