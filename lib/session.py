@@ -22,7 +22,7 @@ class Session:
     def __init__(self):
         pygame.init()
         window_size = (1280, 720)
-        self.screen = pygame.display.set_mode(window_size)
+        self.screen = pygame.display.set_mode(window_size, flags=pygame.SCALED)
         self.icon = Image("game_icon.png")
         self.caption = "Sunni (Alpha 3.0.0)"
         self.fps = 30

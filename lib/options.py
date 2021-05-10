@@ -83,10 +83,15 @@ class Options:
         if not self.fullscreen_enabled:
             self.WINDOWED_BUTTON.display(80, 350)
             if self.session.mouse.left and self.session.mouse.is_in(250, 350, 390, 400):
-                pygame.display.toggle_fullscreen()
+                self.toggle_fullscreen()
                 self.fullscreen_enabled = True
         else:
             self.FULLSCREEN_BUTTON.display(250, 350)
             if self.session.mouse.left and self.session.mouse.is_in(80, 350, 220, 400):
-                pygame.display.toggle_fullscreen()
+                self.toggle_fullscreen()
                 self.fullscreen_enabled = False
+
+    def toggle_fullscreen(self):
+        """Toggle between fullscreen and windowed mode."""
+        pygame.display.toggle_fullscreen()
+        pygame.mouse.set_pos((self.session.mouse.x, self.session.mouse.y))  # Put the mouse where it was
