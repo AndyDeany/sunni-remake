@@ -7,13 +7,6 @@ potentially could be used with saves as well. Need an `on_click()`/`click()` met
 Check **everywhere** that there is a `mouse.is_in()` call because it's likely these
 are all buttons (aside from move icons in battles).
 
-* Go through attributes of game in `Game().__init__()` and see if any are only
-used in one class (that isn't game). If so, move it there!
-
-* Get rid of `initalise()` methods - just do it in `__init__()` methods.
-Using `initialise()` methods means that the assets are always loaded,
-instead of just when needed = memhog.
-
 * Pass `Move`s `user` and `opponent`? So that they don't have to just get it from
 `Game` and hope it's right. Also gets rid of any ambiguity and means that
 any `Character` can use a move without worrying about it targeting the wrong character.
