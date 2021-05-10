@@ -1,5 +1,4 @@
 """Module containing Spook Dog's (unique) moves."""
-import random
 import math
 
 from lib.opponent.moves import OpponentMove
@@ -16,7 +15,7 @@ class Teleport(SpookDogMove):
     """Class for representing the Teleport move."""
 
     def __init__(self):
-        super().__init__(-10)
+        super().__init__(-10, 10, 1, mana_damage=10)
         self.sound = Audio("spook_dog/ghost_dog_teleport.ogg")
 
         self.duration = 0
@@ -37,8 +36,8 @@ class Teleport(SpookDogMove):
         else:
             self.user.idle_animation(220, 380)
             if self.duration == self.damage_time:
-                self.opponent.damage(random.randint(1, 20))
-                self.opponent.damage_mana(10)
+                self.deal_damage()
+                self.deal_mana_damage()
 
         if self.duration < self.total_duration:
             self.duration += 1
@@ -60,7 +59,7 @@ class Glide(SpookDogMove):
     OSCILLATIONS = 1.5
 
     def __init__(self):
-        super().__init__(10)
+        super().__init__(10, 25, 0.2)
         self.sound = Audio("spook_dog/ghost_dog_glide.ogg")
 
         self.range = self.FORWARD_STEP * math.ceil(self.game.screen.get_width() / self.FORWARD_STEP)
@@ -73,7 +72,7 @@ class Glide(SpookDogMove):
         if self.user.x == self.SOUND_X:
             self.play_sound()
         elif self.user.x == self.DAMAGE_X:
-            self.opponent.damage(random.randint(20, 30))
+            self.deal_damage()
         elif self.user.x <= 0:
             self.user.idle_animation(self.user.x + self.range, y)
 
@@ -88,7 +87,7 @@ class Claw(SpookDogMove):
     """Class for representing the Claw move."""
 
     def __init__(self):
-        super().__init__(50)
+        super().__init__(50, 35, 0.75)
         self.sound = Audio("spook_dog/ghost_dog_claw.ogg")
 
         self.fade_overlays = [Image(f"fade_overlay{10*(n+1)}.png", (0, 0)) for n in range(10)]
@@ -133,7 +132,7 @@ class Claw(SpookDogMove):
                 self.opponent.character_scared.display()
             self.duration += 1
             if self.duration == self.total_duration:
-                self.opponent.damage(random.randint(10, 60))
+                self.deal_damage()
 
         elif self.opacity > 0:
             self.fade_overlays[int(self.opacity/10) - 1].display()

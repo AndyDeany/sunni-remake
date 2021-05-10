@@ -8,8 +8,8 @@ from lib.music import Audio
 class MemeDogMove(OpponentMove):    # noqa pylint: disable=abstract-method
     """Class for representing one of Meme Dog's moves."""
 
-    def __init__(self, mana_cost):
-        super().__init__(mana_cost)
+    def __init__(self, mana_cost, *args, **kwargs):
+        super().__init__(mana_cost, *args, **kwargs)
         self.sounds = [Audio(f"meme_dog/dog_attack{n}.ogg") for n in range(1, 4)]
 
     @property
@@ -21,7 +21,7 @@ class Bark(MemeDogMove):
     """Class for representing the Bark move."""
 
     def __init__(self):
-        super().__init__(-10)
+        super().__init__(-10, 12.5, 0.6)
         self.duration = 0
         self.total_duration = 2*self.game.fps
 
@@ -35,7 +35,7 @@ class Bark(MemeDogMove):
             elif self.duration == self.total_duration//3:
                 self.play_sound()
             elif self.duration == self.total_duration//2:
-                self.opponent.damage(random.randint(5, 20))
+                self.deal_damage()
             self.duration += 1
         else:   # Resetting variables for next time
             self.duration = 0
@@ -49,7 +49,7 @@ class Bite(MemeDogMove):
     BACKWARD_STEP = 42
 
     def __init__(self):
-        super().__init__(15)
+        super().__init__(15, 15, 0.333)
 
         self.advancing = True
         self.start_x = 930
@@ -65,7 +65,7 @@ class Bite(MemeDogMove):
                 if self.user.x == self.sound_x:
                     self.play_sound()
             else:
-                self.opponent.damage(random.randint(10, 20))
+                self.deal_damage()
                 self.advancing = False
 
         if not self.advancing:
@@ -85,7 +85,7 @@ class Spin(MemeDogMove):
     BACKWARD_STEP = 30
 
     def __init__(self):
-        super().__init__(25)
+        super().__init__(25, 20, 0.5)
         self.advancing = True
         self.start_x = 930
         self.end_x = 180
@@ -106,7 +106,7 @@ class Spin(MemeDogMove):
 
         elif self.spin_duration < self.total_spin_duration:
             if self.spin_duration == self.total_spin_duration//2:
-                self.opponent.damage(random.randint(10, 30))
+                self.deal_damage()
             image = self.user.dog_normal if self.facing_forwards else self.user.dog_backwards
             image.display(self.user.x, self.user.y)
             self.facing_forwards = not self.facing_forwards

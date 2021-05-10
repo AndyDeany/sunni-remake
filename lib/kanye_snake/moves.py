@@ -1,6 +1,4 @@
 """Module containing Kanye Snake's (unique) moves."""
-import random
-
 from lib.opponent.moves import OpponentMove
 from lib.image import Image
 from lib.music import Audio
@@ -17,7 +15,7 @@ class Confuse(KanyeSnakeMove):
     END_X = 450
 
     def __init__(self):
-        super().__init__(-10)
+        super().__init__(-10, mana_damage=20)
         self.sound = Audio("kanye_snake/snake_confuse.ogg", 0.3)
 
         self.is_moving = None
@@ -54,7 +52,7 @@ class Confuse(KanyeSnakeMove):
             self.opponent.display()
             self.user.x = self.START_X
             self.user.display()
-            self.opponent.damage_mana(20)
+            self.deal_mana_damage()
             self.set_initial_values()
             self.opponent.next_move()
 
@@ -62,11 +60,9 @@ class Confuse(KanyeSnakeMove):
 class BeamMove(KanyeSnakeMove):
     """Base class for Kanye's beam move (since he has two)."""
 
-    def __init__(self, mana_cost, min_damage, max_damage):
-        super().__init__(mana_cost)
+    def __init__(self, mana_cost, damage, damage_variance):
+        super().__init__(mana_cost, damage, damage_variance)
         self.beam = None
-        self.min_damage = min_damage
-        self.max_damage = max_damage
 
         self.duration = None
         self._set_initial_values()
@@ -85,7 +81,7 @@ class BeamMove(KanyeSnakeMove):
             if self.duration == 0:
                 self.play_sound()
             elif self.duration == self.total_duration // 2:
-                self.opponent.damage(random.randint(self.min_damage, self.max_damage))
+                self.deal_damage()
             for n in range(4):
                 self.beam.display(730 - 180 * n, self.user.y)
             self.duration += 1
@@ -99,7 +95,7 @@ class Venom(BeamMove):
     """Class for representing the Venom move."""
 
     def __init__(self):
-        super().__init__(20, 15, 25)
+        super().__init__(20, 20, 0.25)
         self.sound = Audio("kanye_snake/snake_venom.ogg", 0.5)
         self.beam = Image("kanye_snake/snake_venom_beam.png")
 
@@ -112,7 +108,7 @@ class Laser(BeamMove):
     """Class for representing the Laser move."""
 
     def __init__(self):
-        super().__init__(40, 10, 40)
+        super().__init__(40, 25, 0.6)
         self.sound = Audio("kanye_snake/snake_laser.ogg", 0.5)
         self.beam = Image("kanye_snake/snake_laser_beam.png")
 

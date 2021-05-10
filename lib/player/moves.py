@@ -47,8 +47,8 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
     MOVE_DESCRIPTION = "PlayerMove description."
     MOVE_NAME_COLOR = Color.MOVE_NAME_RED
 
-    def __init__(self, mana_cost):
-        super().__init__(mana_cost)
+    def __init__(self, mana_cost, *args, **kwargs):
+        super().__init__(mana_cost, *args, **kwargs)
         self.icon = None
         self.icon_faded = None
         self.info = None
@@ -109,7 +109,7 @@ class Kick(PlayerMove):
     BACKWARD_STEP = 36
 
     def __init__(self):
-        super().__init__(-10)
+        super().__init__(-10, 10, 0.2)
         self.icon = Image("player/kick_move_icon_solid.png")
         self.icon_faded = Image("player/kick_move_icon_faded.png")
         self.sound = Audio("player/character_attack1.ogg")
@@ -128,7 +128,7 @@ class Kick(PlayerMove):
                 if self.user.x == self.SOUND_X:
                     self.play_sound()
                 if self.user.x == self.END_X:
-                    self.opponent.damage(random.randint(8, 12))
+                    self.deal_damage()
                     self.user.x -= self.BACKWARD_STEP
                     self.advancing = False
         else:
@@ -153,7 +153,7 @@ class Headbutt(PlayerMove):
     BACKWARD_STEP = 36
 
     def __init__(self):
-        super().__init__(20)
+        super().__init__(20, 15, 0.33)
         self.icon = Image("player/headbutt_move_icon_solid.png")
         self.icon_faded = Image("player/headbutt_move_icon_faded.png")
         self.sound = Audio("player/character_attack1.ogg")
@@ -169,7 +169,7 @@ class Headbutt(PlayerMove):
                 if self.user.x == self.SOUND_X:
                     self.play_sound()
             else:
-                self.opponent.damage(random.randint(10, 20))
+                self.deal_damage()
                 self.advancing = False
 
         if not self.advancing:
@@ -189,7 +189,7 @@ class Frostbeam(PlayerMove):
                         "firing it directly at his opponent, dealing 15-30 damage.")
 
     def __init__(self):
-        super().__init__(30)
+        super().__init__(30, 22.5, 0.33)
         self.icon = Image("player/frostbeam_move_icon_solid.png")
         self.icon_faded = Image("player/frostbeam_move_icon_faded.png")
         self.sound = Audio("player/frostbeam_move.ogg", 0.2)
@@ -208,7 +208,7 @@ class Frostbeam(PlayerMove):
             if self.duration == 0:
                 self.play_sound()
             elif self.duration == self.total_duration//2:
-                self.opponent.damage(random.randint(15, 30))
+                self.deal_damage()
             self.frostbeam_start.display()
             for x in range(14):
                 self.frostbeam_middle.display(265+50*x, 383+2*x)
@@ -226,7 +226,7 @@ class Heal(PlayerMove):
     MOVE_NAME_COLOR = Color.MOVE_NAME_GREEN
 
     def __init__(self, heart_x, start_y, end_y):
-        super().__init__(10)
+        super().__init__(10, base_healing=10, healing_variance=0.5)
         self.icon = Image("player/heal_move_icon_solid.png")
         self.icon_faded = Image("player/heal_move_icon_faded.png")
         self.sound = Audio("player/heal_move.ogg", 0.1)
@@ -253,7 +253,7 @@ class Heal(PlayerMove):
             self.heart_y += 5
         elif self.delay_duration < self.total_delay_duration:   # Allow time for stat change to show
             if self.delay_duration == 0:
-                self.user.restore_hp(random.randint(5, 15))
+                self.restore_hp()
             self.delay_duration += 1
         else:
             self.delay_duration = 0
