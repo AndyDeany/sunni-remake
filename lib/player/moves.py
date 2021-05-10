@@ -51,35 +51,8 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
         super().__init__(mana_cost)
         self.icon = None
         self.icon_faded = None
-        self._info = pygame.Surface((self.INFO_WIDTH, self.INFO_HEIGHT)).convert_alpha()
-
-        info_desc_height = self.INFO_HEIGHT - self.INFO_TITLE_HEIGHT
-        pygame.draw.rect(self._info, Color.LIGHT_GREY, [0, 0, self.INFO_WIDTH, self.INFO_TITLE_HEIGHT])
-        pygame.draw.rect(self._info, Color.DARK_GREY, [0, self.INFO_TITLE_HEIGHT, self.INFO_WIDTH, info_desc_height])
-        pygame.draw.rect(self._info, Color.BLACK, [0, 0, self.INFO_WIDTH, self.INFO_TITLE_HEIGHT], 1)
-        pygame.draw.rect(self._info, Color.BLACK, [0, self.INFO_TITLE_HEIGHT, self.INFO_WIDTH, info_desc_height], 1)
-
-        name_lines = wrap_text(self.MOVE_NAME, Font.MOVE_INFO_BIG, self.INFO_WIDTH - 16)
-        name_height = sum((Font.MOVE_INFO_BIG.size(line)[1] for line in name_lines))
-        line_height = Font.MOVE_INFO_BIG.get_height()
-        y = (self.INFO_TITLE_HEIGHT - name_height)//2
-        for index, line in enumerate(name_lines):
-            text = Text(line, Font.MOVE_INFO_BIG, self.MOVE_NAME_COLOR, with_outline=True)
-            x = (self.INFO_WIDTH - Font.MOVE_INFO_BIG.size(line)[0]) // 2
-            text.display(x, y + index*line_height, screen=self._info)
-
-        mana_cost_string = f"{self.mana_cost} Mana" if self.mana_cost > 0 else "No Cost"
-        mana_cost_y = self.INFO_TITLE_HEIGHT + 3
-        text = Text(mana_cost_string, Font.MOVE_INFO_BIG, Color.MANA_COST_BLUE, with_outline=True)
-        text.display(8, mana_cost_y, screen=self._info)
-
-        description_lines = wrap_text(self.MOVE_DESCRIPTION, Font.MOVE_INFO_SMALL, self.INFO_WIDTH - 16)
-        line_height = Font.MOVE_INFO_SMALL.get_height()
-        x = 8
-        y = mana_cost_y + Font.MOVE_INFO_BIG.get_height() + 11
-        for index, line in enumerate(description_lines):
-            text = Text(line, Font.MOVE_INFO_SMALL, Color.DESCRIPTION_ORANGE, with_outline=True)
-            text.display(x, y + index*line_height, screen=self._info)
+        self.info = None
+        self.generate_info()
 
     @property
     def user(self):
@@ -89,8 +62,38 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
     def opponent(self):
         return self.game.opponent
 
-    def display_info(self, x, y):
-        self.game.screen.blit(self._info, (x, y))
+    def generate_info(self):
+        """Generate the move's info in an Image instance and put it in self.info."""
+        info = pygame.Surface((self.INFO_WIDTH, self.INFO_HEIGHT)).convert_alpha()
+
+        info_desc_height = self.INFO_HEIGHT - self.INFO_TITLE_HEIGHT
+        pygame.draw.rect(info, Color.LIGHT_GREY, [0, 0, self.INFO_WIDTH, self.INFO_TITLE_HEIGHT])
+        pygame.draw.rect(info, Color.DARK_GREY, [0, self.INFO_TITLE_HEIGHT, self.INFO_WIDTH, info_desc_height])
+        pygame.draw.rect(info, Color.BLACK, [0, 0, self.INFO_WIDTH, self.INFO_TITLE_HEIGHT], 1)
+        pygame.draw.rect(info, Color.BLACK, [0, self.INFO_TITLE_HEIGHT, self.INFO_WIDTH, info_desc_height], 1)
+
+        name_lines = wrap_text(self.MOVE_NAME, Font.MOVE_INFO_BIG, self.INFO_WIDTH - 16)
+        name_height = sum((Font.MOVE_INFO_BIG.size(line)[1] for line in name_lines))
+        line_height = Font.MOVE_INFO_BIG.get_height()
+        y = (self.INFO_TITLE_HEIGHT - name_height)//2
+        for index, line in enumerate(name_lines):
+            text = Text(line, Font.MOVE_INFO_BIG, self.MOVE_NAME_COLOR, with_outline=True)
+            x = (self.INFO_WIDTH - Font.MOVE_INFO_BIG.size(line)[0]) // 2
+            text.display(x, y + index*line_height, screen=info)
+
+        mana_cost_string = f"{self.mana_cost} Mana" if self.mana_cost > 0 else "No Cost"
+        mana_cost_y = self.INFO_TITLE_HEIGHT + 3
+        text = Text(mana_cost_string, Font.MOVE_INFO_BIG, Color.MANA_COST_BLUE, with_outline=True)
+        text.display(8, mana_cost_y, screen=info)
+
+        description_lines = wrap_text(self.MOVE_DESCRIPTION, Font.MOVE_INFO_SMALL, self.INFO_WIDTH - 16)
+        line_height = Font.MOVE_INFO_SMALL.get_height()
+        x = 8
+        y = mana_cost_y + Font.MOVE_INFO_BIG.get_height() + 11
+        for index, line in enumerate(description_lines):
+            text = Text(line, Font.MOVE_INFO_SMALL, Color.DESCRIPTION_ORANGE, with_outline=True)
+            text.display(x, y + index*line_height, screen=info)
+        self.info = Image(info)
 
 
 class Kick(PlayerMove):
@@ -109,7 +112,6 @@ class Kick(PlayerMove):
         super().__init__(-10)
         self.icon = Image("player/kick_move_icon_solid.png")
         self.icon_faded = Image("player/kick_move_icon_faded.png")
-        self.info = Image("player/kick_move_info.png")
         self.sound = Audio("player/character_attack1.ogg")
 
         self.advancing = True
@@ -154,7 +156,6 @@ class Headbutt(PlayerMove):
         super().__init__(20)
         self.icon = Image("player/headbutt_move_icon_solid.png")
         self.icon_faded = Image("player/headbutt_move_icon_faded.png")
-        self.info = Image("player/headbutt_move_info.png")
         self.sound = Audio("player/character_attack1.ogg")
 
         self.advancing = True
@@ -191,7 +192,6 @@ class Frostbeam(PlayerMove):
         super().__init__(30)
         self.icon = Image("player/frostbeam_move_icon_solid.png")
         self.icon_faded = Image("player/frostbeam_move_icon_faded.png")
-        self.info = Image("player/frostbeam_move_info.png")
         self.sound = Audio("player/frostbeam_move.ogg", 0.2)
 
         self.frostbeam_start = Image("player/frostbeam_start.png", (215, 381))
@@ -229,7 +229,6 @@ class Heal(PlayerMove):
         super().__init__(10)
         self.icon = Image("player/heal_move_icon_solid.png")
         self.icon_faded = Image("player/heal_move_icon_faded.png")
-        self.info = Image("player/heal_move_info.png")
         self.sound = Audio("player/heal_move.ogg", 0.1)
 
         self.heart = Image("player/heal_heart.png")

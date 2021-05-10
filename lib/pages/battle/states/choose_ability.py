@@ -51,7 +51,7 @@ class ChooseAbility(BattleState):
                 icon_x = first_icon_x + self.ICON_OFFSET * index
                 move.icon.display(icon_x, icon_y)
                 if self.game.mouse.is_in(icon_x, icon_y, icon_x + self.ICON_WIDTH, icon_y + self.ICON_HEIGHT):
-                    move.display_info(info_x, 130)
+                    move.info.display(info_x, 130)
                     if self.game.mouse.left:
                         self.game.player.use_move(move)
 

@@ -23,11 +23,14 @@ class Surface:
 
 
 class Image(Surface):
-    def __init__(self, path, default_coords: tuple = (None, None), *, convert_alpha=True):
+    def __init__(self, path_or_surface, default_coords: tuple = (None, None), *, convert_alpha=True):
         super().__init__(default_coords)
-        self.image = pygame.image.load("../images/" + path)
-        if convert_alpha:
-            self.image = self.image.convert_alpha()
+        if isinstance(path_or_surface, pygame.Surface):
+            self.image = path_or_surface
+        else:
+            self.image = pygame.image.load("../images/" + path_or_surface)
+            if convert_alpha:
+                self.image = self.image.convert_alpha()
 
 
 class Text(Surface):
