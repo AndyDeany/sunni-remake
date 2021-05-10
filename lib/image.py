@@ -44,9 +44,13 @@ class Text(Surface):
             outlined_image = pygame.Surface((width + 2, height + 2)).convert_alpha()
             pygame.draw.rect(outlined_image, (0, 0, 0, 0), [0, 0, width + 2, height + 2])
             outlined_image.blit(outline_text, (0, 0))
+            outlined_image.blit(outline_text, (0, 1))
             outlined_image.blit(outline_text, (0, 2))
-            outlined_image.blit(outline_text, (2, 0))
+            outlined_image.blit(outline_text, (1, 2))
             outlined_image.blit(outline_text, (2, 2))
+            outlined_image.blit(outline_text, (2, 1))
+            outlined_image.blit(outline_text, (2, 0))
+            outlined_image.blit(outline_text, (1, 0))
             outlined_image.blit(self.image, (1, 1))
             self.image = outlined_image
             if self.default_x is not None:

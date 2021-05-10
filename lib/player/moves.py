@@ -69,13 +69,14 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
             text.display(x, y + index*line_height, screen=self._info)
 
         mana_cost_string = f"{self.mana_cost} Mana" if self.mana_cost > 0 else "No Cost"
+        mana_cost_y = self.INFO_TITLE_HEIGHT + 3
         text = Text(mana_cost_string, Font.MOVE_INFO_BIG, Color.MANA_COST_BLUE, with_outline=True)
-        text.display(8, self.INFO_TITLE_HEIGHT + 8, screen=self._info)
+        text.display(8, mana_cost_y, screen=self._info)
 
         description_lines = wrap_text(self.MOVE_DESCRIPTION, Font.MOVE_INFO_SMALL, self.INFO_WIDTH - 16)
         line_height = Font.MOVE_INFO_SMALL.get_height()
         x = 8
-        y = self.INFO_TITLE_HEIGHT + 8 + Font.MOVE_INFO_BIG.get_height() + 10
+        y = mana_cost_y + Font.MOVE_INFO_BIG.get_height() + 11
         for index, line in enumerate(description_lines):
             text = Text(line, Font.MOVE_INFO_SMALL, Color.DESCRIPTION_ORANGE, with_outline=True)
             text.display(x, y + index*line_height, screen=self._info)
