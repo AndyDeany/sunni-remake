@@ -21,6 +21,12 @@ from lib.pages.battle.states import ChooseCharacter
 
 
 class Game:
+    """Class representing the main game - everything to do with the functionality of the game."""
+
+    OPPONENTS = OrderedDict(
+        (Opponent.NAME, Opponent)
+        for Opponent in (MemeDog, KanyeSnake, SpookDog, EvilCloud)
+    )
 
     @classmethod
     def initialise(cls):
@@ -54,12 +60,6 @@ class Game:
         MainMenu.initialise()
         MemeDog.initialise()
         Battle.initialise()
-
-        self.opponents = OrderedDict()
-        self.opponents["Meme Dog"] = MemeDog
-        self.opponents["Kanye Snake"] = KanyeSnake
-        self.opponents["Spook Dog"] = SpookDog
-        self.opponents["Evil Cloud"] = EvilCloud
 
         # self.battle_music = [Audio(f"battle{n}.ogg", 0.2) for n in range(8)]
 
@@ -120,9 +120,9 @@ class Game:
     def load_next_battle(self, name=None):
         """Load the next battle (it will not actually begin until you call commence_next_battle())."""
         if name is None:
-            opponent_names = list(self.opponents.keys())
+            opponent_names = list(self.OPPONENTS.keys())
             name = opponent_names[opponent_names.index(self.opponent.name) + 1]
-        self.next_battle = Battle(self, self.opponents[name](self))
+        self.next_battle = Battle(self, self.OPPONENTS[name](self))
 
     def commence_next_battle(self):
         """Commence the previously loaded next_battle."""

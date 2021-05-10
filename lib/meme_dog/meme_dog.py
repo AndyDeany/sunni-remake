@@ -10,8 +10,10 @@ from lib.meme_dog.moves import Bark, Bite, Spin
 class MemeDog(Opponent):
     """Class representing the Meme Dog opponent."""
 
+    NAME = "Meme Dog"
+
     def __init__(self, game, max_hp=100, max_mana=100):
-        super().__init__(game, "Meme Dog", max_hp, max_mana)
+        super().__init__(game, max_hp, max_mana)
         self.x = 930
         self.y = 440
 

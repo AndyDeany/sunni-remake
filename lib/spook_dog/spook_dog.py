@@ -10,8 +10,10 @@ from lib.spook_dog.moves import Teleport, Glide, Claw
 class SpookDog(Opponent):
     """Class representing the Spook Dog opponent."""
 
+    NAME = "Spook Dog"
+
     def __init__(self, game, max_hp=200, max_mana=150):
-        super().__init__(game, "Spook Dog", max_hp, max_mana)
+        super().__init__(game, max_hp, max_mana)
         self.x = 930
         self.y = 440
         self.num_idle_frames = 20
