@@ -3,6 +3,7 @@ from lib.image import Image, Text
 from lib.color import Color
 from lib.font import Font
 from lib.player import Player
+from lib.meme_dog import MemeDog
 
 
 class NewGamePage(SavePage):
@@ -67,7 +68,7 @@ class NewGamePage(SavePage):
 
         if self.game.selected_save is not None:
             if self.game.selected_save.is_empty or save_confirmed:
-                self.game.load_next_battle("Meme Dog")
+                self.game.load_next_battle(MemeDog)
                 self.game.commence_next_battle()
             else:
                 self.display_sure = True

@@ -1,5 +1,3 @@
-from collections import OrderedDict
-
 from lib.image import Image
 from lib.options import Options
 from lib.save import Save
@@ -23,10 +21,8 @@ from lib.pages.battle.states import ChooseCharacter
 class Game:
     """Class representing the main game - everything to do with the functionality of the game."""
 
-    OPPONENTS = OrderedDict(
-        (Opponent.NAME, Opponent)
-        for Opponent in (MemeDog, KanyeSnake, SpookDog, EvilCloud)
-    )
+    OPPONENT_CLASSES = (MemeDog, KanyeSnake, SpookDog, EvilCloud)
+    OPPONENTS = {Opponent.NAME: Opponent for Opponent in OPPONENT_CLASSES}
 
     @classmethod
     def initialise(cls):
@@ -114,15 +110,14 @@ class Game:
     def load(self):
         """Load the game state represented by self.selected_save."""
         self.player = self.selected_save.create_player(self)
-        self.load_next_battle(self.selected_save.opponent_name)
+        self.load_next_battle(self.OPPONENTS[self.selected_save.opponent_name])
         self.commence_next_battle()
 
-    def load_next_battle(self, name=None):
+    def load_next_battle(self, opponent_class=None):
         """Load the next battle (it will not actually begin until you call commence_next_battle())."""
-        if name is None:
-            opponent_names = list(self.OPPONENTS.keys())
-            name = opponent_names[opponent_names.index(self.opponent.name) + 1]
-        self.next_battle = Battle(self, self.OPPONENTS[name](self))
+        if opponent_class is None:
+            opponent_class = self.OPPONENT_CLASSES[self.OPPONENT_CLASSES.index(type(self.opponent)) + 1]
+        self.next_battle = Battle(self, opponent_class(self))
 
     def commence_next_battle(self):
         """Commence the previously loaded next_battle."""
