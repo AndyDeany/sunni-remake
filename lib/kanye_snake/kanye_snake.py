@@ -34,7 +34,7 @@ class KanyeSnake(Opponent):
             return random.choice(self.attack_options(favour_damage=True))
 
         if self.current_hp < self.max_hp / 5:
-            if random.randint(1, 10) == 1:
+            if random.random() < 0.1:
                 return random.choice(self.attack_options())
             return self.moves.heal
 

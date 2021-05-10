@@ -32,7 +32,7 @@ class MemeDog(Opponent):
             return random.choice(self.attack_options())
 
         if self.current_hp < self.max_hp / 4:   # Low - prefer to heal but chance of attacking
-            if random.randint(1, 10) == 1:
+            if random.random() < 0.1:
                 return random.choice(self.attack_options())
             return self.moves.heal
 
