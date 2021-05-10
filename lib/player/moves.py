@@ -1,5 +1,4 @@
 """Module containing the player's moves."""
-import random
 import re
 
 import pygame
@@ -30,6 +29,8 @@ def wrap_text(text, font, max_width):
                 line += " "
             line += words.pop(0)
         else:
+            if not line:
+                raise ValueError(f"'{next_word}' is too long to fit within {max_width}px in {font}.")
             lines.append(line)
             line = ""
     lines.append(line)
@@ -42,6 +43,7 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
     INFO_WIDTH = 200
     INFO_HEIGHT = 250
     INFO_TITLE_HEIGHT = 54
+    X_BUFFER = 8
 
     MOVE_NAME = "PlayerMove"
     MOVE_DESCRIPTION = "PlayerMove description."
@@ -62,6 +64,17 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
     def opponent(self):
         return self.game.opponent
 
+    @property
+    def description(self):
+        description = self.MOVE_DESCRIPTION
+        description = description.replace("{min_damage}", str(self.min_damage))
+        description = description.replace("{max_damage}", str(self.max_damage))
+        description = description.replace("{min_healing}", str(self.min_healing))
+        description = description.replace("{max_healing}", str(self.max_healing))
+        description = description.replace("{mana_damage}", str(self.mana_damage))
+        description = description.replace("{mana_healing}", str(self.mana_healing))
+        return description
+
     def generate_info(self):
         """Generate the move's info in an Image instance and put it in self.info."""
         info = pygame.Surface((self.INFO_WIDTH, self.INFO_HEIGHT)).convert_alpha()
@@ -74,7 +87,7 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
 
         name_lines = wrap_text(self.MOVE_NAME, Font.MOVE_INFO_BIG, self.INFO_WIDTH - 16)
         name_height = sum((Font.MOVE_INFO_BIG.size(line)[1] for line in name_lines))
-        line_height = Font.MOVE_INFO_BIG.get_height()
+        line_height = Font.MOVE_INFO_BIG.get_linesize()
         y = (self.INFO_TITLE_HEIGHT - name_height)//2
         for index, line in enumerate(name_lines):
             text = Text(line, Font.MOVE_INFO_BIG, self.MOVE_NAME_COLOR, with_outline=True)
@@ -85,10 +98,9 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
         mana_cost_y = self.INFO_TITLE_HEIGHT + 3
         text = Text(mana_cost_string, Font.MOVE_INFO_BIG, Color.MANA_COST_BLUE, with_outline=True)
         text.display(8, mana_cost_y, screen=info)
-
-        description_lines = wrap_text(self.MOVE_DESCRIPTION, Font.MOVE_INFO_SMALL, self.INFO_WIDTH - 16)
-        line_height = Font.MOVE_INFO_SMALL.get_height()
-        x = 8
+        description_lines = wrap_text(self.description, Font.MOVE_INFO_SMALL, self.INFO_WIDTH - 2*self.X_BUFFER)
+        line_height = Font.MOVE_INFO_SMALL.get_linesize()
+        x = self.X_BUFFER
         y = mana_cost_y + Font.MOVE_INFO_BIG.get_height() + 11
         for index, line in enumerate(description_lines):
             text = Text(line, Font.MOVE_INFO_SMALL, Color.DESCRIPTION_ORANGE, with_outline=True)
@@ -100,7 +112,8 @@ class Kick(PlayerMove):
     """Class for representing the player's kick move."""
 
     MOVE_NAME = "Courageous Kick"
-    MOVE_DESCRIPTION = "Sunni darts forward, kicking his opponent courageously for 8-12 damage.\n\nRestores 10 mana."
+    MOVE_DESCRIPTION = ("Sunni darts forward, kicking his opponent courageously "
+                        "for {min_damage}-{max_damage} damage.\n\nRestores {mana_healing} mana.")
 
     START_X = 150
     SOUND_X = 750
@@ -145,7 +158,8 @@ class Headbutt(PlayerMove):
     """Class for representing the player's headbutt move."""
 
     MOVE_NAME = "Heroic Headbutt"
-    MOVE_DESCRIPTION = "Sunni charges forward, heroically headbutting his opponent for 10-20 damage."
+    MOVE_DESCRIPTION = ("Sunni charges forward, heroically headbutting his opponent "
+                        "for {min_damage}-{max_damage} damage.")
 
     START_X = 150
     SOUND_X = 750
@@ -187,7 +201,7 @@ class Frostbeam(PlayerMove):
 
     MOVE_NAME = "Frostbeam"
     MOVE_DESCRIPTION = ("Sunni calls upon the power of ice, summoning a beam of frozen energy and "
-                        "firing it directly at his opponent, dealing 15-30 damage.")
+                        "firing it directly at his opponent, dealing {min_damage}-{max_damage} damage.")
 
     def __init__(self):
         super().__init__(30, 22.5, 0.33)
@@ -223,7 +237,7 @@ class Heal(PlayerMove):
     """Class for representing the player's heal move."""
 
     MOVE_NAME = "Harmonious Healing"
-    MOVE_DESCRIPTION = "Sunni calls forth nature's heart, healing 5-15 hit points."
+    MOVE_DESCRIPTION = "Sunni calls forth nature's heart, healing {min_healing}-{max_healing} hit points."
     MOVE_NAME_COLOR = Color.MOVE_NAME_GREEN
 
     def __init__(self, heart_x, start_y, end_y):
