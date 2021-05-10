@@ -15,7 +15,7 @@ class Confuse(KanyeSnakeMove):
     END_X = 450
 
     def __init__(self):
-        super().__init__(-10, mana_damage=20)
+        super().__init__(0, mana_damage=20, mana_healing=10)
         self.sound = Audio("kanye_snake/snake_confuse.ogg", 0.3)
 
         self.is_moving = None
@@ -53,6 +53,7 @@ class Confuse(KanyeSnakeMove):
             self.user.x = self.START_X
             self.user.display()
             self.deal_mana_damage()
+            self.restore_mana()
             self.set_initial_values()
             self.opponent.next_move()
 

@@ -15,7 +15,7 @@ class Teleport(SpookDogMove):
     """Class for representing the Teleport move."""
 
     def __init__(self):
-        super().__init__(-10, 10, 1, mana_damage=10)
+        super().__init__(0, 10, 1, mana_damage=10, mana_healing=10)
         self.sound = Audio("spook_dog/ghost_dog_teleport.ogg")
 
         self.duration = 0
@@ -43,6 +43,7 @@ class Teleport(SpookDogMove):
             self.duration += 1
         else:
             self.duration = 0
+            self.restore_mana()
             self.opponent.next_move()
 
 
@@ -87,7 +88,7 @@ class Claw(SpookDogMove):
     """Class for representing the Claw move."""
 
     def __init__(self):
-        super().__init__(50, 35, 0.75)
+        super().__init__(50, 35, 0.71)
         self.sound = Audio("spook_dog/ghost_dog_claw.ogg")
 
         self.fade_overlays = [Image(f"fade_overlay{10*(n+1)}.png", (0, 0)) for n in range(10)]

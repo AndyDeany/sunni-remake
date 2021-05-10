@@ -8,7 +8,7 @@ class Move(BattleState):    # noqa pylint: disable=abstract-method
     """Class representing a character's move."""
 
     def __init__(self, mana_cost, base_damage=0, damage_variance=0.1, *, mana_damage=0,
-                 base_healing=0, healing_variance=0.1):
+                 base_healing=0, healing_variance=0.1, mana_healing=0):
         self._sound = None
         self.mana_cost = mana_cost
         self.base_damage = base_damage
@@ -16,6 +16,7 @@ class Move(BattleState):    # noqa pylint: disable=abstract-method
         self.mana_damage = mana_damage
         self.base_healing = base_healing
         self.healing_variance = healing_variance
+        self.mana_healing = mana_healing
 
     def play_sound(self):
         self.game.music.play_sound(self.sound)
@@ -71,6 +72,10 @@ class Move(BattleState):    # noqa pylint: disable=abstract-method
     def restore_hp(self):
         """Restore the move's healing to the user."""
         self.user.restore_hp(random.randint(self.min_healing, self.max_healing))
+
+    def restore_mana(self):
+        """Restore the move's mana healing to the user."""
+        self.user.restore_mana(self.mana_healing)
 
 
 def opponent_move(player_move_subclass):

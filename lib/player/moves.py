@@ -109,7 +109,7 @@ class Kick(PlayerMove):
     BACKWARD_STEP = 36
 
     def __init__(self):
-        super().__init__(-10, 10, 0.2)
+        super().__init__(0, 10, 0.2, mana_healing=10)
         self.icon = Image("player/kick_move_icon_solid.png")
         self.icon_faded = Image("player/kick_move_icon_faded.png")
         self.sound = Audio("player/character_attack1.ogg")
@@ -136,6 +136,7 @@ class Kick(PlayerMove):
             if self.user.x > self.START_X:
                 self.user.x -= self.BACKWARD_STEP
             else:   # Reset variables for next time
+                self.restore_mana()
                 self.advancing = True
                 self.opponent.next_move()
 
