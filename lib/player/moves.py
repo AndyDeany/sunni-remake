@@ -45,9 +45,9 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
     INFO_TITLE_HEIGHT = 54
     X_BUFFER = 8
 
-    MOVE_NAME = "PlayerMove"
-    MOVE_DESCRIPTION = "PlayerMove description."
-    MOVE_NAME_COLOR = Color.MOVE_NAME_RED
+    NAME = "PlayerMove"
+    DESCRIPTION = "PlayerMove description."
+    NAME_COLOR = Color.MOVE_NAME_RED
 
     def __init__(self, mana_cost, *args, **kwargs):
         super().__init__(mana_cost, *args, **kwargs)
@@ -66,7 +66,7 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
 
     @property
     def description(self):
-        description = self.MOVE_DESCRIPTION
+        description = self.DESCRIPTION
         description = description.replace("{min_damage}", str(self.min_damage))
         description = description.replace("{max_damage}", str(self.max_damage))
         description = description.replace("{min_healing}", str(self.min_healing))
@@ -85,12 +85,12 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
         pygame.draw.rect(info, Color.BLACK, [0, 0, self.INFO_WIDTH, self.INFO_TITLE_HEIGHT], 1)
         pygame.draw.rect(info, Color.BLACK, [0, self.INFO_TITLE_HEIGHT, self.INFO_WIDTH, info_desc_height], 1)
 
-        name_lines = wrap_text(self.MOVE_NAME, Font.MOVE_INFO_BIG, self.INFO_WIDTH - 16)
+        name_lines = wrap_text(self.NAME, Font.MOVE_INFO_BIG, self.INFO_WIDTH - 16)
         name_height = sum((Font.MOVE_INFO_BIG.size(line)[1] for line in name_lines))
         line_height = Font.MOVE_INFO_BIG.get_linesize()
         y = (self.INFO_TITLE_HEIGHT - name_height)//2
         for index, line in enumerate(name_lines):
-            text = Text(line, Font.MOVE_INFO_BIG, self.MOVE_NAME_COLOR, with_outline=True)
+            text = Text(line, Font.MOVE_INFO_BIG, self.NAME_COLOR, with_outline=True)
             x = (self.INFO_WIDTH - Font.MOVE_INFO_BIG.size(line)[0]) // 2
             text.display(x, y + index*line_height, screen=info)
 
@@ -111,9 +111,9 @@ class PlayerMove(Move):     # noqa pylint: disable=abstract-method
 class Kick(PlayerMove):
     """Class for representing the player's kick move."""
 
-    MOVE_NAME = "Courageous Kick"
-    MOVE_DESCRIPTION = ("Sunni darts forward, kicking his opponent courageously "
-                        "for {min_damage}-{max_damage} damage.\n\nRestores {mana_healing} mana.")
+    NAME = "Courageous Kick"
+    DESCRIPTION = ("Sunni darts forward, kicking his opponent courageously "
+                   "for {min_damage}-{max_damage} damage.\n\nRestores {mana_healing} mana.")
 
     START_X = 150
     SOUND_X = 750
@@ -157,9 +157,9 @@ class Kick(PlayerMove):
 class Headbutt(PlayerMove):
     """Class for representing the player's headbutt move."""
 
-    MOVE_NAME = "Heroic Headbutt"
-    MOVE_DESCRIPTION = ("Sunni charges forward, heroically headbutting his opponent "
-                        "for {min_damage}-{max_damage} damage.")
+    NAME = "Heroic Headbutt"
+    DESCRIPTION = ("Sunni charges forward, heroically headbutting his opponent "
+                   "for {min_damage}-{max_damage} damage.")
 
     START_X = 150
     SOUND_X = 750
@@ -199,9 +199,9 @@ class Headbutt(PlayerMove):
 class Frostbeam(PlayerMove):
     """Class for representing the player's frostbeam move."""
 
-    MOVE_NAME = "Frostbeam"
-    MOVE_DESCRIPTION = ("Sunni calls upon the power of ice, summoning a beam of frozen energy and "
-                        "firing it directly at his opponent, dealing {min_damage}-{max_damage} damage.")
+    NAME = "Frostbeam"
+    DESCRIPTION = ("Sunni calls upon the power of ice, summoning a beam of frozen energy and "
+                   "firing it directly at his opponent, dealing {min_damage}-{max_damage} damage.")
 
     def __init__(self):
         super().__init__(30, 22.5, 0.33)
@@ -236,9 +236,9 @@ class Frostbeam(PlayerMove):
 class Heal(PlayerMove):
     """Class for representing the player's heal move."""
 
-    MOVE_NAME = "Harmonious Healing"
-    MOVE_DESCRIPTION = "Sunni calls forth nature's heart, healing {min_healing}-{max_healing} hit points."
-    MOVE_NAME_COLOR = Color.MOVE_NAME_GREEN
+    NAME = "Harmonious Healing"
+    DESCRIPTION = "Sunni calls forth nature's heart, healing {min_healing}-{max_healing} hit points."
+    NAME_COLOR = Color.MOVE_NAME_GREEN
 
     def __init__(self, heart_x, start_y, end_y):
         super().__init__(10, base_healing=10, healing_variance=0.5)
