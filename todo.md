@@ -5,8 +5,6 @@ It would need to remember previous value of `game.page` though - not an issue.
 * Button class for representing buttons on the main menu at least,
 potentially could be used with saves as well. Need an `on_click()`/`click()` method for sure
 
-* use SCALED screen mode in fullscreen to make it """1080p""" (at least by mouse movement standards).
-
 * Go through attributes of game in `Game().__init__()` and see if any are only
 used in one class (that isn't game). If so, move it there!
 
@@ -17,9 +15,6 @@ instead of just when needed = memhog.
 * Pass `Move`s `user` and `opponent`? So that they don't have to just get it from
 `Game` and hope it's right. Also gets rid of any ambiguity and means that
 any `Character` can use a move without worrying about it targeting the wrong character.
-
-* Replace `random.randint()` calls with `random.random()` where it's just looking
-for a probability as it's faster.
 
 * Could (distant-ish future) have like a `Playthrough` class which takes most of `Game`'s logic.
 This would be so that when you load into a save or start a new one,
@@ -40,19 +35,7 @@ accidentally and causing bugs.
 Be sure to check the issues on GitHub for any other bugs.
 
 ### Features
-* Replace `random.randint()` for calculating move damage/healing with two parameters:
-`move.damage` (or `move.average_damage`) and `move.damage_variance`
-(should be between `0.0` and `1.0`). Then the damage/healing calculation for each move can
-just be `int(damage*(1+random.random(-variance, variance)))`.
-This homogenises how damage is calculated.
-Can allow for things like crit chance etc in the future too,
-instead of each move having it's own special way of calculating damage.
-
-* Change kick/confuse/other mana restoring moves to have a mana cost of `0` and
-then have a `restore_mana()` call at a later point? Could also have a 
-`mana_restoration` parameter showing how much mana will be restored,
-which also means you can use it for `attack_options()` as well,
-so that doesn't get ruined by the new `mana_cost` being `0`.
+None at the moment.
 
 ### Other
 * Remove docstring ignores from `.pylintrc` at some point.
