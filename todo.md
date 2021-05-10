@@ -7,23 +7,8 @@ potentially could be used with saves as well. Need an `on_click()`/`click()` met
 
 * use SCALED screen mode in fullscreen to make it """1080p""" (at least by mouse movement standards).
 
-* Probably shouldn't store an instance of each page in `Game()`
-as this means assets are never unloaded=memhog.
-Just create a new one to go to the page.
-This can be done by making `visit()` a classmethod which sets cls.game.page = cls(cls.game).
-Alternatively, scrap the `visit()` method and just write `current = Page()` to go to a page.
-The code from `visit()` can just be in the `Page().__init__()` method.
-Will also have to use `isinstance(self.game.page, PageClass)` instead of
-`self.game.page == self.game.page_class` if you do this. Which is fine,
-just make you sure you go through and do it.
-
 * Go through attributes of game in `Game().__init__()` and see if any are only
 used in one class (that isn't game). If so, move it there!
-
-* Could make `CHOOSE_ABILITY`, `opponent.DEAD`, and `player.DEAD` members of the
-`Move` class somehow so that `Battle().current` is always a `Move`? Unsure if
-this makes complete sense. Perhaps it can be a subclass of a new
-`State` (or `BattleState`) parent class that `Move` will also inherit from.
 
 * Get rid of `initalise()` methods - just do it in `__init__()` methods.
 Using `initialise()` methods means that the assets are always loaded,
@@ -33,7 +18,8 @@ instead of just when needed = memhog.
 `Game` and hope it's right. Also gets rid of any ambiguity and means that
 any `Character` can use a move without worrying about it targeting the wrong character.
 
-* `MouseButton` class.
+* Replace `random.randint()` calls with `random.random()` where it's just looking
+for a probability as it's faster.
 
 * Could (distant-ish future) have like a `Playthrough` class which takes most of `Game`'s logic.
 This would be so that when you load into a save or start a new one,
@@ -70,5 +56,3 @@ so that doesn't get ruined by the new `mana_cost` being `0`.
 
 ### Other
 * Remove docstring ignores from `.pylintrc` at some point.
-
-* Once you've deleted old files, remove them from the ignored files in `.pylintrc` too.
