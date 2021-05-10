@@ -11,18 +11,16 @@ class ChooseCharacter(BattleState):
     CHARACTER_1 = "character1"
     CHARACTER_2 = "character2"
 
-    @classmethod
-    def initialise(cls, game):
-        super().initialise(game)
-        cls.CHOOSE_CHARACTER_OVERLAY = Image("choose_character_overlay.png")
-        cls.CHARACTER_CHOICE1 = Image("player/character1_normal1.png")
-        cls.CHARACTER_CHOICE2 = Image("player/character2_normal1.png")
+    def __init__(self):
+        self.choose_character_overlay = Image("choose_character_overlay.png", (0, 0))
+        self.character_choice1 = Image("player/character1_normal1.png", (400, 300))
+        self.character_choice2 = Image("player/character2_normal1.png", (810, 300))
 
     def run(self):
         """Run the code that asks the player to choose their character sprite."""
-        self.CHOOSE_CHARACTER_OVERLAY.display(0, 0)
-        self.CHARACTER_CHOICE1.display(400, 300)
-        self.CHARACTER_CHOICE2.display(810, 300)
+        self.choose_character_overlay.display()
+        self.character_choice1.display()
+        self.character_choice2.display()
 
         if self.game.mouse.left:
             if self.game.mouse.is_in(400, 300, 470, 480):

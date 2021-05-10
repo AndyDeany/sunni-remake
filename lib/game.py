@@ -1,5 +1,4 @@
 from lib.image import Image
-from lib.options import Options
 from lib.save import Save
 
 from lib.pages.opening_sequence import OpeningSequence
@@ -9,13 +8,11 @@ from lib.pages.load_game_page import LoadGamePage
 
 from lib.character import Character
 from lib.pages.battle import Battle
-from lib.player import Player
 from lib.meme_dog import MemeDog
 from lib.kanye_snake import KanyeSnake
 from lib.spook_dog import SpookDog
 from lib.evil_cloud import EvilCloud
 from lib.pages.battle.states.battle_state import BattleState
-from lib.pages.battle.states import ChooseCharacter
 
 
 class Game:
@@ -45,11 +42,8 @@ class Game:
         NewGamePage.initialise()
         LoadGamePage.initialise()
         BattleState.initialise(self)
-        ChooseCharacter.initialise(self)
         Character.initialise()
-        Player.initialise()
         MainMenu.initialise()
-        MemeDog.initialise()
         Battle.initialise()
 
         # self.battle_music = [Audio(f"battle{n}.ogg", 0.2) for n in range(8)]

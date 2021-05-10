@@ -10,11 +10,10 @@ class Options:
     def __init__(self, session, window_size):
         self.session = session
         self.is_showing = False
+        self.frozen_game = None
 
         self.fullscreen_enabled = False
         self.window_size = window_size
-
-        self.frozen_game = None
 
         self._return_to_game_button = Image("return_to_game_button.png", (10, 665))
         self._volume_minus_button = Image("volume_minus_button.png", (430, 250))
