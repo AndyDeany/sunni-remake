@@ -10,6 +10,7 @@ from lib.options import Options
 from lib.music import Music
 
 from lib.image import Surface
+from lib.button import Button
 
 
 class Session:
@@ -39,6 +40,7 @@ class Session:
         self.game = Game(self)
 
         Surface.initialise(self)
+        Button.initialise(self)
 
     @property
     def icon(self):
