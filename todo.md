@@ -3,7 +3,9 @@
 It would need to remember previous value of `game.page` though - not an issue.
 
 * Button class for representing buttons on the main menu at least,
-potentially could be used with saves as well. Need an `on_click()`/`click()` method for sure
+potentially could be used with saves as well. Need an `on_click()`/`click()` method for sure.
+Check **everywhere** that there is a `mouse.is_in()` call because it's likely these
+are all buttons (aside from move icons in battles).
 
 * Go through attributes of game in `Game().__init__()` and see if any are only
 used in one class (that isn't game). If so, move it there!
