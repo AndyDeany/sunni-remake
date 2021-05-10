@@ -2,6 +2,10 @@ from multiprocessing.dummy import Pool
 
 import pygame
 
+from lib.image import Text
+from lib.font import Font
+from lib.color import Color
+
 
 def pygame_volume(volume):
     """Convert the given volume to one that can be fed to pygame.mixer's set_volume() method."""
@@ -47,10 +51,10 @@ class Music:
     """Class for controlling audio playback in the game."""
 
     def __init__(self):
-        self._volume = 100
         self.is_muted = False
         self.current_music = None
         self.current_sound = None
+        self.volume = 100
 
         self.music_channel = pygame.mixer.Channel(0)
         self.sound_channel = pygame.mixer.Channel(1)    # Can add more if multiple sounds need to play simultaneously
@@ -104,6 +108,7 @@ class Music:
     def volume(self, value):
         self._volume = value
         self.set_unmuted_pygame_volume()
+        self.volume_text = Text(f"Volume Level: {self.volume}%", Font.OPENING, Color.MILD_BLUE)
 
     def set_unmuted_pygame_volume(self):
         self.is_muted = False

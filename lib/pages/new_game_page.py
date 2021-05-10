@@ -30,7 +30,8 @@ class NewGamePage(SavePage):
             self._get_name_from_user()
         else:
             self._get_save_selection_from_user()
-        self.game.run_options_and_return_to_title_logic()
+        self.game.run_options_button()
+        self.game.run_return_to_title_button()
 
     def _get_name_from_user(self):
         """Run the code to get the user's desired character/save name."""

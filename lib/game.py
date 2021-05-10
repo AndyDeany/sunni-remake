@@ -26,11 +26,7 @@ class Game:
 
     @classmethod
     def initialise(cls):
-        cls.OPTIONS_BUTTON = Image("options_button.png", (10, 665))
-        cls.VICTORY_OVERLAY = Image("victory_overlay.png", (0, 0))
-        cls.DEFEAT_OVERLAY = Image("defeat_overlay.png", (0, 0))
-        cls.CONTINUE_BUTTON = Image("continue_button.png", (1000, 600))
-        cls.TRY_AGAIN_BUTTON = Image("try_again_button.png", (1000, 600))
+        cls._OPTIONS_BUTTON = Image("options_button.png", (10, 665))
         cls.RETURN_TO_TITLE_BUTTON = Image("return_to_title_button.png", (80, 600))
 
     def __init__(self, session):
@@ -48,7 +44,6 @@ class Game:
         self.initialise()
         NewGamePage.initialise()
         LoadGamePage.initialise()
-        Options.initialise()
         BattleState.initialise(self)
         ChooseCharacter.initialise(self)
         Character.initialise()
@@ -130,12 +125,16 @@ class Game:
         self.opponent = self.next_battle.opponent
         self.next_battle = None
 
-    def run_options_and_return_to_title_logic(self):
-        self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
-        self.OPTIONS_BUTTON.display(10, 665)
-        if self.keys.escape or (self.mouse.is_in(10, 665, 100, 715) and self.mouse.left):
+    def run_options_button(self):
+        """Run the logic to show the "Options" button and act upon it being clicked."""
+        self._OPTIONS_BUTTON.display()
+        if self.keys.escape or (self.mouse.left and self.mouse.is_in(10, 665, 100, 715)):
             self.options.show()
-        elif self.mouse.is_in(1082, 665, 1270, 715) and self.mouse.left:
+
+    def run_return_to_title_button(self):
+        """Run the logic to show the "Return to Title" button and act upon it being clicked."""
+        self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
+        if self.mouse.is_in(1082, 665, 1270, 715) and self.mouse.left:
             self.go_to_main_menu()
 
     def run(self):

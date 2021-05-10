@@ -8,14 +8,13 @@ from lib.pages.battle.states import ChooseCharacter, ChooseAbility, Victory, Def
 class Battle(Page):
     """Class for representing a battle between the player and a given opponent."""
 
-    CHOOSE_CHARACTER = ChooseCharacter()
-    CHOOSE_ABILITY = ChooseAbility()
-    VICTORY = Victory()
-    DEFEAT = Defeat()
-
     @classmethod
     def initialise(cls):
         cls.BATTLE_BACKGROUND_HALLWAY = Image("battle_background_hallway.png", (0, 0))
+        cls.CHOOSE_CHARACTER = ChooseCharacter()
+        cls.CHOOSE_ABILITY = ChooseAbility()
+        cls.VICTORY = Victory()
+        cls.DEFEAT = Defeat()
 
     def __init__(self, game, opponent):
         super().__init__(game)
@@ -41,9 +40,7 @@ class Battle(Page):
         self.player.display_info()
         self.opponent.display_info()
 
-        self.game.OPTIONS_BUTTON.display(10, 665)
-        if self.game.keys.escape or (self.game.mouse.left and self.game.mouse.is_in(10, 665, 100, 715)):
-            self.game.options.show()
+        self.game.run_options_button()
 
         self.player.display_stat_change()
         self.opponent.display_stat_change()

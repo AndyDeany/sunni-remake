@@ -12,4 +12,5 @@ class LoadGamePage(SavePage):
                 self.game.select_save(None)  # Don't let the player select an empty save
             else:
                 self.game.load()
-        self.game.run_options_and_return_to_title_logic()
+        self.game.run_options_button()
+        self.game.run_return_to_title_button()
