@@ -2,6 +2,7 @@ from lib.pages.save_page import SavePage
 from lib.image import Image, Text
 from lib.color import Color
 from lib.font import Font
+from lib.button import Button
 from lib.player import Player
 from lib.meme_dog import MemeDog
 
@@ -13,16 +14,17 @@ class NewGamePage(SavePage):
     def initialise(cls):
         super().initialise()
         cls.ENTER_CHARACTER_NAME = Image("enter_character_name.png", (0, 0))
-        cls.CONTINUE_BUTTON_FLARED = Image("continue_button_flared.png", (0, 0))
+        cls.continue_button = ContinueButton(553, 404, 174, 38, hover_image=Image("continue_button_flared.png", (0, 0)))
         cls.ARE_YOU_SURE = Image("are_you_sure.png", (0, 0))
-        cls.SURE_YES_FLARED = Image("sure_yes_flared.png", (0, 0))
-        cls.SURE_NO_FLARED = Image("sure_no_flared.png", (0, 0))
+        cls.yes_button = YesButton(555, 398, 75, 39, hover_image=Image("sure_yes_flared.png", (0, 0)))
+        cls.no_button = NoButton(648, 398, 75, 39, hover_image=Image("sure_no_flared.png", (0, 0)))
 
     def __init__(self, game):
         super().__init__(game)
         self.player_name_text = None
         self.display_sure = False
         self.game.keys.start_text_input(16, default_text="Sunni")
+        self.save_confirmed = False
 
     def run(self):
         super().run()
@@ -39,10 +41,7 @@ class NewGamePage(SavePage):
         if self.game.keys.text_input:    # Only allow the user to continue with a name entered.
             if self.game.keys.enter or self.game.keys.numpad_enter:
                 self.game.keys.stop_text_input()
-            if self.game.mouse.is_in(553, 404, 727, 442):
-                self.CONTINUE_BUTTON_FLARED.display()
-                if self.game.mouse.left:
-                    self.game.keys.stop_text_input()
+            self.continue_button.run()
         Text(self.game.keys.text_input, Font.SUNNI, Color.BLACK, (370, 338)).display()
         if not self.game.keys.receiving_text_input:
             self.game.player = Player(self.game, self.game.keys.text_input)
@@ -51,25 +50,42 @@ class NewGamePage(SavePage):
 
     def _get_save_selection_from_user(self):
         self.player_name_text.display()
-        save_confirmed = False
+        self.save_confirmed = False
         if self.display_sure:
             self.ARE_YOU_SURE.display()
-            if self.game.mouse.is_in(555, 398, 630, 437):
-                self.SURE_YES_FLARED.display()
-                if self.game.mouse.left:
-                    save_confirmed = True
-                    self.display_sure = False
-            elif self.game.mouse.is_in(648, 398, 723, 437):
-                self.SURE_NO_FLARED.display()
-                if self.game.mouse.left:
-                    self.game.select_save(None)
-                    self.display_sure = False
+            for button in (self.yes_button, self.no_button):
+                if button.is_hovered:
+                    button.on_hover()
+                    break
         else:
             self.show_saves_for_selection()
 
         if self.game.selected_save is not None:
-            if self.game.selected_save.is_empty or save_confirmed:
+            if self.game.selected_save.is_empty or self.save_confirmed:
                 self.game.load_next_battle(MemeDog)
                 self.game.commence_next_battle()
             else:
                 self.display_sure = True
+
+
+class ContinueButton(Button):
+    """Class representing the "CONTINUE" button on the new game page, which is pressed after entering your name."""
+
+    def _on_click(self):
+        self.session.keys.stop_text_input()
+
+
+class YesButton(Button):
+    """Class representing the "Yes" button on the new game page, to confirm that you wish to overwrite a save."""
+
+    def _on_click(self):
+        self.session.game.page.save_confirmed = True
+        self.session.game.page.display_sure = False
+
+
+class NoButton(Button):
+    """Class representing the "No" button on the new game page, to cancel overwriting a save."""
+
+    def _on_click(self):
+        self.session.game.select_save(None)
+        self.session.game.page.display_sure = False
