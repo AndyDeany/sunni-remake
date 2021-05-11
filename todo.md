@@ -2,10 +2,10 @@
 * Perhaps `Options` should also inherit from `Page`.
 It would need to remember previous value of `game.page` though - not an issue.
 
-* Button class for representing buttons on the main menu at least,
-potentially could be used with saves as well. Need an `on_click()`/`click()` method for sure.
-Check **everywhere** that there is a `mouse.is_in()` call because it's likely these
-are all buttons (aside from move icons in battles).
+* I'm not sure I actually like `Button().on_click()` existing in general.
+*Perhaps* remove this and make calling code do this work instead.
+I'm sure in some cases it is useful but a lot of the time it is just messy.
+The `Button` class already does enough by checking if the button is hovered, clicked, etc.
 
 * Pass `Move`s `user` and `opponent`? So that they don't have to just get it from
 `Game` and hope it's right. Also gets rid of any ambiguity and means that
