@@ -47,6 +47,9 @@ class Button:
 
     def on_hover(self):
         """Run the code for when the button is being hovered over."""
+        self._on_hover()
+
+    def _on_hover(self):
         if self.hover_image is not None:
             self.hover_image.display(*self.hover_display_coords)
         if self.session.mouse.left:
