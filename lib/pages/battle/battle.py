@@ -40,7 +40,7 @@ class Battle(Page):
         self.player.display_info()
         self.opponent.display_info()
 
-        self.game.run_options_button()
+        self.game.options_button.run()
 
         self.player.display_stat_change()
         self.opponent.display_stat_change()

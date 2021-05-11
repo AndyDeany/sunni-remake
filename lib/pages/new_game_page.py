@@ -30,7 +30,7 @@ class NewGamePage(SavePage):
             self._get_name_from_user()
         else:
             self._get_save_selection_from_user()
-        self.game.run_options_button()
+        self.game.options_button.run()
         self.game.return_to_title_button.run()
 
     def _get_name_from_user(self):
