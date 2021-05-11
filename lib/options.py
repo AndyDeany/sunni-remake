@@ -15,12 +15,12 @@ class Options:
         self.fullscreen_enabled = False
         self.window_size = window_size
 
-        self._return_to_game_button = Image("return_to_game_button.png", (10, 665))
+        self._return_to_game_button = Image("return_to_game_button.png", (11, 667))
         self._volume_minus_button = Image("volume_minus_button.png", (430, 250))
         self._volume_plus_button = Image("volume_plus_button.png", (490, 250))
         self._volume_mute_button = Image("volume_mute_button.png", (570, 250))
-        self._windowed_button = Image("windowed_button.png", (80, 350))
-        self._fullscreen_button = Image("fullscreen_button.png", (250, 350))
+        self._windowed_button = Image("windowed_button.png", (84, 352))
+        self._fullscreen_button = Image("fullscreen_button.png", (250, 352))
         self._blank_overlay = Image("blank_overlay.png", (0, 0))
 
     def show(self):

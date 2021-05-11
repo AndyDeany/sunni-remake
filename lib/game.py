@@ -26,7 +26,7 @@ class Game:
     @classmethod
     def initialise(cls):
         cls.options_button = OptionsButton(14, 667)
-        cls.return_to_title_button = ReturnToTitleButton(1082, 665)
+        cls.return_to_title_button = ReturnToTitleButton(1083, 667)
 
     def __init__(self, session):
         self.session = session
