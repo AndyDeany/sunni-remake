@@ -20,16 +20,8 @@ class ChooseCharacter(BattleState):
     def run(self):
         """Run the code that asks the player to choose their character sprite."""
         self.choose_character_overlay.display()
-        for button in self.character_buttons:
-            button.display()
-
-        if self.game.mouse.left:
-            for button in self.character_buttons:
-                if button.is_hovered:
-                    button.on_click()
-                    break
-            else:
-                return
+        Button.run_buttons(self.character_buttons)
+        if self.game.player.character is not None:
             self.game.page.current = self.game.page.CHOOSE_ABILITY
 
 

@@ -67,3 +67,13 @@ class Button:
         self.display()
         if self.is_hovered:
             self.on_hover()
+
+    @staticmethod
+    def run_buttons(list_of_buttons):
+        """Run multiple buttons simultaneously, stopping after a hovered button is found for optimisation purposes."""
+        for button in list_of_buttons:
+            button.display()
+        for button in list_of_buttons:
+            if button.is_hovered:
+                button.on_hover()
+                break

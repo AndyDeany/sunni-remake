@@ -25,10 +25,7 @@ class MainMenu(Page):
 
     def run(self):
         self.MAIN_MENU.display()
-        for button in self.buttons:
-            if button.is_hovered:
-                button.on_hover()
-                break   # Can't be hovering more than one button at the same time.
+        Button.run_buttons(self.buttons)
         if self.game.keys.escape:
             self.game.options.show()
 

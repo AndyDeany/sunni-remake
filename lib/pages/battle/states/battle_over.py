@@ -1,5 +1,6 @@
 from lib.pages.battle.states.battle_state import BattleState
 from lib.buttons import ReturnToTitleButton
+from lib.button import Button
 
 
 class BattleOver(BattleState):
@@ -14,12 +15,4 @@ class BattleOver(BattleState):
         self.game.player.display()
         self.game.opponent.display()
         self.overlay.display()
-
-        for button in self.buttons:
-            button.display()
-
-        if self.game.mouse.left:
-            for button in self.buttons:
-                if button.is_hovered:
-                    button.on_click()
-                    break
+        Button.run_buttons(self.buttons)

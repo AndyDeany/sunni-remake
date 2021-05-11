@@ -53,10 +53,7 @@ class NewGamePage(SavePage):
         self.save_confirmed = False
         if self.display_sure:
             self.ARE_YOU_SURE.display()
-            for button in (self.yes_button, self.no_button):
-                if button.is_hovered:
-                    button.on_hover()
-                    break
+            Button.run_buttons((self.yes_button, self.no_button))
         else:
             self.show_saves_for_selection()
 
