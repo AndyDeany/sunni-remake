@@ -9,20 +9,18 @@ class Button:
     def initialise(cls, session):
         cls.session = session
 
-    def __init__(self, start_x, start_y, end_x=None, end_y=None, *, image=None, hover_image=None):
+    def __init__(self, x, y, width=None, height=None, *, image=None, hover_image=None):
         self.image = image or self._get_image()
         self.hover_image = hover_image
-        if None in (end_x, end_y):
+        if None in (width, height):
             width, height = self.image.image.get_size()
-            end_x = start_x + width
-            end_y = start_y + height
-        self.boundaries = (start_x, start_y, end_x, end_y)
+        self.boundaries = (x, y, x + width, y + height)
 
-        self.display_coords = (start_x, start_y)
+        self.display_coords = (x, y)
         if self.image and None not in (self.image.default_x, self.image.default_y):
             self.display_coords = (self.image.default_x, self.image.default_y)
 
-        self.hover_display_coords = (start_x, start_y)
+        self.hover_display_coords = (x, y)
         if self.hover_image and None not in (self.hover_image.default_x, self.hover_image.default_y):
             self.hover_display_coords = (self.hover_image.default_x, self.hover_image.default_y)
 
