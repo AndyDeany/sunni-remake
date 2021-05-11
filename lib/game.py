@@ -125,12 +125,6 @@ class Game:
         if self.keys.escape or (self.mouse.left and self.mouse.is_in(10, 665, 100, 715)):
             self.options.show()
 
-    def run_return_to_title_button(self):
-        """Run the logic to show the "Return to Title" button and act upon it being clicked."""
-        self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
-        if self.mouse.is_in(1082, 665, 1270, 715) and self.mouse.left:
-            self.go_to_main_menu()
-
     def run(self):
         """Code that is executed once per frame - the body of the main program loop."""
         self.page.run()
