@@ -44,6 +44,7 @@ class ChooseAbility(BattleState):
             for button in self.moves_buttons:
                 if button.is_hovered:
                     button.on_hover()
+                    break
         else:
             if self.game.player.selected_moves == self.game.player.offensive_moves:
                 move_buttons = self.offensive_move_buttons
@@ -85,14 +86,10 @@ class MoveButton(Button):
     INFO_Y = 130
 
     def __init__(self, x, y, move, info_x):
-        super().__init__(x, y, image=move.icon)
+        move.info.default_x = info_x
+        move.info.default_y = self.INFO_Y
+        super().__init__(x, y, image=move.icon, hover_image=move.info)
         self.move = move
-        self.info_x = info_x
-
-    def _on_hover(self):
-        self.move.info.display(self.info_x, self.INFO_Y)
-        if self.session.mouse.left:
-            self.on_click()
 
     def _on_click(self):
         self.session.game.player.use_move(self.move)
