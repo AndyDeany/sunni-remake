@@ -17,6 +17,11 @@ class Button:
         """Return whether or not the button is being hovered over by the user's mouse."""
         return self.session.mouse.is_in(self.start_x, self.start_y, self.end_x, self.end_y)
 
+    @property
+    def is_clicked(self):
+        """Return whether or not the button is being click on by the user."""
+        return self.session.mouse.left and self.is_hovered
+
     def display(self):
         """Run the code for displaying the button in it's default state."""
         if self.image is not None:

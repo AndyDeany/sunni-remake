@@ -50,11 +50,11 @@ class Options:
             self.hide()
 
         if not isinstance(self.session.game.page, MainMenu):
-            self.session.game.RETURN_TO_TITLE_BUTTON.display(1082, 665)
-            if self.session.mouse.left and self.session.mouse.is_in(1082, 665, 1270, 715):
+            self.session.game.return_to_title_button.display()
+            if self.session.game.return_to_title_button.is_clicked:
                 if self.session.game.selected_save is not None:
                     self.session.game.save()
-                self.session.game.go_to_main_menu()
+                self.session.game.return_to_title_button.on_click()
                 self.hide()
 
         self._run_volume_change_logic()

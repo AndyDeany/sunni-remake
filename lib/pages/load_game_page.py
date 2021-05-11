@@ -13,4 +13,4 @@ class LoadGamePage(SavePage):
             else:
                 self.game.load()
         self.game.run_options_button()
-        self.game.run_return_to_title_button()
+        self.game.return_to_title_button.run()

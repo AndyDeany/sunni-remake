@@ -13,6 +13,7 @@ from lib.kanye_snake import KanyeSnake
 from lib.spook_dog import SpookDog
 from lib.evil_cloud import EvilCloud
 from lib.pages.battle.states.battle_state import BattleState
+from lib.buttons import ReturnToTitleButton
 
 
 class Game:
@@ -24,7 +25,7 @@ class Game:
     @classmethod
     def initialise(cls):
         cls._OPTIONS_BUTTON = Image("options_button.png", (10, 665))
-        cls.RETURN_TO_TITLE_BUTTON = Image("return_to_title_button.png", (80, 600))
+        cls.return_to_title_button = ReturnToTitleButton(1082, 665, 1270, 715)
 
     def __init__(self, session):
         self.session = session
