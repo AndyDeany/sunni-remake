@@ -15,11 +15,9 @@ class Defeat(BattleOver):
 class TryAgainButton(Button):
     """Class representing the "Try Again" button for after the player has been defeated."""
 
-    def __init__(self, start_x, start_y, end_x, end_y):
-        super().__init__(start_x, start_y, end_x, end_y, image=Image("try_again_button.png", (start_x, start_y)))
+    _image_path = "try_again_button.png"
 
-    def on_click(self):
-        """Run the code for when the button is clicked."""
+    def _on_click(self):
         self.session.game.page.current = self.session.game.page.CHOOSE_ABILITY
         self.session.game.player.fully_restore()
         self.session.game.opponent.fully_restore()

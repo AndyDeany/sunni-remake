@@ -37,11 +37,9 @@ class PlayButton(Button):
     """Class representing the "PLAY" button on the main menu."""
 
     def __init__(self):
-        super().__init__(535, 269, 744, 345)
-        self.hover_image = Image("menu_play_flared.png", (79, 0))
+        super().__init__(535, 269, 744, 345, hover_image=Image("menu_play_flared.png", (79, 0)))
 
-    def on_click(self):
-        """Run the code for what happens when the button is clicked."""
+    def _on_click(self):
         self.session.game.visit(NewGamePage)
 
 
@@ -49,11 +47,9 @@ class LoadButton(Button):
     """Class representing the "LOAD" button on the main menu."""
 
     def __init__(self):
-        super().__init__(406, 375, 877, 451)
-        self.hover_image = Image("menu_load_flared.png", (82, 106))
+        super().__init__(406, 375, 877, 451, hover_image=Image("menu_load_flared.png", (82, 106)))
 
-    def on_click(self):
-        """Run the code for what happens when the button is clicked."""
+    def _on_click(self):
         self.session.game.visit(LoadGamePage)
 
 
@@ -61,11 +57,9 @@ class OptionsButton(Button):
     """Class representing the "OPTIONS" button on the main menu."""
 
     def __init__(self):
-        super().__init__(461, 481, 817, 557)
-        self.hover_image = Image("menu_options_flared.png", (82, 212))
+        super().__init__(461, 481, 817, 557, hover_image=Image("menu_options_flared.png", (82, 212)))
 
-    def on_click(self):
-        """Run the code for what happens when the button is clicked."""
+    def _on_click(self):
         self.session.game.options.show()
 
 
@@ -73,9 +67,7 @@ class ExitButton(Button):
     """Class representing the "EXIT" button on the main menu."""
 
     def __init__(self):
-        super().__init__(547, 585, 734, 661)
-        self.hover_image = Image("menu_exit_flared.png", (166, 476))
+        super().__init__(547, 585, 734, 661, hover_image=Image("menu_exit_flared.png", (166, 476)))
 
-    def on_click(self):
-        """Run the code for what happens when the button is clicked."""
+    def _on_click(self):
         self.session.is_running = False

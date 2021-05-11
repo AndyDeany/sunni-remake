@@ -1,4 +1,9 @@
+from lib.image import Image
+
+
 class Button:
+
+    _image_path = None
 
     @classmethod
     def initialise(cls, session):
@@ -9,8 +14,22 @@ class Button:
         self.start_y = start_y
         self.end_x = end_x
         self.end_y = end_y
-        self.image = image
+        self.image = image or self._get_image()
         self.hover_image = hover_image
+
+        self.display_coords = (self.start_x, self.start_y)
+        if self.image and None not in (self.image.default_x, self.image.default_y):
+            self.display_coords = (self.image.default_x, self.image.default_y)
+
+        self.hover_display_coords = (self.start_x, self.start_y)
+        if self.hover_image and None not in (self.hover_image.default_x, self.hover_image.default_y):
+            self.hover_display_coords = (self.hover_image.default_x, self.hover_image.default_y)
+
+    def _get_image(self):
+        """Return an Image() instance for this class using cls.image_path if set by subclasses."""
+        if self._image_path is None:
+            return None
+        return Image(self._image_path)
 
     @property
     def is_hovered(self):
@@ -25,17 +44,20 @@ class Button:
     def display(self):
         """Run the code for displaying the button in it's default state."""
         if self.image is not None:
-            self.image.display()
+            self.image.display(*self.display_coords)
 
     def on_hover(self):
         """Run the code for when the button is being hovered over."""
         if self.hover_image is not None:
-            self.hover_image.display()
+            self.hover_image.display(*self.hover_display_coords)
         if self.session.mouse.left:
             self.on_click()
 
     def on_click(self):
-        """Run code for when the button is clicked."""
+        """Run the code for when the button is clicked."""
+        self._on_click()
+
+    def _on_click(self):
         raise NotImplementedError
 
     def run(self):

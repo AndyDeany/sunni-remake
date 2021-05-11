@@ -37,9 +37,9 @@ class CharacterButton(Button):
     """Class representing a button for selecting a certain character on the choose character screen."""
 
     def __init__(self, start_x, start_y, end_x, end_y, character_name):
-        image = Image(f"player/{character_name}_normal1.png", (start_x, start_y))
-        super().__init__(start_x, start_y, end_x, end_y, image=image)
+        self._image_path = f"player/{character_name}_normal1.png"
+        super().__init__(start_x, start_y, end_x, end_y)
         self.character_name = character_name
 
-    def on_click(self):
+    def _on_click(self):
         self.session.game.player.character = self.character_name

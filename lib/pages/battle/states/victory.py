@@ -23,8 +23,7 @@ class Victory(BattleOver):
 class ContinueButton(Button):
     """Class for representing the "Continue" button for the player to progress to the next part of the game."""
 
-    def __init__(self, start_x, start_y, end_x, end_y):
-        super().__init__(start_x, start_y, end_x, end_y, image=Image("continue_button.png", (start_x, start_y)))
+    _image_path = "continue_button.png"
 
-    def on_click(self):
+    def _on_click(self):
         self.session.game.commence_next_battle()

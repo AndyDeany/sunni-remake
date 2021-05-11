@@ -129,10 +129,9 @@ class Game:
 class OptionsButton(Button):
     """Class representing the "Options" button for opening the Options menu."""
 
-    def __init__(self, start_x, start_y, end_x, end_y):
-        super().__init__(start_x, start_y, end_x, end_y, image=Image("options_button.png", (start_x, start_y)))
+    _image_path = "options_button.png"
 
-    def on_click(self):
+    def _on_click(self):
         self.session.options.show()
 
     def run(self):
