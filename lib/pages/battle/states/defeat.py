@@ -8,7 +8,7 @@ class Defeat(BattleOver):
 
     def __init__(self):
         super().__init__()
-        self.buttons.append(TryAgainButton(1000, 600, 1200, 700))
+        self.buttons.append(TryAgainButton(1000, 600))
         self.overlay = Image("defeat_overlay.png", (0, 0))
 
 

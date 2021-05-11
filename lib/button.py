@@ -9,19 +9,20 @@ class Button:
     def initialise(cls, session):
         cls.session = session
 
-    def __init__(self, start_x, start_y, end_x, end_y, *, image=None, hover_image=None):
-        self.start_x = start_x
-        self.start_y = start_y
-        self.end_x = end_x
-        self.end_y = end_y
+    def __init__(self, start_x, start_y, end_x=None, end_y=None, *, image=None, hover_image=None):
         self.image = image or self._get_image()
         self.hover_image = hover_image
+        if None in (end_x, end_y):
+            width, height = self.image.image.get_size()
+            end_x = start_x + width
+            end_y = start_y + height
+        self.boundaries = (start_x, start_y, end_x, end_y)
 
-        self.display_coords = (self.start_x, self.start_y)
+        self.display_coords = (start_x, start_y)
         if self.image and None not in (self.image.default_x, self.image.default_y):
             self.display_coords = (self.image.default_x, self.image.default_y)
 
-        self.hover_display_coords = (self.start_x, self.start_y)
+        self.hover_display_coords = (start_x, start_y)
         if self.hover_image and None not in (self.hover_image.default_x, self.hover_image.default_y):
             self.hover_display_coords = (self.hover_image.default_x, self.hover_image.default_y)
 
@@ -34,7 +35,7 @@ class Button:
     @property
     def is_hovered(self):
         """Return whether or not the button is being hovered over by the user's mouse."""
-        return self.session.mouse.is_in(self.start_x, self.start_y, self.end_x, self.end_y)
+        return self.session.mouse.is_in(*self.boundaries)
 
     @property
     def is_clicked(self):

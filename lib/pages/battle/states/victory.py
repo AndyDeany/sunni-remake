@@ -8,7 +8,7 @@ class Victory(BattleOver):
 
     def __init__(self):
         super().__init__()
-        self.buttons.append(ContinueButton(1000, 600, 1120, 650))
+        self.buttons.append(ContinueButton(1000, 600))
         self.overlay = Image("victory_overlay.png", (0, 0))
 
     def run(self):

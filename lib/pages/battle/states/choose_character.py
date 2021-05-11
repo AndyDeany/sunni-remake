@@ -14,8 +14,8 @@ class ChooseCharacter(BattleState):
 
     def __init__(self):
         self.choose_character_overlay = Image("choose_character_overlay.png", (0, 0))
-        self.character_buttons = (CharacterButton(400, 300, 470, 480, self.CHARACTER_1),
-                                  CharacterButton(810, 300, 880, 480, self.CHARACTER_2))
+        self.character_buttons = (CharacterButton(400, 300, self.CHARACTER_1),
+                                  CharacterButton(810, 300, self.CHARACTER_2))
 
     def run(self):
         """Run the code that asks the player to choose their character sprite."""
@@ -36,9 +36,9 @@ class ChooseCharacter(BattleState):
 class CharacterButton(Button):
     """Class representing a button for selecting a certain character on the choose character screen."""
 
-    def __init__(self, start_x, start_y, end_x, end_y, character_name):
+    def __init__(self, start_x, start_y, character_name):
         self._image_path = f"player/{character_name}_normal1.png"
-        super().__init__(start_x, start_y, end_x, end_y)
+        super().__init__(start_x, start_y)
         self.character_name = character_name
 
     def _on_click(self):

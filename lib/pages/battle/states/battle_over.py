@@ -6,7 +6,7 @@ class BattleOver(BattleState):
     """Class for representing a state when the battle is over, like victory/defeat."""
 
     def __init__(self):
-        self.buttons = [ReturnToTitleButton(80, 600, 268, 650)]
+        self.buttons = [ReturnToTitleButton(80, 600)]
         self.overlay = None
 
     def run(self):
