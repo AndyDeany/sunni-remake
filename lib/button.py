@@ -37,8 +37,13 @@ class Button:
 
     @property
     def is_clicked(self):
-        """Return whether or not the button is being click on by the user."""
+        """Return whether or not the button is being clicked on by the user."""
         return self.session.mouse.left and self.is_hovered
+
+    @property
+    def is_held(self):
+        """Return whether or not the button is being held down by the user."""
+        return self.session.mouse.left.is_pressed and self.is_hovered
 
     def display(self):
         """Run the code for displaying the button in it's default state."""
