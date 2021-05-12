@@ -1,4 +1,3 @@
-from lib.image import Image
 from lib.save import Save
 
 from lib.pages.opening_sequence import OpeningSequence
