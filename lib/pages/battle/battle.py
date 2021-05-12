@@ -33,18 +33,18 @@ class Battle(Page):
     def run(self):
         """Run the code for execution of the battle with the opponent."""
         self._show_background()
-        self.current.run()
         if self.current == self.CHOOSE_CHARACTER:
+            self.current.run()
             return
 
         self.player.display_info()
         self.opponent.display_info()
+        self.game.options_button.run()
 
-        self.game.run_options_button()
+        self.current.run()
 
         self.player.display_stat_change()
         self.opponent.display_stat_change()
-
         self.mana_notification_display()
 
     def mana_notification_display(self):

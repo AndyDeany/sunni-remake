@@ -29,6 +29,8 @@ class Save:
             self.player_level = float(save_lines[1])
             self.opponent_name = save_lines[2]
             self.player_character = save_lines[3]
+            if self.player_character == "None":
+                self.player_character = None
 
     @property
     def player_name(self):

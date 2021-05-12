@@ -13,6 +13,8 @@ from lib.kanye_snake import KanyeSnake
 from lib.spook_dog import SpookDog
 from lib.evil_cloud import EvilCloud
 from lib.pages.battle.states.battle_state import BattleState
+from lib.button import Button
+from lib.buttons import ReturnToTitleButton
 
 
 class Game:
@@ -23,8 +25,8 @@ class Game:
 
     @classmethod
     def initialise(cls):
-        cls._OPTIONS_BUTTON = Image("options_button.png", (10, 665))
-        cls.RETURN_TO_TITLE_BUTTON = Image("return_to_title_button.png", (80, 600))
+        cls.options_button = OptionsButton(14, 667)
+        cls.return_to_title_button = ReturnToTitleButton(1083, 667)
 
     def __init__(self, session):
         self.session = session
@@ -119,18 +121,20 @@ class Game:
         self.opponent = self.next_battle.opponent
         self.next_battle = None
 
-    def run_options_button(self):
-        """Run the logic to show the "Options" button and act upon it being clicked."""
-        self._OPTIONS_BUTTON.display()
-        if self.keys.escape or (self.mouse.left and self.mouse.is_in(10, 665, 100, 715)):
-            self.options.show()
-
-    def run_return_to_title_button(self):
-        """Run the logic to show the "Return to Title" button and act upon it being clicked."""
-        self.RETURN_TO_TITLE_BUTTON.display(1082, 665)
-        if self.mouse.is_in(1082, 665, 1270, 715) and self.mouse.left:
-            self.go_to_main_menu()
-
     def run(self):
         """Code that is executed once per frame - the body of the main program loop."""
         self.page.run()
+
+
+class OptionsButton(Button):
+    """Class representing the "Options" button for opening the Options menu."""
+
+    _image_path = "options_button.png"
+
+    def _on_click(self):
+        self.session.options.show()
+
+    def run(self):
+        self.display()
+        if self.session.keys.escape or self.is_clicked:
+            self.on_click()

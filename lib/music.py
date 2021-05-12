@@ -43,8 +43,7 @@ class Audio:
 
     def set_volume(self, volume):
         """Set the volume of the audio clip."""
-        volume = pygame_volume(volume)
-        self.sound.set_volume(volume * self.volume_multiplier)
+        self.sound.set_volume(pygame_volume(volume * self.volume_multiplier))
 
 
 class Music:
